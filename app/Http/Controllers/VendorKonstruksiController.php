@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\PelangganPbpd;
+use App\Services\NotifikasiService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 
@@ -73,6 +74,7 @@ class VendorKonstruksiController extends Controller
         ]);
 
         $pelanggan->update(['tahap' => 'PERENCANAAN']);
+        NotifikasiService::untukData($pelanggan, 'Laporan vendor konstruksi masuk', 'Vendor konstruksi telah mengirim laporan untuk ' . $pelanggan->no_agenda . '.', route('laporan'));
         return back()->with('success', 'Laporan vendor konstruksi berhasil dikirim.');
     }
 
@@ -113,6 +115,7 @@ class VendorKonstruksiController extends Controller
             $paths[] = $file->store('hasil-konstruksi', 'public');
         }
         $pengiriman->update(['hasil_paths' => $paths]);
+        NotifikasiService::untukData($pelanggan, 'Berkas hasil perencanaan diupload', 'Berkas hasil perencanaan untuk konstruksi ' . $pelanggan->no_agenda . ' telah diupload.', route('laporan'));
 
         return back()->with('success', 'Berkas hasil Perencanaan berhasil disimpan.');
     }
@@ -149,6 +152,7 @@ class VendorKonstruksiController extends Controller
             $paths[] = $file->store('hasil-konstruksi', 'public');
         }
         $pelanggan->update(['hasil_konstruksi_paths' => $paths]);
+        NotifikasiService::untukData($pelanggan, 'Berkas hasil konstruksi diupload', 'Berkas hasil konstruksi untuk ' . $pelanggan->no_agenda . ' telah diupload.', route('laporan'));
 
         return back()->with('success', 'Berkas hasil konstruksi berhasil disimpan.');
     }

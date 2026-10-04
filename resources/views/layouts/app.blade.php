@@ -36,7 +36,7 @@
             @can($m['permission'])
                 <a href="{{ route($m['route']) }}"
                    class="{{ request()->routeIs($m['route']) ? 'active' : '' }}">
-                    {{ $m['label'] }}
+                    {{ $m['label'] }}@if ($m['route'] === 'notifikasi' && auth()->check()) <span class="notif-badge">{{ \App\Models\AppNotification::where('user_id', auth()->id())->whereNull('read_at')->count() }}</span>@endif
                 </a>
             @endcan
         @endforeach
@@ -55,5 +55,6 @@
         </main>
     </div>
 </div>
+<style>.notif-badge{display:inline-block;min-width:18px;margin-left:6px;padding:2px 5px;border-radius:10px;background:#c0392b;color:#fff;font-size:11px;text-align:center}</style>
 </body>
 </html>

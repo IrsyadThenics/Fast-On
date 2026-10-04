@@ -7,6 +7,7 @@ use App\Models\PermintaanMaterial;
 use App\Models\PengirimanVendor;
 use App\Models\PengirimanKonstruksi;
 use App\Models\Ulp;
+use App\Services\NotifikasiService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
@@ -72,6 +73,7 @@ class PbpdController extends Controller
         ]);
 
         $pelanggan->update(['rab' => $data['rab'] ?? null]);
+        NotifikasiService::untukData($pelanggan, 'RAB diperbarui', 'RAB data pelanggan ' . $pelanggan->no_agenda . ' telah diperbarui.', route('laporan'));
 
         return back()->with('success', 'RAB berhasil disimpan.');
     }
@@ -141,6 +143,8 @@ class PbpdController extends Controller
             });
         });
 
+        $pelanggan->each(fn ($row) => NotifikasiService::untukData($row, 'Data dikirim ULP', 'Data ' . $row->no_agenda . ' dikirim ke ' . $data['tujuan'] . '.', route('laporan')));
+
         return back()->with('success', $pelanggan->count() . ' data berhasil dikirim ke ' . $data['tujuan'] . '.');
     }
 
@@ -193,6 +197,8 @@ class PbpdController extends Controller
             }
         });
 
+        NotifikasiService::untukData($pelanggan, 'Detail/RAB diperbarui', 'Detail material atau RAB ' . $pelanggan->no_agenda . ' telah diperbarui.', route('laporan'));
+
         return back()->with('success', 'RAB dan kebutuhan perluasan berhasil diperbarui.');
     }
 
@@ -224,6 +230,7 @@ class PbpdController extends Controller
         ])->save();
 
         $pelanggan->update(['tahap' => 'VENDOR_TIANG']);
+        NotifikasiService::untukData($pelanggan, 'Data dikirim ke vendor tiang', 'Data ' . $pelanggan->no_agenda . ' dikirim ke vendor tiang.', route('laporan'), [$vendor->user_id]);
 
         return back()->with('success', 'Data berhasil dikirim ke vendor tiang.');
     }
@@ -251,6 +258,7 @@ class PbpdController extends Controller
             'dikirim_at' => now(),
         ])->save();
         $pelanggan->update(['tahap' => 'VENDOR_KONSTRUKSI']);
+        NotifikasiService::untukData($pelanggan, 'Data dikirim ke vendor konstruksi', 'Data ' . $pelanggan->no_agenda . ' dikirim ke vendor konstruksi.', route('laporan'), [$vendor->user_id]);
 
         return back()->with('success', 'Data berhasil dikirim ke vendor konstruksi.');
     }
@@ -267,6 +275,7 @@ class PbpdController extends Controller
             $paths[] = $file->store('hasil-transaksi', 'public');
         }
         $pelanggan->update(['hasil_transaksi_paths' => $paths]);
+        NotifikasiService::untukData($pelanggan, 'Berkas hasil transaksi diupload', 'Berkas hasil transaksi untuk ' . $pelanggan->no_agenda . ' telah diupload.', route('laporan'));
 
         return back()->with('success', 'Berkas hasil transaksi berhasil disimpan.');
     }
@@ -292,6 +301,7 @@ class PbpdController extends Controller
             $paths[] = $file->store('hasil-jaringan', 'public');
         }
         $pelanggan->update(['hasil_jaringan_paths' => $paths]);
+        NotifikasiService::untukData($pelanggan, 'Berkas hasil jaringan diupload', 'Berkas hasil jaringan untuk ' . $pelanggan->no_agenda . ' telah diupload.', route('laporan'));
 
         return back()->with('success', 'Berkas hasil jaringan berhasil disimpan.');
     }
@@ -320,6 +330,7 @@ class PbpdController extends Controller
             $paths[] = $file->store('syarat/' . $jenis, 'public');
         }
         $pelanggan->update([$column => $paths]);
+        NotifikasiService::untukData($pelanggan, 'Berkas syarat diupload', 'Berkas ' . $jenis . ' untuk ' . $pelanggan->no_agenda . ' telah diupload oleh ULP.', route('laporan'));
 
         return back()->with('success', 'Berkas syarat berhasil disimpan.');
     }

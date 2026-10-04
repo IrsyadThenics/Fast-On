@@ -7,6 +7,7 @@ use App\Http\Controllers\PerluasanController;
 use App\Http\Controllers\VendorTiangController;
 use App\Http\Controllers\VendorKonstruksiController;
 use App\Http\Controllers\LaporanController;
+use App\Http\Controllers\NotifikasiController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', fn () => redirect()->route('dashboard'));
@@ -36,6 +37,12 @@ Route::middleware('auth')->group(function () {
         ->middleware('permission:laporan.view')->name('laporan');
     Route::get('/laporan/export', [LaporanController::class, 'export'])
         ->middleware('permission:laporan.view')->name('laporan.export');
+    Route::get('/notifikasi', [NotifikasiController::class, 'index'])
+        ->middleware('permission:notifikasi.view')->name('notifikasi');
+    Route::post('/notifikasi/baca-semua', [NotifikasiController::class, 'readAll'])
+        ->middleware('permission:notifikasi.view')->name('notifikasi.read-all');
+    Route::post('/notifikasi/{notification}/baca', [NotifikasiController::class, 'read'])
+        ->middleware('permission:notifikasi.view')->name('notifikasi.read');
 
     // Halaman asli
     Route::get('/pbpd', [PbpdController::class, 'index'])

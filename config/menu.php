@@ -21,5 +21,5 @@ return [
     'permission' => 'vendor.konstruksi.history', 'placeholder' => false],
     ['label' => 'Pengoperasian',   'route' => 'pengoperasian',   'path' => '/pengoperasian', 'permission' => 'pengoperasian.view'],
     ['label' => 'Pencarian',   'route' => 'pencarian',   'path' => '/pencarian', 'permission' => 'pencarian.view'],
-    ['label' => 'Notifikasi',   'route' => 'notifikasi',   'path' => '/notifikasi', 'permission' => 'notifikasi.view']
+    ['label' => 'Notifikasi',   'route' => 'notifikasi',   'path' => '/notifikasi', 'permission' => 'notifikasi.view', 'placeholder' => false]
 ];

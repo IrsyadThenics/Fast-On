@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\LaporanVendor;
 use App\Models\PelangganPbpd;
+use App\Services\NotifikasiService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 
@@ -92,6 +93,7 @@ class VendorTiangController extends Controller
         if ($pelanggan->tahap === 'VENDOR_TIANG') {
             $pelanggan->update(['tahap' => 'PERENCANAAN']);
         }
+        NotifikasiService::untukData($pelanggan, 'Laporan vendor tiang masuk', 'Vendor tiang telah mengirim laporan untuk ' . $pelanggan->no_agenda . '.', route('laporan'));
 
         return back()->with('success', 'Laporan berhasil dikirim ke Perencanaan.');
     }
@@ -149,6 +151,7 @@ class VendorTiangController extends Controller
         }
 
         $laporan->update(['berkas_hasil_paths' => $paths]);
+        NotifikasiService::untukData($pelanggan, 'Berkas hasil perencanaan diupload', 'Berkas hasil perencanaan untuk ' . $pelanggan->no_agenda . ' telah diupload.', route('laporan'));
 
         return back()->with('success', 'Berkas hasil perencanaan berhasil disimpan.');
     }
