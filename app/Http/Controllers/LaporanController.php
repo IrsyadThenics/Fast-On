@@ -15,7 +15,7 @@ class LaporanController extends Controller
             ->where('tahap', '!=', 'ULP')
             ->whereNotIn('jenis_transaksi', ['BN', 'BALIK NAMA', 'PS', 'PENERANGAN SEMENTARA']);
 
-        $data = (clone $base)->with('ulp')
+        $data = (clone $base)->with(['ulp', 'permintaan'])
             ->when($request->filled('tahap'), fn ($q) => $q->where('tahap', $request->tahap))
             ->when($request->filled('jenis'), fn ($q) => $q->where('jenis_transaksi', $request->jenis))
             ->orderByDesc('id')->paginate(30)->withQueryString();
