@@ -78,7 +78,7 @@
                         <th rowspan="2">NO.</th>
                         <th rowspan="2">ASAL ULP</th>
                         <th rowspan="2">DETAIL</th>
-                        <th colspan="2" class="grup">SYARAT</th>
+                        @if ($showSyarat)<th colspan="2" class="grup">SYARAT</th>@endif
                         <th rowspan="2">TRANSAKSI</th>
                         <th rowspan="2">STATUS</th>
                         <th rowspan="2">NO AGENDA</th>
@@ -92,8 +92,10 @@
                         <th rowspan="2">DURASI HARI KERJA</th>
                     </tr>
                     <tr>
-                        <th class="sub">BERKAS PENDUKUNG</th>
-                        <th class="sub">BERKAS IJIN</th>
+                        @if ($showSyarat)
+                            <th class="sub">BERKAS PENDUKUNG</th>
+                            <th class="sub">BERKAS IJIN</th>
+                        @endif
                         <th class="sub">TARIF</th>
                         <th class="sub">DAYA</th>
                         <th class="sub">TARIF</th>
@@ -135,8 +137,10 @@
                                     data-ijin-url="{{ route('pbpd.syarat.file', ['pelanggan' => $row->id, 'jenis' => 'ijin', 'index' => 0]) }}"
                                 >📋</button>
                             </td>
-                            <td><button type="button" class="ikon-syarat tombol-syarat" data-id="{{ $row->id }}" data-jenis="pendukung" data-files="{{ base64_encode(json_encode($row->berkas_pendukung_paths ?? [])) }}" data-file-url="{{ route('pbpd.syarat.file', ['pelanggan' => $row->id, 'jenis' => 'pendukung', 'index' => 0]) }}" title="Berkas Pendukung">📎</button></td>
-                            <td><button type="button" class="ikon-syarat tombol-syarat" data-id="{{ $row->id }}" data-jenis="ijin" data-files="{{ base64_encode(json_encode($row->berkas_ijin_paths ?? [])) }}" data-file-url="{{ route('pbpd.syarat.file', ['pelanggan' => $row->id, 'jenis' => 'ijin', 'index' => 0]) }}" title="Berkas Ijin">📎</button></td>
+                            @if ($showSyarat)
+                                <td><button type="button" class="ikon-syarat tombol-syarat" data-id="{{ $row->id }}" data-jenis="pendukung" data-files="{{ base64_encode(json_encode($row->berkas_pendukung_paths ?? [])) }}" data-file-url="{{ route('pbpd.syarat.file', ['pelanggan' => $row->id, 'jenis' => 'pendukung', 'index' => 0]) }}" title="Berkas Pendukung">📎</button></td>
+                                <td><button type="button" class="ikon-syarat tombol-syarat" data-id="{{ $row->id }}" data-jenis="ijin" data-files="{{ base64_encode(json_encode($row->berkas_ijin_paths ?? [])) }}" data-file-url="{{ route('pbpd.syarat.file', ['pelanggan' => $row->id, 'jenis' => 'ijin', 'index' => 0]) }}" title="Berkas Ijin">📎</button></td>
+                            @endif
                             <td>
                                 <span class="pill pill-ungu">
                                     {{ [
@@ -169,7 +173,7 @@
                             <td>{{ $row->keterangan }}</td>
                         </tr>
                     @empty
-                        <tr><td colspan="{{ $canKirim ? 19 : 18 }}" style="text-align:center">Tidak ada data.</td></tr>
+                        <tr><td colspan="{{ ($canKirim ? 17 : 16) + ($showSyarat ? 2 : 0) }}" style="text-align:center">Tidak ada data.</td></tr>
                     @endforelse
                 </tbody>
             </table>

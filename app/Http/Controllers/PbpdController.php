@@ -15,15 +15,16 @@ class PbpdController extends Controller
 {
     public function index(Request $request)
     {
-        $ulpUser = auth()->user()->ulpId();
         $role = auth()->user()->role;
-        $canKirim = (bool) $role?->ulp_id;
+        $isUlpRole = $role?->type === 'ULP' && (bool) $role?->ulp_id;
+        $ulpUser = $isUlpRole ? auth()->user()->ulpId() : null;
+        $canKirim = $isUlpRole;
         $canEditRab = $canKirim || $role?->role_code === '5180REN';
 
         $data = PelangganPbpd::with('ulp')
             ->when($ulpUser, fn ($q) => $q->where('ulp_id', $ulpUser))
             ->when(! $ulpUser && $request->filled('ulp'), fn ($q) => $q->where('ulp_id', $request->ulp))
-            ->where('tahap', 'ULP')
+            ->when($role?->type === 'ULP' && ! $request->filled('import'), fn ($q) => $q->where('tahap', 'ULP'))
             ->where('status', '!=', 'MOHON')
             ->whereNotIn('jenis_transaksi', ['BN', 'BALIK NAMA', 'PS', 'PENERANGAN SEMENTARA'])
             ->when($request->filled('import'), fn ($q) => $q->where('import_id', $request->import))
@@ -47,6 +48,7 @@ class PbpdController extends Controller
             'canKirim' => $canKirim,
             'canEditRab' => $canEditRab,
             'canUploadSyarat' => $canKirim,
+            'showSyarat' => $role?->type !== 'UP3',
             'ulps'    => $ulpUser ? collect() : Ulp::orderBy('kode')->get(),
             'statuss' => PelangganPbpd::whereNotNull('status')
                 ->where('status', '!=', 'MOHON')

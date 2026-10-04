@@ -71,16 +71,25 @@ class PelangganPbpdImport implements ToCollection
                 continue;
             }
 
-            $teks = strtoupper(trim((string) $this->ambil($d, ['unittujuan', 'ulp', 'namaup'])));
-            $ulp = $ulps->first(fn($u) => $u->kode === $teks
-                || strtoupper($u->nama) === $teks
-                || strtoupper($u->nama) === 'ULP ' . $teks);
-
-            // cadangan: coba NAMAUP kalau UNITTUJUAN tidak cocok
-            if (! $ulp) {
-                $nm = strtoupper(trim((string) $this->ambil($d, ['namaup'])));
-                $ulp = $ulps->first(fn($u) => strtoupper($u->nama) === $nm);
+            // NAMAUP biasanya berisi nama ULP/UP3 yang paling jelas.
+            // UNITTUJUAN tetap dipakai sebagai cadangan kode ULP.
+            $calonUlps = [
+                $this->ambil($d, ['namaup']),
+                $this->ambil($d, ['unittujuan', 'ulp']),
+            ];
+            $ulp = null;
+            foreach ($calonUlps as $calon) {
+                $teksCalon = strtoupper(trim((string) $calon));
+                if ($teksCalon === '') continue;
+                $kodeCalon = preg_replace('/\.0$/', '', $teksCalon);
+                $namaCalon = $this->normalUlp($teksCalon);
+                $ulp = $ulps->first(function ($u) use ($kodeCalon, $namaCalon) {
+                    $namaUlp = $this->normalUlp($u->nama);
+                    return $u->kode === $kodeCalon || $namaUlp === $namaCalon;
+                });
+                if ($ulp) break;
             }
+            $teks = strtoupper(trim((string) ($calonUlps[0] ?? $calonUlps[1] ?? '')));
             $ulpId = $ulp?->id ?? $this->ulpDefault;
 
             if (! $ulpId) {
@@ -123,7 +132,11 @@ class PelangganPbpdImport implements ToCollection
                 'keterangan'      => $this->ambil($d, ['durasiharikerja', 'keterangan', 'ket']),
             ];
 
-            $ada = PelangganPbpd::where('no_agenda', $noAgenda)->first();
+            // Nomor agenda dapat sama pada ULP berbeda. Kunci update harus memakai
+            // kombinasi nomor agenda dan ULP agar data antar-ULP tidak tertimpa.
+            $ada = PelangganPbpd::where('no_agenda', $noAgenda)
+                ->where('ulp_id', $ulpId)
+                ->first();
             if ($ada) {
                 $ada->update($data); // tahap tidak diubah
                 $this->diperbarui++;
@@ -174,6 +187,16 @@ class PelangganPbpdImport implements ToCollection
     {
         $v = preg_replace('/\D/', '', (string) $v);
         return $v === '' ? null : $v;
+    }
+
+    private function normalUlp($value): string
+    {
+        $value = strtoupper(trim((string) $value));
+        $value = preg_replace('/^(ULP|UP3)\s+/i', '', $value);
+        $value = preg_replace('/\s+/', '', $value);
+
+        // Penulisan pada sumber data kadang "SUMBEREJO", sedangkan master memakai "SUMBERREJO".
+        return str_replace(['SUMBEREJO', 'BRONDONG'], ['SUMBERREJO', 'BRONDON'], $value);
     }
 
     private function tanggal($v): ?string
