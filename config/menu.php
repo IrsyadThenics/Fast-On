@@ -2,7 +2,7 @@
 
 return [
     ['label' => 'Dashboard',         'route' => 'dashboard',         'path' => '/dashboard',   'permission' => 'dashboard.view'],
-    ['label' => 'Laporan',           'route' => 'laporan',            'path' => '/laporan',      'permission' => 'laporan.view'],
+    ['label' => 'Laporan',           'route' => 'laporan',            'path' => '/laporan',      'permission' => 'laporan.view', 'placeholder' => false],
     ['label' => 'Upload Data PB/PD', 'route' => 'pbpd.upload',       'path' => '/pbpd/upload', 'permission' => 'pbpd.upload'],
     ['label' => 'Data PB/PD', 'route' => 'pbpd.index', 'path' => '/pbpd',
     'permission' => 'pbpd.view', 'placeholder' => false],

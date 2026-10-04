@@ -12,6 +12,7 @@ class LaporanController extends Controller
         $ulpId = auth()->user()->ulpId();
         $base = PelangganPbpd::query()
             ->when($ulpId, fn ($q) => $q->where('ulp_id', $ulpId))
+            ->where('tahap', '!=', 'ULP')
             ->whereNotIn('jenis_transaksi', ['BN', 'BALIK NAMA', 'PS', 'PENERANGAN SEMENTARA']);
 
         $data = (clone $base)->with('ulp')
