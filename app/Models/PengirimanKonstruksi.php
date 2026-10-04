@@ -20,6 +20,8 @@ class PengirimanKonstruksi extends Model
             'hasil_konstruksi_paths' => 'array',
             'dikirim_at' => 'datetime',
             'laporan_at' => 'datetime',
+            'hasil_perencanaan_at' => 'datetime',
+            'hasil_konstruksi_at' => 'datetime',
             'pekerjaan_lengkap' => 'boolean',
             'pekerjaan_sesuai_wo' => 'boolean',
             'foto_terlampir' => 'boolean',

@@ -114,7 +114,7 @@ class VendorKonstruksiController extends Controller
         foreach ($request->file('berkas_hasil', []) as $file) {
             $paths[] = $file->store('hasil-konstruksi', 'public');
         }
-        $pengiriman->update(['hasil_paths' => $paths]);
+        $pengiriman->update(['hasil_paths' => $paths, 'hasil_perencanaan_at' => now()]);
         NotifikasiService::untukData($pelanggan, 'Berkas hasil perencanaan diupload', 'Berkas hasil perencanaan untuk konstruksi ' . $pelanggan->no_agenda . ' telah diupload.', route('laporan'));
 
         return back()->with('success', 'Berkas hasil Perencanaan berhasil disimpan.');
@@ -151,7 +151,7 @@ class VendorKonstruksiController extends Controller
         foreach ($request->file('berkas_hasil_konstruksi', []) as $file) {
             $paths[] = $file->store('hasil-konstruksi', 'public');
         }
-        $pelanggan->update(['hasil_konstruksi_paths' => $paths]);
+        $pelanggan->update(['hasil_konstruksi_paths' => $paths, 'hasil_konstruksi_at' => now()]);
         NotifikasiService::untukData($pelanggan, 'Berkas hasil konstruksi diupload', 'Berkas hasil konstruksi untuk ' . $pelanggan->no_agenda . ' telah diupload.', route('laporan'));
 
         return back()->with('success', 'Berkas hasil konstruksi berhasil disimpan.');

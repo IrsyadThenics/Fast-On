@@ -39,7 +39,14 @@
                 </thead>
                 <tbody>
                     @forelse ($data as $row)
-                        @php $m = $row->permintaan; $pv = $row->pengirimanVendor; $pk = $row->pengirimanKonstruksi; @endphp
+                        @php
+                            $m = $row->permintaan; $pv = $row->pengirimanVendor; $pk = $row->pengirimanKonstruksi;
+                            $ulpSent = $row->tahap !== 'ULP' || $row->tujuan_perluasan;
+                            $planningDone = count($row->laporanVendor?->berkas_hasil_paths ?? []) > 0 || count($pk?->hasil_paths ?? []) > 0;
+                            $constructionDone = count($row->hasil_konstruksi_paths ?? []) > 0 || count($pk?->hasil_konstruksi_paths ?? []) > 0;
+                            $transactionDone = count($row->hasil_transaksi_paths ?? []) > 0;
+                            $networkDone = count($row->hasil_jaringan_paths ?? []) > 0;
+                        @endphp
                         <tr>
                             <td><input type="checkbox" value="{{ $row->id }}"></td>
                             <td>{{ $data->firstItem() + $loop->index }}.</td>
@@ -95,6 +102,16 @@
                                     data-transaksi-hasil-files="{{ base64_encode(json_encode($row->hasil_transaksi_paths ?? [])) }}"
                                     data-jaringan-hasil-file-url="{{ route('pbpd.jaringan.result.file', ['pelanggan' => $row->id, 'index' => 0]) }}"
                                     data-jaringan-hasil-files="{{ base64_encode(json_encode($row->hasil_jaringan_paths ?? [])) }}"
+                                    data-proses-ulp="{{ $ulpSent ? '1' : '0' }}"
+                                    data-proses-ulp-date="{{ $m?->dikirim_at?->format('Y-m-d H:i:s') ?? $row->created_at }}"
+                                    data-proses-perencanaan="{{ $planningDone ? '1' : '0' }}"
+                                    data-proses-perencanaan-date="{{ $row->laporanVendor?->berkas_hasil_at?->format('Y-m-d H:i:s') ?? $pk?->hasil_perencanaan_at?->format('Y-m-d H:i:s') }}"
+                                    data-proses-konstruksi="{{ $constructionDone ? '1' : '0' }}"
+                                    data-proses-konstruksi-date="{{ $row->hasil_konstruksi_at?->format('Y-m-d H:i:s') ?? $pk?->hasil_konstruksi_at?->format('Y-m-d H:i:s') }}"
+                                    data-proses-transaksi="{{ $transactionDone ? '1' : '0' }}"
+                                    data-proses-transaksi-date="{{ $row->hasil_transaksi_at?->format('Y-m-d H:i:s') }}"
+                                    data-proses-jaringan="{{ $networkDone ? '1' : '0' }}"
+                                    data-proses-jaringan-date="{{ $row->hasil_jaringan_at?->format('Y-m-d H:i:s') }}"
                                     data-laporan-lengkap="{{ $row->laporanVendor?->pekerjaan_lengkap ? 'Ya' : 'Tidak' }}"
                                     data-laporan-sesuai="{{ $row->laporanVendor?->pekerjaan_sesuai_wo ? 'Ya' : 'Tidak' }}"
                                     data-laporan-foto="{{ $row->laporanVendor?->foto_terlampir ? 'Ya' : 'Tidak' }}"
@@ -167,6 +184,16 @@
                 <div><small>Tanggal Bayar</small><b id="perluasanTglBayar"></b></div>
                 <div><small>RAB</small><b id="perluasanRabValue"></b></div>
                 <div class="detail-full"><small>Alamat</small><b id="perluasanAlamat"></b></div>
+            </div>
+            <div class="proses-box">
+                <h4>Proses</h4>
+                <table class="proses-tabel"><thead><tr><th>Proses</th><th>Status</th><th>Tanggal</th></tr></thead><tbody>
+                    <tr><td>Pengiriman ULP</td><td id="prosesUlpStatus"></td><td id="prosesUlpDate">-</td></tr>
+                    <tr><td>Berkas Hasil Perencanaan</td><td id="prosesPerencanaanStatus"></td><td id="prosesPerencanaanDate">-</td></tr>
+                    <tr><td>Berkas Hasil Konstruksi</td><td id="prosesKonstruksiStatus"></td><td id="prosesKonstruksiDate">-</td></tr>
+                    <tr><td>Berkas Hasil Transaksi</td><td id="prosesTransaksiStatus"></td><td id="prosesTransaksiDate">-</td></tr>
+                    <tr><td>Berkas Hasil Jaringan</td><td id="prosesJaringanStatus"></td><td id="prosesJaringanDate">-</td></tr>
+                </tbody></table>
             </div>
             @if ($canViewMaterial)
             @if ($canViewMaterial && $tujuan !== 'TANPA_PERLUASAN')
@@ -359,6 +386,14 @@
         .result-file-row { display:flex; align-items:center; justify-content:space-between; gap:10px; margin:4px 0; }
         .result-delete { padding:4px 8px; border:0; border-radius:4px; background:#a61b1b; color:#fff; cursor:pointer; font-size:12px; }
         .result-waiting-message { padding:10px; border-radius:6px; background:#fff5d6; color:#795900; }
+        .proses-box { margin-top:18px; padding:12px; border:1px solid #c8d6e5; border-radius:8px; background:#f8fbff; }
+        .proses-box h4 { margin:0 0 8px; color:#0b3d6b; }
+        .proses-tabel { width:100%; border:1px solid #d6e2ee; border-radius:6px; overflow:hidden; font-size:12px; }
+        .proses-tabel th, .proses-tabel td { padding:8px 10px; border-bottom:1px solid #e1e8ef; text-align:left; }
+        .proses-tabel th { background:#eef3f8; color:#536477; }
+        .proses-tabel tr:last-child td { border-bottom:0; }
+        .proses-selesai { color:#159447; font-weight:600; }
+        .proses-belum { color:#d33; font-weight:600; }
         @media (max-width:600px) { .detail-grid { grid-template-columns:1fr; } .detail-full { grid-column:auto; } .detail-rab-form { align-items:stretch; flex-direction:column; } }
     </style>
 
@@ -378,6 +413,13 @@
             const setText = (id, value) => { document.getElementById(id).textContent = value || '-'; };
             const money = (value) => value ? Number(value).toLocaleString('id-ID') : '-';
             const date = (value) => value ? new Date(value).toLocaleDateString('id-ID') : '-';
+            const setProcess = (name, done, value) => {
+                const status = document.getElementById(`proses${name}Status`);
+                const tanggal = document.getElementById(`proses${name}Date`);
+                status.textContent = done === '1' ? '✓ Sudah lengkap' : '✕ Belum diunggah';
+                status.className = done === '1' ? 'proses-selesai' : 'proses-belum';
+                tanggal.textContent = done === '1' ? date(value) : '-';
+            };
 
             document.querySelectorAll('.tombol-detail-perluasan').forEach((button) => {
                 button.addEventListener('click', () => {
@@ -392,6 +434,11 @@
                     setText('perluasanTglMohon', date(button.dataset.tglMohon));
                     setText('perluasanTglBayar', date(button.dataset.tglBayar));
                     setText('perluasanRabValue', money(button.dataset.rab));
+                    setProcess('Ulp', button.dataset.prosesUlp, button.dataset.prosesUlpDate);
+                    setProcess('Perencanaan', button.dataset.prosesPerencanaan, button.dataset.prosesPerencanaanDate);
+                    setProcess('Konstruksi', button.dataset.prosesKonstruksi, button.dataset.prosesKonstruksiDate);
+                    setProcess('Transaksi', button.dataset.prosesTransaksi, button.dataset.prosesTransaksiDate);
+                    setProcess('Jaringan', button.dataset.prosesJaringan, button.dataset.prosesJaringanDate);
                     modal.hidden = false;
                     if (resultUploadForm) document.getElementById('resultPelangganId').value = button.dataset.id;
                     if (form) {

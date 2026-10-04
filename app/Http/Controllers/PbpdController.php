@@ -274,7 +274,7 @@ class PbpdController extends Controller
         foreach ($request->file('berkas_hasil_transaksi', []) as $file) {
             $paths[] = $file->store('hasil-transaksi', 'public');
         }
-        $pelanggan->update(['hasil_transaksi_paths' => $paths]);
+        $pelanggan->update(['hasil_transaksi_paths' => $paths, 'hasil_transaksi_at' => now()]);
         NotifikasiService::untukData($pelanggan, 'Berkas hasil transaksi diupload', 'Berkas hasil transaksi untuk ' . $pelanggan->no_agenda . ' telah diupload.', route('laporan'));
 
         return back()->with('success', 'Berkas hasil transaksi berhasil disimpan.');
@@ -300,7 +300,7 @@ class PbpdController extends Controller
         foreach ($request->file('berkas_hasil_jaringan', []) as $file) {
             $paths[] = $file->store('hasil-jaringan', 'public');
         }
-        $pelanggan->update(['hasil_jaringan_paths' => $paths]);
+        $pelanggan->update(['hasil_jaringan_paths' => $paths, 'hasil_jaringan_at' => now()]);
         NotifikasiService::untukData($pelanggan, 'Berkas hasil jaringan diupload', 'Berkas hasil jaringan untuk ' . $pelanggan->no_agenda . ' telah diupload.', route('laporan'));
 
         return back()->with('success', 'Berkas hasil jaringan berhasil disimpan.');

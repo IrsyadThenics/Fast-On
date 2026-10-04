@@ -150,7 +150,7 @@ class VendorTiangController extends Controller
             $paths[] = $file->store('hasil-perencanaan', 'public');
         }
 
-        $laporan->update(['berkas_hasil_paths' => $paths]);
+        $laporan->update(['berkas_hasil_paths' => $paths, 'berkas_hasil_at' => now()]);
         NotifikasiService::untukData($pelanggan, 'Berkas hasil perencanaan diupload', 'Berkas hasil perencanaan untuk ' . $pelanggan->no_agenda . ' telah diupload.', route('laporan'));
 
         return back()->with('success', 'Berkas hasil perencanaan berhasil disimpan.');
