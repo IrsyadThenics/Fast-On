@@ -8,6 +8,7 @@ use App\Http\Controllers\VendorTiangController;
 use App\Http\Controllers\VendorKonstruksiController;
 use App\Http\Controllers\LaporanController;
 use App\Http\Controllers\NotifikasiController;
+use App\Http\Controllers\DashboardController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', fn () => redirect()->route('dashboard'));
@@ -31,7 +32,7 @@ Route::middleware('auth')->group(function () {
         }
 
         abort_unless(auth()->user()->hasPermission('dashboard.view'), 403);
-        return view('dashboard');
+        return app(DashboardController::class)->index();
     })->name('dashboard');
     Route::get('/laporan', [LaporanController::class, 'index'])
         ->middleware('permission:laporan.view')->name('laporan');
