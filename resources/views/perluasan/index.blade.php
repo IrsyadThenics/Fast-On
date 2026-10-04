@@ -244,6 +244,17 @@
                 </div>
             @endif
             @endif
+            @if ($canEditRab && $tujuan === 'TANPA_PERLUASAN')
+                <form id="tanpaRabForm" method="POST" class="detail-rab-form">
+                    @csrf
+                    <label for="tanpaRabInput">RAB</label>
+                    <div class="detail-rab-input">
+                        <span>Rp</span>
+                        <input id="tanpaRabInput" name="rab" type="number" min="0" step="0.01" placeholder="Masukkan RAB">
+                    </div>
+                    <button type="submit" class="btn">Simpan RAB</button>
+                </form>
+            @endif
             <div class="planning-result-box">
                 <h4>Berkas Hasil Perencanaan</h4>
                 <div id="resultFiles">-</div>
@@ -355,6 +366,7 @@
         (() => {
             const modal = document.getElementById('detailModalPerluasan');
             const form = document.getElementById('detailFormPerluasan');
+            const tanpaRabForm = document.getElementById('tanpaRabForm');
             const vendorForm = document.getElementById('vendorFormPerluasan');
             const constructionForm = document.getElementById('constructionForm');
             const constructionResultUploadForm = document.getElementById('constructionResultUploadForm');
@@ -393,6 +405,10 @@
                         document.getElementById('jmlTrafoPerluasan').value = button.dataset.jmlTrafo || '';
                         document.getElementById('jenisKwhPerluasan').value = button.dataset.jenisKwhMeter || '';
                         document.getElementById('jmlKwhPerluasan').value = button.dataset.jmlKwhMeter || '';
+                    }
+                    if (tanpaRabForm) {
+                        document.getElementById('tanpaRabInput').value = button.dataset.rab || '';
+                        tanpaRabForm.action = button.dataset.rabUrl;
                     }
                     if (vendorForm) {
                         vendorForm.hidden = button.dataset.tahap !== 'PERENCANAAN';

@@ -21,7 +21,8 @@ class PerluasanController extends Controller
         $canUploadTransaksi = $role?->role_code === '5180TEL';
         $canUploadJaringan = $role?->role_code === '5180JAR';
         $canViewMaterial = $canEditRab || in_array($role?->role_code, ['5180KON', '5180TEL', '5180JAR'], true);
-        $visibleTahaps = $role?->type === 'UP3'
+        // ULP tetap melihat data miliknya setelah diteruskan ke tahap/vendor berikutnya.
+        $visibleTahaps = in_array($role?->type, ['UP3', 'ULP'], true)
             ? ['PERENCANAAN', 'VENDOR_TIANG', 'VENDOR_KONSTRUKSI']
             : ['PERENCANAAN'];
         $judul = match ($tujuan) {
@@ -32,7 +33,9 @@ class PerluasanController extends Controller
 
         $data = PelangganPbpd::with(['ulp', 'permintaan', 'pengirimanVendor.vendor', 'laporanVendor', 'pengirimanKonstruksi.vendor'])
             ->whereIn('tahap', $visibleTahaps)
-            ->where('tujuan_perluasan', $tujuan)
+            // Data lama bisa tersimpan dengan spasi, sedangkan kiriman baru
+            // menggunakan underscore. Samakan format saat ditampilkan.
+            ->whereRaw("UPPER(REPLACE(tujuan_perluasan, ' ', '_')) = ?", [$tujuan])
             ->when($ulpUser, fn ($q) => $q->where('ulp_id', $ulpUser))
             ->orderByDesc('id')
             ->paginate(20)

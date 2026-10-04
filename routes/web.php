@@ -34,6 +34,8 @@ Route::middleware('auth')->group(function () {
     })->name('dashboard');
     Route::get('/laporan', [LaporanController::class, 'index'])
         ->middleware('permission:laporan.view')->name('laporan');
+    Route::get('/laporan/export', [LaporanController::class, 'export'])
+        ->middleware('permission:laporan.view')->name('laporan.export');
 
     // Halaman asli
     Route::get('/pbpd', [PbpdController::class, 'index'])
