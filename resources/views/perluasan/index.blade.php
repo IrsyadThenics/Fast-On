@@ -118,7 +118,7 @@
                                     data-laporan-siap="{{ $row->laporanVendor?->siap_dilanjutkan ? 'Ya' : 'Tidak' }}"
                                     data-laporan-catatan="{{ $row->laporanVendor?->catatan }}"
                                     data-laporan-exists="{{ $row->laporanVendor ? '1' : '0' }}"
-                                >📋</button>
+                                ><svg class="icon-inline" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 3.5h9l3 3V20.5H6z"/><path d="M15 3.5v4h3M9 12h6M9 16h6"/></svg></button>
                             </td>
                             <td>
                                 <span class="pill pill-ungu">
