@@ -201,13 +201,13 @@
                     @csrf
                     <div class="detail-edit-table">
                         <label>RAB <input id="rabInputPerluasan" name="rab" type="number" min="0" step="0.01" placeholder="Masukkan RAB" @disabled(!$canEditRab)></label>
-                        <label>Jenis Tiang <select id="jenisTiangPerluasan" name="jenis_tiang" @disabled(!$canEditMaterial)><option value="">Pilih</option><option>Beton</option><option>Besi</option><option>Lainnya</option></select></label>
+                        <label>Jenis Tiang <select id="jenisTiangPerluasan" name="jenis_tiang" @disabled(!$canEditMaterial)><option value="">Pilih</option><option>9</option><option>11</option><option>13</option></select></label>
                         <label>Jumlah Tiang <input id="jmlTiangPerluasan" name="jml_tiang" type="number" min="0" @disabled(!$canEditMaterial)></label>
-                        <label>Jenis Konduktor <select id="jenisKonduktorPerluasan" name="jenis_konduktor" @disabled(!$canEditMaterial)><option value="">Pilih</option><option>AAAC</option><option>BC</option><option>LVTC</option><option>Lainnya</option></select></label>
+                        <label>Jenis Konduktor <select id="jenisKonduktorPerluasan" name="jenis_konduktor" @disabled(!$canEditMaterial)><option value="">Pilih</option><option>AAAC-S 240</option><option>AAAC-S 150</option><option>AAAC-S 70</option><option>LVTC 3x70+1x70</option></select></label>
                         <label>Jumlah Konduktor <input id="jmlKonduktorPerluasan" name="jml_konduktor" type="number" min="0" @disabled(!$canEditMaterial)></label>
-                        <label>Jenis Trafo <select id="jenisTrafoPerluasan" name="jenis_trafo" @disabled(!$canEditMaterial)><option value="">Pilih</option><option>Distribusi</option><option>Portable</option><option>Lainnya</option></select></label>
+                        <label>Jenis Trafo <select id="jenisTrafoPerluasan" name="jenis_trafo" @disabled(!$canEditMaterial)><option value="">Pilih</option><option>0</option><option>50</option><option>100</option><option>160</option><option>200</option><option>250</option></select></label>
                         <label>Jumlah Trafo <input id="jmlTrafoPerluasan" name="jml_trafo" type="number" min="0" @disabled(!$canEditMaterial)></label>
-                        <label>Jenis KWH Meter <select id="jenisKwhPerluasan" name="jenis_kwh_meter" @disabled(!$canEditMaterial)><option value="">Pilih</option><option>Prabayar</option><option>Pascabayar</option><option>Lainnya</option></select></label>
+                        <label>Jenis KWH Meter <select id="jenisKwhPerluasan" name="jenis_kwh_meter" @disabled(!$canEditMaterial)><option value="">Pilih</option><option>Prabayar</option><option>Pascabayar</option></select></label>
                         <label>Jumlah KWH Meter <input id="jmlKwhPerluasan" name="jml_kwh_meter" type="number" min="0" @disabled(!$canEditMaterial)></label>
                     </div>
                     @if ($canEditRab)

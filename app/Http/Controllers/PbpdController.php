@@ -175,7 +175,7 @@ class PbpdController extends Controller
         }
         $data = $request->validate($rules);
 
-        DB::transaction(function () use ($pelanggan, $data) {
+        DB::transaction(function () use ($pelanggan, $data, $isUlp) {
             $pelanggan->update(['rab' => $data['rab'] ?? null]);
             if ($isUlp) {
                 PermintaanMaterial::updateOrCreate(

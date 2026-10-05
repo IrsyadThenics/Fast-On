@@ -217,19 +217,19 @@
                             <tbody>
                                 <tr>
                                     <th>JUMLAH TIANG</th>
-                                    <td><select name="jenis_tiang"><option value="">Pilih</option><option>Beton</option><option>Besi</option><option>Lainnya</option></select></td>
+                                    <td><select name="jenis_tiang"><option value="">Pilih</option><option>9</option><option>11</option><option>13</option></select></td>
                                     <td><input name="jml_tiang" type="number" min="0" placeholder="Isi jumlah sendiri"></td>
                                     <td>BUAH</td>
                                 </tr>
                                 <tr>
                                     <th>JUMLAH KONDUKTOR</th>
-                                    <td><select name="jenis_konduktor"><option value="">Pilih</option><option>AAAC</option><option>BC</option><option>LVTC</option><option>Lainnya</option></select></td>
+                                    <td><select name="jenis_konduktor"><option value="">Pilih</option><option>AAAC-S 240</option><option>AAAC-S 150</option><option>AAAC-S 70</option><option>LVTC 3x70+1x70</option></select></td>
                                     <td><input name="jml_konduktor" type="number" min="0" placeholder="Isi jumlah meter"></td>
                                     <td>METER</td>
                                 </tr>
                                 <tr>
                                     <th>JUMLAH TRAFO</th>
-                                    <td><select name="jenis_trafo"><option value="">Pilih</option><option>Distribusi</option><option>Portable</option><option>Lainnya</option></select></td>
+                                    <td><select name="jenis_trafo"><option value="">Pilih</option><option>0</option><option>50</option><option>100</option><option>160</option><option>200</option><option>250</option></select></td>
                                     <td><input name="jml_trafo" type="number" min="0" placeholder="Isi jumlah sendiri"></td>
                                     <td>BUAH</td>
                                 </tr>

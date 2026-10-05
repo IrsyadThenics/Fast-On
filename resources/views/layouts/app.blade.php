@@ -221,6 +221,12 @@
     .proses-belum{color:#ff7b86}
     .result-waiting-message{background:#3c351c;color:#f2d17a}
     .result-delete{background:#b84655;color:#fff}
+    .kebutuhan-tabel{border-color:#2b3d5b;background:#17243b;color:#c9d8e8}
+    .kebutuhan-tabel th,.kebutuhan-tabel td{border-bottom-color:#2b3d5b}
+    .kebutuhan-tabel thead th{background:#1f3553;color:#c5d8eb}
+    .kebutuhan-tabel select,.kebutuhan-tabel input{background:#0f1c30!important;color:#dbe7f6;border-color:#385170}
+    .kebutuhan-tabel select:focus,.kebutuhan-tabel input:focus{border-color:#20b8cf;box-shadow:0 0 0 3px rgba(32,184,207,.12)}
+    #tujuanKirim{background:#111d32!important;color:#e6f1fc;border-color:#20b8cf!important}
     .halaman{color:#91a2bd}
     .menu-toggle{background:#17243c;color:#71d2e4}
     .notif-badge{background:#e05b61}
