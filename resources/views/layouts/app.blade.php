@@ -227,6 +227,19 @@
     .kebutuhan-tabel select,.kebutuhan-tabel input{background:#0f1c30!important;color:#dbe7f6;border-color:#385170}
     .kebutuhan-tabel select:focus,.kebutuhan-tabel input:focus{border-color:#20b8cf;box-shadow:0 0 0 3px rgba(32,184,207,.12)}
     #tujuanKirim{background:#111d32!important;color:#e6f1fc;border-color:#20b8cf!important}
+    .vendor-card{background:linear-gradient(145deg,#172742,#131f35);border-color:#2b4161}
+    .vendor-card-head{border-bottom-color:#2b3d5b}
+    .vendor-card-head strong,.history-item strong{color:#eef5ff}
+    .vendor-card-head span,.history-item div span{color:#91a2bd}
+    .vendor-berkas,.vendor-report,.vendor-report-form,.history-edit-form{background:#17243b;border-color:#2b3d5b;color:#d8e2f0}
+    .vendor-berkas a{background:#1f3553;color:#60cce0}
+    .vendor-berkas span{color:#91a2bd}
+    .vendor-report label,.vendor-report-form label,.history-edit-form label{color:#b9cbe0}
+    .vendor-report textarea,.vendor-report-form textarea,.history-edit-form textarea,
+    .vendor-report input[type=file],.vendor-report-form input[type=file],.history-edit-form input[type=file]{background:#0f1c30;color:#dbe7f6;border-color:#385170}
+    .history-item{border-bottom-color:#2b3d5b}
+    .history-close{background:#263753;color:#dbe7f6}
+    .empty{color:#91a2bd}
     .halaman{color:#91a2bd}
     .menu-toggle{background:#17243c;color:#71d2e4}
     .notif-badge{background:#e05b61}

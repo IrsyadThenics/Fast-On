@@ -211,7 +211,7 @@
                         <label>Jumlah KWH Meter <input id="jmlKwhPerluasan" name="jml_kwh_meter" type="number" min="0" @disabled(!$canEditMaterial)></label>
                     </div>
                     @if ($canEditRab)
-                        <button type="submit" class="btn">Simpan RAB &amp; Kebutuhan</button>
+                        <button type="submit" class="btn">Simpan</button>
                     @endif
                 </form>
             @endif
@@ -236,7 +236,7 @@
                     <label>Upload berkas WO tiang
                         <input type="file" name="wo_tiang" accept=".pdf,.doc,.docx,.xls,.xlsx,.jpg,.jpeg,.png">
                     </label>
-                    <button type="submit" class="btn">⚠ Kirim ke Vendor</button>
+                    <button type="submit" class="btn">Kirim ke Vendor</button>
                 </form>
             @endif
 
