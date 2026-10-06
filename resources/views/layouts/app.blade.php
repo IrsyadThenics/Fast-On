@@ -385,6 +385,64 @@
     .notif-item{border-radius:11px!important}.notif-item.unread{border-left:4px solid #f4c300!important;background:#fffaf0!important}
     @media(max-width:700px){.box:not(.filter),.card,.vendor-card,.notif-box{padding:14px!important}.content>h1,.content>h2,.content>h3{font-size:20px!important}.tabel{font-size:11px!important}}
 </style>
+<style>
+    /* PB/PD table shell: keep the record bar, action area and table as one visual panel. */
+    .content .kartu{padding:0!important;background:#fff!important;border-color:#dbe5f0!important}
+    .content .kartu .kartu-judul{min-height:45px!important;padding:12px 16px!important;background:#0d1b8c!important;margin:0!important;border-radius:12px 12px 0 0!important}
+    .content .kartu>div:has(>#openSendModal){padding:12px 18px 10px!important;background:#0d1b8c!important}
+    .content .kartu .scroll{margin:-12px 0 16px!important;background:#fff!important;border-top:0!important;border-radius:0 0 11px 11px!important}
+    /* Report detail modal must remain usable when its content exceeds the viewport. */
+    .laporan-modal{overflow-y:auto!important;overflow-x:hidden!important;align-items:start!important}
+    .laporan-modal-box{max-height:calc(100vh - 40px)!important;overflow-y:auto!important;overflow-x:hidden!important;overscroll-behavior:contain;-webkit-overflow-scrolling:touch}
+    body:has(#detailModalPerluasan) .detail-modal{overflow-y:auto!important;overflow-x:hidden!important;align-items:start!important}
+    body:has(#detailModalPerluasan) .detail-modal-box{max-height:calc(100vh - 40px)!important;overflow-y:auto!important;overflow-x:hidden!important;overscroll-behavior:contain;-webkit-overflow-scrolling:touch}
+    /* Consistent spacing for JTM, JTR and Tanpa Perluasan tables. */
+    body:has(#detailModalPerluasan) .content .kartu{margin-top:8px!important;padding:0!important;border-radius:16px!important;overflow:hidden!important}
+    body:has(#detailModalPerluasan) .content .kartu-judul{min-height:48px!important;margin:0!important;padding:14px 16px!important;border-radius:12px 12px 0 0!important}
+    body:has(#detailModalPerluasan) .content .kartu .scroll{margin:0!important;border-radius:0!important;overflow-x:auto!important;overflow-y:visible!important}
+    body:has(#detailModalPerluasan) .content .kartu .tabel{font-size:12px!important;line-height:1.45!important}
+    body:has(#detailModalPerluasan) .content .kartu .tabel th,
+    body:has(#detailModalPerluasan) .content .kartu .tabel td{padding:11px 12px!important;line-height:1.45!important}
+    body:has(#detailModalPerluasan) .content .kartu .tabel th{font-size:11px!important;letter-spacing:.025em!important}
+    body:has(#detailModalPerluasan) .content .kartu .kartu-kaki{margin:14px 16px 4px!important;line-height:1.5!important}
+    body:has(#detailModalPerluasan) .content .kartu .halaman{margin:0 16px 16px!important}
+    /* Apply the same readable spacing to the Data PB/PD table. */
+    body:has(#sendModal) .content .kartu .scroll{margin:0 8px 16px!important;overflow-x:auto!important;overflow-y:visible!important}
+    body:has(#sendModal) .content .kartu .tabel{font-size:12px!important;line-height:1.45!important}
+    body:has(#sendModal) .content .kartu .tabel th,
+    body:has(#sendModal) .content .kartu .tabel td{padding:11px 12px!important;line-height:1.45!important}
+    body:has(#sendModal) .content .kartu .tabel th{font-size:11px!important;letter-spacing:.025em!important}
+    body:has(#sendModal) .content .filter input,
+    body:has(#sendModal) .content .filter select{min-height:38px!important;padding-top:9px!important;padding-bottom:9px!important}
+    body:has(#sendModal) .content .filter .btn{min-height:38px!important;padding-left:14px!important;padding-right:14px!important}
+    body:has(#sendModal) .content .kartu .tabel tbody tr{min-height:46px!important}
+    body:has(#sendModal) .content .kartu .tabel th,
+    body:has(#sendModal) .content .kartu .tabel td{padding:12px 13px!important}
+
+    /* Sidebar visual refresh only: existing links, permissions and routes remain unchanged. */
+    #mainSidebar{position:sticky!important;top:0!important;align-self:flex-start;width:230px!important;height:100vh!important;overflow-y:auto!important;overflow-x:hidden!important;padding:26px 14px 20px!important;background:#111c91!important;color:#fff!important;border-right:0!important;border-radius:0 0 18px 0;box-shadow:6px 0 20px rgba(17,28,145,.16)!important;scrollbar-width:thin;scrollbar-color:rgba(255,255,255,.3) transparent}
+    #mainSidebar h2{margin:0 14px 3px!important;color:#fff!important;font-size:18px!important;font-weight:800!important;letter-spacing:.04em!important}
+    #mainSidebar .role{margin:0 14px 24px!important;color:rgba(255,255,255,.68)!important;font-size:11px!important;letter-spacing:.02em}
+    #mainSidebar a{position:relative;display:flex!important;align-items:center;gap:12px;margin:4px 0!important;padding:11px 12px!important;border:1px solid transparent!important;border-radius:11px!important;color:rgba(255,255,255,.78)!important;font-size:13px!important;font-weight:600!important;letter-spacing:.005em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;transition:background .18s ease,color .18s ease,transform .18s ease,box-shadow .18s ease!important}
+    #mainSidebar a::before{display:inline-flex!important;align-items:center;justify-content:center;width:20px;min-width:20px;flex:0 0 20px;text-align:center;color:rgba(255,255,255,.72);font-size:15px;line-height:1}
+    #mainSidebar a[href$="/dashboard"]::before{content:'⌂'}
+    #mainSidebar a[href$="/laporan"]::before{content:'▤'}
+    #mainSidebar a[href$="/pbpd"]::before{content:'▣'}
+    #mainSidebar a[href$="/perluasan/jtm"]::before,#mainSidebar a[href$="/perluasan/jtr"]::before{content:'↗';font-size:11px}
+    #mainSidebar a[href$="/tanpa/perluasan"]::before{content:'○';font-size:11px}
+    #mainSidebar a[href$="/pbpd-upload"]::before{content:'↑';font-size:13px}
+    #mainSidebar a[href*="vendor"]::before{content:'▥'}
+    #mainSidebar a[href$="/pengoperasian"]::before{content:'✓'}
+    #mainSidebar a[href$="/pencarian"]::before{content:'⌕'}
+    #mainSidebar a[href$="/notifikasi"]::before{content:'♧'}
+    #mainSidebar a:hover{background:rgba(39,169,214,.2)!important;color:#fff!important;border-color:rgba(39,169,214,.24)!important;transform:translateX(2px)!important}
+    #mainSidebar a.active{background:#fff!important;color:#111c91!important;box-shadow:0 5px 14px rgba(0,0,0,.12)!important;font-weight:750!important}
+    #mainSidebar a.active::before{position:static!important;display:inline-flex!important;background:none!important;color:#111c91!important;width:20px!important;min-width:20px!important;height:20px!important;top:auto!important;right:auto!important;bottom:auto!important;left:auto!important;margin:0!important;transform:none!important}
+    #mainSidebar a.active::after{right:12px!important;background:#facc15!important;width:6px!important;height:6px!important}
+    #mainSidebar .notif-badge{margin-left:auto!important;background:#facc15!important;color:#172554!important;min-width:18px!important;border-radius:999px!important;font-size:10px!important;font-weight:800!important}
+    @media(max-width:900px){#mainSidebar{width:210px!important}}
+    @media(max-width:650px){#mainSidebar{position:fixed!important;top:0!important;left:0!important;width:250px!important;height:100vh!important;border-radius:0!important;padding:22px 14px!important}}
+</style>
 <script>document.getElementById('menuToggle')?.addEventListener('click',()=>document.body.classList.toggle('menu-open'));document.getElementById('mainSidebar')?.addEventListener('click',e=>{if(e.target.closest('a'))document.body.classList.remove('menu-open')});</script>
 </body>
 </html>

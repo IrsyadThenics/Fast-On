@@ -4,11 +4,8 @@
 @section('isi')
     <div class="grid statistik">
         <div class="stat-card"><small>Total Data</small><strong>{{ number_format($total, 0, ',', '.') }}</strong></div>
-        @foreach ($perTahap as $tahap => $jumlah)<div class="stat-card"><small>{{ $tahap }}</small><strong>{{ number_format($jumlah, 0, ',', '.') }}</strong></div>@endforeach
+        @foreach ($perJenis as $jenis => $jumlah)<div class="stat-card"><small>{{ $jenis ?: 'LAINNYA' }}</small><strong>{{ number_format($jumlah, 0, ',', '.') }}</strong></div>@endforeach
     </div>
-    <div class="box"><h3>Ringkasan Transaksi</h3><div class="ringkasan">
-        @forelse ($perJenis as $jenis => $jumlah)<span>{{ $jenis }}: <b>{{ number_format($jumlah, 0, ',', '.') }}</b></span>@empty<span>Belum ada data.</span>@endforelse
-    </div></div>
     <div class="box">
         <form class="filter" method="GET"><select name="tahap"><option value="">Semua tahap</option>@foreach ($tahapPilihan as $tahap)<option value="{{ $tahap }}" @selected(request('tahap') === $tahap)>{{ $tahap }}</option>@endforeach</select><select name="jenis"><option value="">Semua transaksi</option>@foreach ($jenisPilihan as $jenis)<option value="{{ $jenis }}" @selected(request('jenis') === $jenis)>{{ $jenis }}</option>@endforeach</select><button type="submit" class="btn">Filter</button><a class="btn btn-excel" href="{{ route('laporan.export', request()->only(['tahap', 'jenis'])) }}">Export Excel</a></form>
         @php($showSyarat = ! in_array(auth()->user()->role?->type, ['UP3', 'ULP'], true))
@@ -163,5 +160,18 @@
         .laporan-table td{min-width:72px}.laporan-table td:nth-child(1){min-width:42px;width:42px}.laporan-table td:nth-child(2){min-width:105px}.laporan-table td:nth-child(3){min-width:64px}.laporan-table td:nth-child(6){min-width:120px}.laporan-table td:nth-child(7){min-width:190px}.laporan-table td:nth-child(8){min-width:125px}.laporan-table td:nth-child(15){min-width:135px}.laporan-table td:nth-child(16){min-width:115px}.laporan-table td:nth-child(17){min-width:90px}.laporan-table td:nth-child(18){min-width:145px}
         .laporan-table .detail-link{width:32px;height:32px;padding:0!important}
         @media(max-width:700px){.laporan-table{min-width:1750px!important}.laporan-table th,.laporan-table td{padding:8px!important}}
+        /* Report controls aligned with the current navy/cyan theme. */
+        .statistik{grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px!important;margin-bottom:16px!important}
+        .stat-card{min-height:78px!important;padding:14px 16px!important;border:1px solid #dbe5f0!important;border-top:3px solid #2b73fe!important;border-radius:12px!important;background:#fff!important;box-shadow:0 4px 14px rgba(13,27,140,.06)!important}
+        .stat-card:nth-child(2){border-top-color:#27a9d6!important}.stat-card:nth-child(3){border-top-color:#f2a541!important}.stat-card:nth-child(4){border-top-color:#2e9b68!important}.stat-card:nth-child(5){border-top-color:#d9534f!important}
+        .stat-card small{font-size:11px!important;font-weight:700!important;color:#627d98!important;text-transform:uppercase;letter-spacing:.035em}.stat-card strong{margin-top:7px!important;font-size:23px!important;color:#123b5d!important}
+        .laporan-scroll+.halaman{color:#627d98}
+        .box:has(>.filter){padding:14px!important;border-radius:14px!important}
+        .box>.filter{display:flex;align-items:center;gap:10px!important;margin:0 0 16px!important;padding:0!important}
+        .box>.filter select{min-height:38px!important;padding:8px 30px 8px 11px!important;border:1px solid #cbd9e8!important;border-radius:9px!important;background:#f8fafc!important;color:#243b53!important;font-size:12px!important}
+        .box>.filter select:focus{border-color:#1e6fa8!important;box-shadow:0 0 0 3px rgba(30,111,168,.13)!important;outline:0}
+        .box>.filter .btn{min-height:38px!important;border:0!important;border-radius:9px!important;background:#123b5d!important;color:#fff!important;font-weight:700!important;box-shadow:0 4px 10px rgba(18,59,93,.16)!important}
+        .box>.filter .btn:hover{background:#0d2e49!important}.box>.filter .btn-excel{background:#123b5d!important}.box>.filter .btn-excel:hover{background:#0d2e49!important}
+        @media(max-width:700px){.box>.filter{align-items:stretch;flex-wrap:wrap}.box>.filter select,.box>.filter .btn{flex:1 1 145px}}
     </style>
 @endsection

@@ -54,7 +54,7 @@ class PermissionSeeder extends Seeder
             '5180MAN' => array_merge($umum, ['pbpd.view'], $perluasan, ['pengoperasian.view', 'laporan.view']),
             '5180REN' => array_merge($umum, $perluasan, ['pbpd.view','perencanaan.process', 'berkas.upload']),
             '5180KON' => array_merge($umum, $perluasan, ['pbpd.view', 'konstruksi.process', 'berkas.upload']),
-            '5180TEL' => array_merge($umum, $perluasan, ['pbpd.view']),
+            '5180TEL' => array_merge($umum, $perluasan, ['pbpd.view', 'pengoperasian.upload']),
             '5180JAR' => array_merge($umum, ['perluasan.jtm.view', 'perluasan.jtr.view'], ['pbpd.view', 'jaringan.upload']),
         ];
 

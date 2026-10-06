@@ -412,7 +412,7 @@
     </script>
     <style>
         /* Modern dashboard treatment for the existing PB/PD screen. */
-        .filter{position:relative;display:flex;align-items:center;gap:10px;flex-wrap:wrap;padding:64px 18px 16px!important;background:#fff!important;border:1px solid #dbe5f0!important;border-radius:16px!important;box-shadow:0 8px 24px rgba(13,27,140,.07)!important}
+        .filter{position:relative;display:flex;align-items:center;column-gap:10px!important;row-gap:12px!important;flex-wrap:wrap;padding:64px 18px 20px!important;background:#fff!important;border:1px solid #dbe5f0!important;border-radius:16px!important;box-shadow:0 8px 24px rgba(13,27,140,.07)!important}
         .filter::before{content:'DAFTAR TRANSAKSI';position:absolute;inset:0 0 auto;height:46px;display:flex;align-items:flex-start;padding:9px 18px 0;border-radius:16px 16px 0 0;background:#0d1b8c;color:#fff;font-size:12px;font-weight:800;letter-spacing:.07em;line-height:1.1}
         .filter::after{content:'Daftar Transaksi PB/PD';position:absolute;top:25px;left:18px;color:#dbeafe;font-size:9px;letter-spacing:.01em;line-height:1.1}
         .filter input,.filter select{min-height:36px;border-radius:9px!important;border-color:#cbd9e8!important;background:#f8fafc!important;color:#475569!important;opacity:1!important;box-shadow:none!important;transition:border-color .18s,box-shadow .18s,background .18s}
@@ -422,11 +422,12 @@
         .filter .btn:hover{background:#091267;transform:translateY(-1px);box-shadow:0 8px 16px rgba(13,27,140,.25)}
         .filter .btn.btn-abu{background:#f1f5f9!important;color:#475569!important;border:1px solid #dbe5f0!important;box-shadow:none!important}
         .filter .btn.btn-abu:hover{background:#e2e8f0!important;color:#123b5d!important;transform:none}
-        .kartu{overflow:hidden;padding:0!important;border:1px solid #dbe5f0!important;border-radius:16px!important;background:#fff!important;box-shadow:0 8px 24px rgba(13,27,140,.07)!important}
-        .kartu-judul{display:flex;align-items:center;justify-content:space-between;gap:12px;min-height:45px;padding:12px 16px;color:#fff!important;background:#0d1b8c!important;font-size:12px;font-weight:800;letter-spacing:.035em}
+        .kartu{overflow:hidden;padding:0!important;margin-top:14px!important;border:1px solid #0d1b8c!important;border-radius:16px!important;background:#0d1b8c!important;box-shadow:0 8px 24px rgba(13,27,140,.14)!important}
+        .kartu-judul{display:flex;align-items:center;justify-content:space-between;gap:12px;min-height:45px;margin:0!important;padding:12px 16px;color:#fff!important;background:#0d1b8c!important;border-radius:12px 12px 0 0!important;font-size:12px;font-weight:800;letter-spacing:.035em}
         .kartu-judul>span:first-child{color:#fff!important}.kartu-judul .pill{background:#1e40af!important;color:#fff!important;border:1px solid rgba(255,255,255,.28)!important;box-shadow:none!important}
-        .kartu>#openSendModal,.kartu>div:has(>#openSendModal){padding:12px 18px 8px}
-        .kartu .scroll{margin:0 18px 16px;border:1px solid #dbe5f0!important;border-radius:11px!important;box-shadow:none;overflow:auto}
+        .kartu>#openSendModal,.kartu>div:has(>#openSendModal){padding:12px 18px 12px;background:#0d1b8c!important}
+        .kartu>#openSendModal{background:#2b73fe!important;color:#fff!important}
+        .kartu .scroll{margin:0 18px 16px;border:1px solid #dbe5f0!important;border-radius:11px!important;box-shadow:none;overflow:auto;background:#fff!important}
         .tabel{border:0!important;border-radius:10px!important;overflow:hidden;font-size:12px!important}
         .tabel thead th{background:#0d1b8c!important;border-color:#263aa8!important;color:#fff!important;font-size:11px!important;letter-spacing:.035em;white-space:nowrap}
         .tabel thead th.grup,.tabel thead th.sub{background:#0d1b8c!important}
