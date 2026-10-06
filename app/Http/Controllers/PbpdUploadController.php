@@ -13,7 +13,7 @@ class PbpdUploadController extends Controller
     public function index()
 {
     return view('pbpd.upload', [
-        'riwayat' => ImportExcel::latest()->limit(15)->get(),
+        'riwayat' => ImportExcel::orderByDesc('id')->limit(15)->get(),
         'ulps'    => Ulp::orderBy('kode')->get(),
     ]);
 }

@@ -13,7 +13,7 @@ class LaporanController extends Controller
     {
         $base = $this->laporanQuery($request);
 
-        $data = (clone $base)->with(['ulp', 'permintaan'])
+        $data = (clone $base)->with(['ulp', 'permintaan', 'pengirimanVendor', 'pengirimanKonstruksi', 'laporanVendor'])
             ->when($request->filled('tahap'), fn ($q) => $q->where('tahap', $request->tahap))
             ->when($request->filled('jenis'), fn ($q) => $q->where('jenis_transaksi', $request->jenis))
             ->orderByDesc('id')->paginate(30)->withQueryString();
@@ -30,7 +30,7 @@ class LaporanController extends Controller
 
     public function export(Request $request)
     {
-        $rows = $this->laporanQuery($request)->with(['ulp', 'permintaan'])->get();
+        $rows = $this->laporanQuery($request)->with(['ulp', 'permintaan', 'pengirimanVendor', 'pengirimanKonstruksi', 'laporanVendor'])->get();
 
         return Excel::download(new LaporanExport($rows), 'laporan-pbpd-' . now()->format('Ymd-His') . '.xlsx');
     }

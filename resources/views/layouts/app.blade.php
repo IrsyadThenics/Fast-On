@@ -357,6 +357,34 @@
 <style>
     .icon-inline,.metric-icon svg{width:16px;height:16px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;display:block}.metric-icon svg{width:15px;height:15px}.file-icon{display:inline-flex;align-items:center;justify-content:center;margin-right:6px;color:#1e6fa8}.tabel .ikon-dtl,.tabel .detail-link,.laporan-detail{display:inline-grid;place-items:center}.tabel .ikon-syarat{display:inline-grid;place-items:center}
 </style>
+<style>
+    /* Shared modern dashboard language across every role and page. */
+    .content{background:#f5f8fc!important}
+    .content>h1,.content>h2,.content>h3{color:#123b5d!important;font-weight:750;letter-spacing:-.025em}
+    .box,.card,.kartu,.vendor-card,.notif-box,.upload-card,.history-card{border:1px solid #dbe5f0!important;border-radius:16px!important;background:#fff!important;box-shadow:0 8px 24px rgba(13,27,140,.06)!important}
+    .box:not(.filter),.card,.vendor-card,.notif-box{padding:18px!important}
+    .box:hover,.card:hover,.vendor-card:hover,.notif-box:hover{border-color:#c7d8ec!important;box-shadow:0 11px 28px rgba(13,27,140,.09)!important}
+    .section-head,.kartu-judul,.card-header,.vendor-card-head,.notif-head{border-radius:12px!important;color:#fff!important;background:#0d1b8c!important}
+    .section-head h2,.section-head h3,.card-header h2,.card-header h3,.vendor-card-head h3,.notif-head h2{color:#fff!important}
+    .scroll{border:1px solid #dbe5f0!important;border-radius:11px!important;background:#fff!important}
+    .tabel{border-collapse:separate!important;border-spacing:0!important;overflow:hidden;border:1px solid #dbe5f0!important;border-radius:11px!important;background:#fff!important;color:#334155!important}
+    .tabel thead th{background:#0d1b8c!important;border-color:#3152bd!important;color:#fff!important;letter-spacing:.035em}
+    .tabel thead th.grup{background:#1646b8!important}.tabel thead th.sub{background:#245ed1!important}
+    .tabel tbody tr:nth-child(even){background:#f8fbff!important}.tabel tbody tr:hover{background:#eef6ff!important;box-shadow:inset 3px 0 #f4c300}
+    .tabel td,.tabel th{border-color:#e2e8f0!important;vertical-align:middle}
+    form.box input,form.box select,form.box textarea,.filter input,.filter select{border-radius:9px!important;background:#f8fafc!important;border-color:#d5e0ec!important;transition:border-color .18s,box-shadow .18s,background .18s}
+    form.box input:focus,form.box select:focus,form.box textarea:focus,.filter input:focus,.filter select:focus{background:#fff!important;border-color:#2b73fe!important;box-shadow:0 0 0 3px rgba(43,115,254,.13)!important}
+    button,.btn,a.btn,a.btn-excel{border-radius:9px!important;font-weight:650!important;box-shadow:0 4px 10px rgba(30,111,168,.13)}
+    button:hover,.btn:hover,a.btn:hover,a.btn-excel:hover{box-shadow:0 7px 15px rgba(30,111,168,.2)}
+    .pill{border-radius:999px!important;font-weight:650!important}
+    .detail-modal-box,.laporan-modal-box{border-radius:16px!important;overflow:hidden!important}
+    .detail-modal-box h3,.laporan-modal-box h3{padding:12px 14px!important;margin:-24px -24px 18px!important;color:#fff!important;background:#0d1b8c!important}
+    .detail-grid div,.laporan-detail-grid>div,.laporan-material-grid>div{border-radius:10px!important;background:#f8fbff!important;border-color:#dbe5f0!important}
+    .proses-tabel,.kebutuhan-tabel{border-radius:10px!important;overflow:hidden}.proses-tabel th,.kebutuhan-tabel th{background:#edf4ff!important;color:#123b5d!important}
+    .vendor-form,.planning-result-box,.construction-report-box,.proses-box{border-radius:12px!important;border-color:#dbe5f0!important;box-shadow:0 3px 12px rgba(13,27,140,.05)}
+    .notif-item{border-radius:11px!important}.notif-item.unread{border-left:4px solid #f4c300!important;background:#fffaf0!important}
+    @media(max-width:700px){.box:not(.filter),.card,.vendor-card,.notif-box{padding:14px!important}.content>h1,.content>h2,.content>h3{font-size:20px!important}.tabel{font-size:11px!important}}
+</style>
 <script>document.getElementById('menuToggle')?.addEventListener('click',()=>document.body.classList.toggle('menu-open'));document.getElementById('mainSidebar')?.addEventListener('click',e=>{if(e.target.closest('a'))document.body.classList.remove('menu-open')});</script>
 </body>
 </html>

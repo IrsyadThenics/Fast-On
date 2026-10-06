@@ -14,7 +14,7 @@ class DashboardController extends Controller
             ->where('status', '!=', 'MOHON')
             ->whereNotIn('jenis_transaksi', ['BN', 'BALIK NAMA', 'PS', 'PENERANGAN SEMENTARA']);
 
-        $rows = (clone $base)->with('ulp')->latest('id')->get();
+        $rows = (clone $base)->with('ulp')->orderByDesc('id')->get();
         $tahap = $rows->groupBy(fn ($row) => $row->tahap ?: 'BELUM DITENTUKAN')->map->count()->sortDesc();
         $tujuan = $rows->groupBy(fn ($row) => $row->tujuan_perluasan ?: 'BELUM DIKIRIM')->map->count()->sortDesc();
         $transaksi = $rows->groupBy(fn ($row) => $row->jenis_transaksi ?: 'LAINNYA')->map->count()->sortDesc();

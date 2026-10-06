@@ -138,8 +138,8 @@
                                 ><svg class="icon-inline" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 3.5h9l3 3V20.5H6z"/><path d="M15 3.5v4h3M9 12h6M9 16h6"/></svg></button>
                             </td>
                             @if ($showSyarat)
-                                <td><button type="button" class="ikon-syarat tombol-syarat" data-id="{{ $row->id }}" data-jenis="pendukung" data-files="{{ base64_encode(json_encode($row->berkas_pendukung_paths ?? [])) }}" data-file-url="{{ route('pbpd.syarat.file', ['pelanggan' => $row->id, 'jenis' => 'pendukung', 'index' => 0]) }}" title="Berkas Pendukung"><svg class="icon-inline" viewBox="0 0 24 24" aria-hidden="true"><path d="m8.5 12.5 5.8-5.8a3 3 0 0 1 4.2 4.2l-7.4 7.4a4.5 4.5 0 0 1-6.4-6.4l7.1-7.1a2 2 0 0 1 2.8 2.8l-6.6 6.6"/></svg></button></td>
-                                <td><button type="button" class="ikon-syarat tombol-syarat" data-id="{{ $row->id }}" data-jenis="ijin" data-files="{{ base64_encode(json_encode($row->berkas_ijin_paths ?? [])) }}" data-file-url="{{ route('pbpd.syarat.file', ['pelanggan' => $row->id, 'jenis' => 'ijin', 'index' => 0]) }}" title="Berkas Ijin"><svg class="icon-inline" viewBox="0 0 24 24" aria-hidden="true"><path d="m8.5 12.5 5.8-5.8a3 3 0 0 1 4.2 4.2l-7.4 7.4a4.5 4.5 0 0 1-6.4-6.4l7.1-7.1a2 2 0 0 1 2.8 2.8l-6.6 6.6"/></svg></button></td>
+                                <td><button type="button" class="ikon-syarat tombol-syarat {{ count($row->berkas_pendukung_paths ?? []) ? 'berkas-lengkap' : 'berkas-belum' }}" data-id="{{ $row->id }}" data-jenis="pendukung" data-files="{{ base64_encode(json_encode($row->berkas_pendukung_paths ?? [])) }}" data-file-url="{{ route('pbpd.syarat.file', ['pelanggan' => $row->id, 'jenis' => 'pendukung', 'index' => 0]) }}" title="Berkas Pendukung">@if(count($row->berkas_pendukung_paths ?? []))<svg class="icon-inline" viewBox="0 0 24 24" aria-hidden="true"><path d="m5 12 4 4L19 6"/></svg>@else<svg class="icon-inline" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 8v4M12 16h.01"/><circle cx="12" cy="12" r="9"/></svg>@endif</button></td>
+                                <td><button type="button" class="ikon-syarat tombol-syarat {{ count($row->berkas_ijin_paths ?? []) ? 'berkas-lengkap' : 'berkas-belum' }}" data-id="{{ $row->id }}" data-jenis="ijin" data-files="{{ base64_encode(json_encode($row->berkas_ijin_paths ?? [])) }}" data-file-url="{{ route('pbpd.syarat.file', ['pelanggan' => $row->id, 'jenis' => 'ijin', 'index' => 0]) }}" title="Berkas Ijin">@if(count($row->berkas_ijin_paths ?? []))<svg class="icon-inline" viewBox="0 0 24 24" aria-hidden="true"><path d="m5 12 4 4L19 6"/></svg>@else<svg class="icon-inline" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 8v4M12 16h.01"/><circle cx="12" cy="12" r="9"/></svg>@endif</button></td>
                             @endif
                             <td>
                                 <span class="pill pill-ungu">
@@ -410,4 +410,32 @@
             }
         })();
     </script>
+    <style>
+        /* Modern dashboard treatment for the existing PB/PD screen. */
+        .filter{position:relative;display:flex;align-items:center;gap:10px;flex-wrap:wrap;padding:64px 18px 16px!important;background:#fff!important;border:1px solid #dbe5f0!important;border-radius:16px!important;box-shadow:0 8px 24px rgba(13,27,140,.07)!important}
+        .filter::before{content:'DAFTAR TRANSAKSI';position:absolute;inset:0 0 auto;height:46px;display:flex;align-items:flex-start;padding:9px 18px 0;border-radius:16px 16px 0 0;background:#0d1b8c;color:#fff;font-size:12px;font-weight:800;letter-spacing:.07em;line-height:1.1}
+        .filter::after{content:'Daftar Transaksi PB/PD';position:absolute;top:25px;left:18px;color:#dbeafe;font-size:9px;letter-spacing:.01em;line-height:1.1}
+        .filter input,.filter select{min-height:36px;border-radius:9px!important;border-color:#cbd9e8!important;background:#f8fafc!important;color:#475569!important;opacity:1!important;box-shadow:none!important;transition:border-color .18s,box-shadow .18s,background .18s}
+        .filter select option{color:#334155;background:#fff}
+        .filter input:focus,.filter select:focus{background:#fff!important;border-color:#2b73fe!important;box-shadow:0 0 0 3px rgba(43,115,254,.13)!important}
+        .filter .btn{min-height:38px;border:0;background:#0d1b8c;box-shadow:0 5px 12px rgba(13,27,140,.2);transition:transform .18s,box-shadow .18s,background .18s}
+        .filter .btn:hover{background:#091267;transform:translateY(-1px);box-shadow:0 8px 16px rgba(13,27,140,.25)}
+        .filter .btn.btn-abu{background:#f1f5f9!important;color:#475569!important;border:1px solid #dbe5f0!important;box-shadow:none!important}
+        .filter .btn.btn-abu:hover{background:#e2e8f0!important;color:#123b5d!important;transform:none}
+        .kartu{overflow:hidden;padding:0!important;border:1px solid #dbe5f0!important;border-radius:16px!important;background:#fff!important;box-shadow:0 8px 24px rgba(13,27,140,.07)!important}
+        .kartu-judul{display:flex;align-items:center;justify-content:space-between;gap:12px;min-height:45px;padding:12px 16px;color:#fff!important;background:#0d1b8c!important;font-size:12px;font-weight:800;letter-spacing:.035em}
+        .kartu-judul>span:first-child{color:#fff!important}.kartu-judul .pill{background:#1e40af!important;color:#fff!important;border:1px solid rgba(255,255,255,.28)!important;box-shadow:none!important}
+        .kartu>#openSendModal,.kartu>div:has(>#openSendModal){padding:12px 18px 8px}
+        .kartu .scroll{margin:0 18px 16px;border:1px solid #dbe5f0!important;border-radius:11px!important;box-shadow:none;overflow:auto}
+        .tabel{border:0!important;border-radius:10px!important;overflow:hidden;font-size:12px!important}
+        .tabel thead th{background:#0d1b8c!important;border-color:#263aa8!important;color:#fff!important;font-size:11px!important;letter-spacing:.035em;white-space:nowrap}
+        .tabel thead th.grup,.tabel thead th.sub{background:#0d1b8c!important}
+        .tabel tbody tr{transition:background .16s,box-shadow .16s}.tabel tbody tr:nth-child(even){background:#f8fbff!important}.tabel tbody tr:hover{background:#eef6ff!important;box-shadow:inset 3px 0 #f4c300}
+        .tabel tbody td{border-color:#e2e8f0!important;color:#475569!important;vertical-align:middle}.tabel tbody td b{color:#123b5d!important}.tabel tbody td:nth-child(2),.tabel tbody td:nth-child(3){font-weight:650}
+        .tabel .ikon-dtl,.tabel .detail-link{width:31px;height:31px;border-radius:8px!important;background:#eaf3ff!important;color:#1e6fa8!important;border:1px solid #c8def5!important;box-shadow:none!important}
+        .tabel .ikon-dtl:hover,.tabel .detail-link:hover{background:#1e6fa8!important;color:#fff!important;transform:translateY(-1px)!important}
+        .tabel .ikon-syarat{width:28px;height:28px;border-radius:8px!important;background:#f8fbff!important;color:#1e6fa8!important;border:1px solid #d5e5f5!important}.tabel .ikon-syarat.berkas-lengkap{background:#e8f7ef!important;color:#2e9b68!important;border-color:#b9e4ca!important}.tabel .ikon-syarat.berkas-belum{background:#fff7ed!important;color:#d97706!important;border-color:#f5d7a1!important}
+        .tabel .pill{font-size:11px!important;font-weight:700;border-radius:999px!important;padding:5px 9px!important}
+        @media(max-width:760px){.filter{padding:58px 12px 14px!important}.filter>*{flex:1 1 100%}.filter::before{padding-left:12px}.filter::after{left:12px}.kartu-judul{align-items:flex-start;flex-direction:column}.kartu .scroll{margin:0 10px 10px}.kartu>#openSendModal,.kartu>div:has(>#openSendModal){padding-left:10px;padding-right:10px}}
+    </style>
 @endsection

@@ -10,7 +10,7 @@ class NotifikasiController extends Controller
     public function index()
     {
         return view('notifikasi.index', [
-            'notifications' => AppNotification::where('user_id', auth()->id())->latest()->paginate(30),
+            'notifications' => AppNotification::where('user_id', auth()->id())->orderByDesc('id')->paginate(30),
             'unread' => AppNotification::where('user_id', auth()->id())->whereNull('read_at')->count(),
         ]);
     }
