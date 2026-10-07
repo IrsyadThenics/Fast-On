@@ -151,6 +151,7 @@ class VendorTiangController extends Controller
         }
 
         $laporan->update(['berkas_hasil_paths' => $paths, 'berkas_hasil_at' => now()]);
+        $pelanggan->tandaiSelesaiJikaLengkap(auth()->id());
         NotifikasiService::untukData($pelanggan, 'Berkas hasil perencanaan diupload', 'Berkas hasil perencanaan untuk ' . $pelanggan->no_agenda . ' telah diupload.', route('laporan'));
 
         return back()->with('success', 'Berkas hasil perencanaan berhasil disimpan.');

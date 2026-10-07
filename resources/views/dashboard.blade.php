@@ -2,7 +2,27 @@
 @section('title', 'Dashboard')
 @section('judul', 'Dashboard')
 @section('isi')
-@php($namaScope = auth()->user()->role?->type === 'ULP' ? (auth()->user()->role?->name ?? 'ULP') : 'UP3 Bojonegoro')
+@php
+    $namaScope = auth()->user()->role?->type === 'ULP'
+        ? (auth()->user()->role?->name ?? 'ULP')
+        : 'UP3 Bojonegoro';
+    $tujuanColors = [
+        'BELUM DIKIRIM' => '#6fa2d4',
+        'JTR' => '#f4c95d',
+        'TANPA PERLUASAN' => '#64b9d6',
+        'JTM' => '#1e6fa8',
+    ];
+    $tujuanSegments = [];
+    $tujuanOffset = 0;
+    $tujuanTotal = max((int) $tujuan->sum(), 1);
+    foreach ($tujuan as $nama => $jumlah) {
+        $tujuanLabel = strtoupper(str_replace('_', ' ', $nama));
+        $tujuanNext = $tujuanOffset + ((int) $jumlah / $tujuanTotal * 100);
+        $tujuanSegments[] = ($tujuanColors[$tujuanLabel] ?? '#94a3b8') . ' ' . $tujuanOffset . '% ' . $tujuanNext . '%';
+        $tujuanOffset = $tujuanNext;
+    }
+    $tujuanGradient = $tujuanSegments ? implode(', ', $tujuanSegments) : '#dbe5f0 0 100%';
+@endphp
 <div class="modern-dashboard">
     <div class="dashboard-topline"><div><div class="eyebrow">FAST ON / OVERVIEW</div><h1>Selamat datang, {{ $namaScope }} <span>✦</span></h1><p>Berikut ringkasan proses PB/PD yang sedang berjalan.</p></div><a href="{{ route('laporan') }}" class="dashboard-primary">Buka laporan <span>→</span></a></div>
 
@@ -15,11 +35,11 @@
 
     <div class="dashboard-layout">
         <div class="dashboard-main-column">
-            <section class="modern-panel"><div class="panel-heading"><div><h2>Aktivitas terbaru</h2><p>Data PB/PD terakhir yang masuk dalam sistem</p></div><a href="{{ route('pbpd.index') }}">Lihat semua</a></div><div class="modern-table-wrap"><table class="modern-table"><thead><tr><th>AGENDA</th><th>PELANGGAN</th><th>TRANSAKSI</th><th>TAHAP</th><th>STATUS</th></tr></thead><tbody>@forelse($terbaru as $row)<tr><td class="agenda">{{ $row->no_agenda }}</td><td><b>{{ $row->nama_pelanggan }}</b><small>{{ $row->asal_ulp }}</small></td><td>{{ $row->jenis_transaksi }}</td><td><span class="status-tag stage">{{ $row->tahap }}</span></td><td><span class="status-dot"></span>{{ $row->status ?: '-' }}</td></tr>@empty<tr><td colspan="5" class="empty">Belum ada data.</td></tr>@endforelse</tbody></table></div></section>
+            <section class="modern-panel"><div class="panel-heading"><div><h2>Aktivitas terbaru</h2><p>Data PB/PD terakhir yang masuk dalam sistem</p></div><a href="{{ route('pbpd.index') }}">Lihat semua</a></div><div class="modern-table-wrap"><table class="modern-table"><thead><tr><th>AGENDA</th><th>PELANGGAN</th><th>TRANSAKSI</th><th>TAHAP</th><th>STATUS</th></tr></thead><tbody>@forelse($terbaru as $row) @php $tahapTampilan = ! $row->tahap || $row->tahap === 'ULP' ? 'BELUM DIPROSES' : ($row->tahap === 'SELESAI' ? 'SELESAI' : 'SEDANG DIPROSES'); @endphp<tr><td class="agenda">{{ $row->no_agenda }}</td><td><b>{{ $row->nama_pelanggan }}</b><small>{{ $row->asal_ulp }}</small></td><td>{{ $row->jenis_transaksi }}</td><td><span class="status-tag stage">{{ $tahapTampilan }}</span></td><td><span class="status-dot"></span>{{ $row->status ?: '-' }}</td></tr>@empty<tr><td colspan="5" class="empty">Belum ada data.</td></tr>@endforelse</tbody></table></div></section>
             <section class="modern-panel"><div class="panel-heading"><div><h2>Distribusi tahap proses</h2><p>Perbandingan status data saat ini</p></div></div><div class="stage-chart">@forelse($tahap as $nama => $jumlah)<div class="stage-row"><span>{{ $nama }}</span><div class="stage-track"><i style="width:{{ $total ? round($jumlah / $total * 100) : 0 }}%"></i></div><b>{{ $jumlah }}</b></div>@empty<p class="empty">Belum ada data.</p>@endforelse</div></section>
         </div>
         <aside class="dashboard-side-column">
-            <section class="modern-panel compact-panel"><div class="panel-heading"><div><h2>Tujuan proses</h2><p>Distribusi pengiriman</p></div></div><div class="donut-wrap"><div class="donut"><div><b>{{ $total }}</b><small>data</small></div></div><div class="legend">@forelse($tujuan as $nama => $jumlah)<div><i class="legend-dot dot-{{ $loop->index % 3 }}"></i><span>{{ str_replace('_', ' ', $nama) }}</span><b>{{ $jumlah }}</b></div>@empty<p class="empty">-</p>@endforelse</div></div></section>
+            <section class="modern-panel compact-panel"><div class="panel-heading"><div><h2>Tujuan proses</h2><p>Distribusi pengiriman</p></div></div><div class="donut-wrap"><div class="donut" style="background:conic-gradient({{ $tujuanGradient }})"><div><b>{{ $total }}</b><small>data</small></div></div><div class="legend">@forelse($tujuan as $nama => $jumlah) @php($tujuanLabel = strtoupper(str_replace('_', ' ', $nama)))<div><i class="legend-dot" style="background:{{ $tujuanColors[$tujuanLabel] ?? '#94a3b8' }}"></i><span>{{ str_replace('_', ' ', $nama) }}</span><b>{{ $jumlah }}</b></div>@empty<p class="empty">-</p>@endforelse</div></div></section>
             <section class="modern-panel compact-panel"><div class="panel-heading"><div><h2>Jenis transaksi</h2><p>Ringkasan permohonan</p></div></div><div class="transaction-list">@forelse($transaksi as $nama => $jumlah)<div><span>{{ $nama }}</span><b>{{ $jumlah }}</b></div>@empty<p class="empty">Belum ada data.</p>@endforelse</div></section>
             @if(auth()->user()->role?->type === 'UP3')<section class="modern-panel compact-panel"><div class="panel-heading"><div><h2>Per ULP</h2><p>Data pada seluruh ULP</p></div></div><div class="transaction-list">@forelse($ulp->take(5) as $nama => $jumlah)<div><span>{{ $nama }}</span><b>{{ $jumlah }}</b></div>@empty<p class="empty">Belum ada data.</p>@endforelse</div></section>@endif
         </aside>
@@ -141,8 +161,7 @@
     body:has(.modern-dashboard) .metric-card{background:#fff!important;border:1px solid #dbe5f0!important;border-radius:14px!important;box-shadow:0 7px 20px rgba(13,27,140,.07)!important}body:has(.modern-dashboard) .metric-card:nth-child(1){border-top:3px solid #2b73fe!important}body:has(.modern-dashboard) .metric-card:nth-child(2){border-top:3px solid #f2a541!important}body:has(.modern-dashboard) .metric-card:nth-child(3){border-top:3px solid #27a9d6!important}body:has(.modern-dashboard) .metric-card:nth-child(4){border-top:3px solid #2e9b68!important}body:has(.modern-dashboard) .metric-label{color:#64748b!important}body:has(.modern-dashboard) .metric-card strong{color:#123b5d!important}body:has(.modern-dashboard) .metric-card small{color:#7c8da0!important}body:has(.modern-dashboard) .metric-line{background:#e8eef5!important}
     body:has(.modern-dashboard) .modern-panel{background:#fff!important;border:1px solid #dbe5f0!important;border-radius:14px!important;box-shadow:0 7px 20px rgba(13,27,140,.06)!important}body:has(.modern-dashboard) .panel-heading h2{color:#123b5d!important}body:has(.modern-dashboard) .panel-heading p{color:#64748b!important}body:has(.modern-dashboard) .panel-heading a{color:#1e6fa8!important}body:has(.modern-dashboard) .modern-table th{color:#64748b!important;border-bottom-color:#dbe5f0!important}body:has(.modern-dashboard) .modern-table td{color:#475569!important;border-bottom-color:#edf2f7!important}body:has(.modern-dashboard) .modern-table td b{color:#123b5d!important}body:has(.modern-dashboard) .modern-table td small{color:#94a3b8!important}body:has(.modern-dashboard) .modern-table .agenda{color:#1e6fa8!important}body:has(.modern-dashboard) .modern-table tbody tr:hover{background:#f1f7ff!important}
     body:has(.modern-dashboard) .status-tag.stage{background:#eaf3ff!important;color:#1e6fa8!important}body:has(.modern-dashboard) .status-dot{background:#2e9b68!important}body:has(.modern-dashboard) .stage-row,body:has(.modern-dashboard) .legend>div,body:has(.modern-dashboard) .transaction-list>div{color:#64748b!important}body:has(.modern-dashboard) .stage-row>b,body:has(.modern-dashboard) .legend b,body:has(.modern-dashboard) .transaction-list b{color:#123b5d!important}body:has(.modern-dashboard) .stage-track{background:#e5edf5!important}body:has(.modern-dashboard) .stage-track i{background:linear-gradient(90deg,#1e6fa8,#2b73fe)!important}body:has(.modern-dashboard) .donut>div{background:#fff!important}body:has(.modern-dashboard) .donut b{color:#123b5d!important}body:has(.modern-dashboard) .donut small{color:#64748b!important}body:has(.modern-dashboard) .empty{color:#94a3b8!important}
-    body:has(.modern-dashboard) .donut{background:conic-gradient(#6fa2d4 0 42%,#f4c95d 42% 70%,#7fc4a9 70% 100%)!important}
-    body:has(.modern-dashboard) .legend-dot{background:#6fa2d4!important}.modern-dashboard .legend .dot-1{background:#f4c95d!important}.modern-dashboard .legend .dot-2{background:#64b9d6!important}
+    body:has(.modern-dashboard) .legend-dot{background:#6fa2d4}
     @media(max-width:650px){body:has(.modern-dashboard) main{padding-left:14px;padding-right:14px}body:has(.modern-dashboard) .dashboard-topline{align-items:flex-start}body:has(.modern-dashboard) .dashboard-topline h1{font-size:22px}}
 </style>
 @endsection

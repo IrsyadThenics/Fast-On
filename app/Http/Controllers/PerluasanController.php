@@ -55,6 +55,39 @@ class PerluasanController extends Controller
         $data = (clone $query)->orderByDesc('id')->paginate(20)
             ->withQueryString();
 
+        $summaryBase = PelangganPbpd::query()
+            ->whereIn('tahap', $visibleTahaps)
+            ->whereRaw("UPPER(REPLACE(tujuan_perluasan, ' ', '_')) = ?", [$tujuan])
+            ->when($ulpUser, fn ($q) => $q->where('ulp_id', $ulpUser));
+        $summaryByJenisRaw = (clone $summaryBase)
+            ->selectRaw('UPPER(TRIM(jenis_transaksi)) AS jenis, COUNT(*) AS jumlah')
+            ->whereNotNull('jenis_transaksi')
+            ->groupByRaw('UPPER(TRIM(jenis_transaksi))')
+            ->pluck('jumlah', 'jenis');
+        $summaryByJenis = collect([
+            'CETAK PK' => (int) ($summaryByJenisRaw['CETAK PK'] ?? 0),
+            'PASANG BARU' => (int) (($summaryByJenisRaw['PASANG BARU'] ?? 0) + ($summaryByJenisRaw['PB'] ?? 0)),
+            'PERUBAHAN DAYA' => (int) (($summaryByJenisRaw['PERUBAHAN DAYA'] ?? 0) + ($summaryByJenisRaw['PD'] ?? 0)),
+            'PENGESAHAN PDL' => (int) ($summaryByJenisRaw['PENGESAHAN PDL'] ?? 0),
+            'PDL AWAL' => (int) ($summaryByJenisRaw['PDL AWAL'] ?? 0),
+        ]);
+        $isUlpSummary = $role?->type === 'ULP' && (bool) $role?->ulp_id;
+        $showSummaryCards = in_array($role?->type, ['ULP', 'UP3'], true);
+        $summaryTotal = (clone $summaryBase)->count();
+        $summarySentBase = PelangganPbpd::query()
+            ->whereRaw("UPPER(REPLACE(tujuan_perluasan, ' ', '_')) = ?", [$tujuan])
+            ->whereNotNull('tahap')
+            ->where('tahap', '!=', 'ULP')
+            ->when($ulpUser, fn ($q) => $q->where('ulp_id', $ulpUser));
+        $summarySentByUlp = (clone $summarySentBase)
+            ->selectRaw('ulp_id, COUNT(*) AS jumlah')
+            ->whereNotNull('ulp_id')->groupBy('ulp_id')->orderByDesc('jumlah')->get();
+        $summarySentCounts = $summarySentByUlp->pluck('jumlah', 'ulp_id');
+        $summaryUlpNames = Ulp::orderBy('nama')->get()->keyBy('id');
+        $summarySentByUlp = $summaryUlpNames->map(function ($ulp) use ($summarySentCounts) {
+            return (object) ['ulp_id' => $ulp->id, 'jumlah' => (int) ($summarySentCounts[$ulp->id] ?? 0)];
+        })->values();
+
         $ulps = $ulpUser
             ? Ulp::whereKey($ulpUser)->get()
             : Ulp::orderBy('nama')->get();
@@ -65,6 +98,6 @@ class PerluasanController extends Controller
         $vendors = Vendor::with('user')->where('jenis', 'TIANG')->orderBy('nama')->get();
         $vendorsKonstruksi = Vendor::with('user')->where('jenis', 'KONSTRUKSI')->orderBy('nama')->get();
 
-        return view('perluasan.index', compact('data', 'judul', 'tujuan', 'canEditRab', 'canEditMaterial', 'canViewMaterial', 'canSendVendor', 'canSendKonstruksi', 'canUploadTransaksi', 'canUploadJaringan', 'vendors', 'vendorsKonstruksi', 'ulps', 'jenisPilihan', 'statusPilihan', 'tahapPilihan'));
+        return view('perluasan.index', compact('data', 'judul', 'tujuan', 'canEditRab', 'canEditMaterial', 'canViewMaterial', 'canSendVendor', 'canSendKonstruksi', 'canUploadTransaksi', 'canUploadJaringan', 'vendors', 'vendorsKonstruksi', 'ulps', 'jenisPilihan', 'statusPilihan', 'tahapPilihan', 'showSummaryCards', 'isUlpSummary', 'summaryTotal', 'summarySentByUlp', 'summaryUlpNames', 'summaryByJenis'));
     }
 }

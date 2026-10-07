@@ -40,13 +40,34 @@ class PelangganPbpd extends Model
     public function konstruksi()  { return $this->hasOne(KonstruksiData::class, 'pelanggan_id'); }
     public function checklist()   { return $this->hasMany(ChecklistVendor::class, 'pelanggan_id'); }
     public function berkas()      { return $this->hasMany(Berkas::class, 'pelanggan_id'); }
-    public function riwayat()     { return $this->hasMany(RiwayatTahap::class, 'pelanggan_id'); }
 
-    /** Pindah tahap sekaligus mencatat riwayatnya. */
+    /** Pindah tahap. Pencatatan riwayat belum digunakan karena tabel riwayat belum tersedia. */
     public function pindahTahap(string $ke, ?int $userId = null): void
     {
-        $dari = $this->tahap;
         $this->update(['tahap' => $ke]);
-        $this->riwayat()->create(['dari_tahap' => $dari, 'ke_tahap' => $ke, 'oleh' => $userId]);
+    }
+
+    /** Menandai selesai setelah seluruh lima proses memiliki berkas lengkap. */
+    public function tandaiSelesaiJikaLengkap(?int $userId = null): bool
+    {
+        $this->loadMissing(['pengirimanKonstruksi', 'laporanVendor']);
+
+        $planningDone = count($this->laporanVendor?->berkas_hasil_paths ?? []) > 0
+            || count($this->pengirimanKonstruksi?->hasil_paths ?? []) > 0;
+        $constructionDone = count($this->hasil_konstruksi_paths ?? []) > 0
+            || count($this->pengirimanKonstruksi?->hasil_konstruksi_paths ?? []) > 0;
+        $transactionDone = count($this->hasil_transaksi_paths ?? []) > 0;
+        $networkDone = count($this->hasil_jaringan_paths ?? []) > 0;
+        $ulpDone = $this->tahap !== 'ULP' || (bool) $this->tujuan_perluasan;
+
+        if (! $ulpDone || ! $planningDone || ! $constructionDone || ! $transactionDone || ! $networkDone) {
+            return false;
+        }
+
+        if ($this->tahap !== 'SELESAI') {
+            $this->pindahTahap('SELESAI', $userId);
+        }
+
+        return true;
     }
 }

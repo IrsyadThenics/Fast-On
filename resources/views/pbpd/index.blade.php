@@ -11,6 +11,42 @@
         <div class="box" style="color:#a61b1b">{{ session('error') }}</div>
     @endif
 
+    @if ($showSummaryCards)
+        <div class="summary-cards">
+            <div class="summary-card summary-card-total">
+                <span class="summary-card-label">TOTAL DATA</span>
+                <strong>{{ $summaryTotal }}</strong>
+            </div>
+            @if ($isUlpSummary)
+                @foreach ([
+                    'CETAK PK' => 'Cetak PK',
+                    'PASANG BARU' => 'Pasang Baru',
+                    'PERUBAHAN DAYA' => 'Perubahan Daya',
+                    'PENGESAHAN PDL' => 'Pengesahan PDL',
+                    'PDL AWAL' => 'PDL Awal',
+                ] as $key => $label)
+                    <div class="summary-card">
+                        <span class="summary-card-label">{{ $label }}</span>
+                        <strong>{{ $summaryByJenis[$key] ?? 0 }}</strong>
+                    </div>
+                @endforeach
+            @else
+                @forelse ($summarySentByUlp as $sentUlp)
+                    <div class="summary-card summary-card-sent">
+                        <span class="summary-card-label">{{ $summaryUlpNames[$sentUlp->ulp_id]->nama ?? 'ULP tidak diketahui' }}</span>
+                        <strong>{{ $sentUlp->jumlah }}</strong>
+                        <small class="summary-card-caption">Data dikirim ULP</small>
+                    </div>
+                @empty
+                    <div class="summary-card summary-card-sent">
+                        <span class="summary-card-label">DATA DIKIRIM ULP</span>
+                        <strong>0</strong>
+                    </div>
+                @endforelse
+            @endif
+        </div>
+    @endif
+
     <form class="box filter" method="GET" action="{{ route('pbpd.index') }}">
         <input type="text" name="cari" value="{{ request('cari') }}"
                placeholder="Cari nama / no agenda / alamat">
@@ -426,9 +462,9 @@
     </script>
     <style>
         /* Modern dashboard treatment for the existing PB/PD screen. */
-        .filter{position:relative;display:flex;align-items:center;column-gap:10px!important;row-gap:12px!important;flex-wrap:wrap;padding:64px 18px 20px!important;background:#fff!important;border:1px solid #dbe5f0!important;border-radius:16px!important;box-shadow:0 8px 24px rgba(13,27,140,.07)!important}
-        .filter::before{content:'DAFTAR TRANSAKSI';position:absolute;inset:0 0 auto;height:46px;display:flex;align-items:flex-start;padding:9px 18px 0;border-radius:16px 16px 0 0;background:#0d1b8c;color:#fff;font-size:12px;font-weight:800;letter-spacing:.07em;line-height:1.1}
-        .filter::after{content:'Daftar Transaksi PB/PD';position:absolute;top:25px;left:18px;color:#dbeafe;font-size:9px;letter-spacing:.01em;line-height:1.1}
+        .filter{position:relative;display:flex;align-items:center;column-gap:10px!important;row-gap:12px!important;flex-wrap:wrap;padding:70px 18px 20px!important;background:#fff!important;border:1px solid #dbe5f0!important;border-radius:16px!important;box-shadow:0 8px 24px rgba(13,27,140,.07)!important}
+        .filter::before{content:'DAFTAR TRANSAKSI';position:absolute;inset:0 0 auto;height:50px;display:flex;align-items:flex-start;padding:9px 18px 0;border-radius:16px 16px 0 0;background:#0d1b8c;color:#fff;font-size:15px;font-weight:800;letter-spacing:.035em;line-height:1.1}
+        .filter::after{content:'Daftar Transaksi PB/PD';position:absolute;top:31px;left:18px;color:#dbeafe;font-size:11px;font-weight:600;letter-spacing:.01em;line-height:1.1}
         .filter input,.filter select{min-height:36px;border-radius:9px!important;border-color:#cbd9e8!important;background:#f8fafc!important;color:#475569!important;opacity:1!important;box-shadow:none!important;transition:border-color .18s,box-shadow .18s,background .18s}
         .filter select option{color:#334155;background:#fff}
         .filter input:focus,.filter select:focus{background:#fff!important;border-color:#2b73fe!important;box-shadow:0 0 0 3px rgba(43,115,254,.13)!important}
@@ -453,6 +489,6 @@
         .tabel .ikon-dtl:hover,.tabel .detail-link:hover{background:#1e6fa8!important;color:#fff!important;transform:translateY(-1px)!important}
         .tabel .ikon-syarat{width:28px;height:28px;border-radius:8px!important;background:#f8fbff!important;color:#1e6fa8!important;border:1px solid #d5e5f5!important}.tabel .ikon-syarat.berkas-lengkap{background:#e8f7ef!important;color:#2e9b68!important;border-color:#b9e4ca!important}.tabel .ikon-syarat.berkas-belum{background:#fff7ed!important;color:#d97706!important;border-color:#f5d7a1!important}
         .tabel .pill{font-size:11px!important;font-weight:700;border-radius:999px!important;padding:5px 9px!important}
-        @media(max-width:760px){.filter{padding:58px 12px 14px!important}.filter>*{flex:1 1 100%}.filter::before{padding-left:12px}.filter::after{left:12px}.kartu-judul{align-items:flex-start;flex-direction:column}.kartu .scroll{margin:0 10px 10px}.table-title-content{align-items:flex-start;flex-direction:column;gap:8px}.table-send-button{align-self:flex-end}}
+        @media(max-width:760px){.filter{padding:64px 12px 14px!important}.filter>*{flex:1 1 100%}.filter::before{padding-left:12px}.filter::after{left:12px}.kartu-judul{align-items:flex-start;flex-direction:column}.kartu .scroll{margin:0 10px 10px}.table-title-content{align-items:flex-start;flex-direction:column;gap:8px}.table-send-button{align-self:flex-end}}
     </style>
 @endsection

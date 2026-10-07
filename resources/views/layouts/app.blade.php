@@ -80,7 +80,7 @@
 <body>
 <div class="layout">
     <aside id="mainSidebar">
-        <h2>FAST ON</h2>
+        <h2><span class="brand-fast">FAST</span> <span class="brand-accent">ON 360</span></h2>
         <div class="role">{{ auth()->user()->role?->name ?? auth()->user()->user_id }}</div>
 
         @foreach (config('menu') as $m)
@@ -448,6 +448,8 @@
     /* Sidebar visual refresh only: existing links, permissions and routes remain unchanged. */
     #mainSidebar{position:sticky!important;top:0!important;align-self:flex-start;width:230px!important;height:100vh!important;overflow-y:auto!important;overflow-x:hidden!important;padding:26px 14px 20px!important;background:#111c91!important;color:#fff!important;border-right:0!important;border-radius:0 0 18px 0;box-shadow:6px 0 20px rgba(17,28,145,.16)!important;scrollbar-width:thin;scrollbar-color:rgba(255,255,255,.3) transparent}
     #mainSidebar h2{margin:0 14px 3px!important;color:#fff!important;font-size:18px!important;font-weight:800!important;letter-spacing:.04em!important}
+    #mainSidebar h2 .brand-fast{color:#fff!important}
+    #mainSidebar h2 .brand-accent{color:#facc15!important}
     #mainSidebar .role{margin:0 14px 24px!important;color:rgba(255,255,255,.68)!important;font-size:11px!important;letter-spacing:.02em}
     #mainSidebar a{position:relative;display:flex!important;align-items:center;gap:12px;margin:4px 0!important;padding:11px 12px!important;border:1px solid transparent!important;border-radius:11px!important;color:rgba(255,255,255,.78)!important;font-size:13px!important;font-weight:600!important;letter-spacing:.005em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;transition:background .18s ease,color .18s ease,transform .18s ease,box-shadow .18s ease!important}
     #mainSidebar a::before{display:inline-flex!important;align-items:center;justify-content:center;width:20px;min-width:20px;flex:0 0 20px;text-align:center;color:rgba(255,255,255,.72);font-size:15px;line-height:1}
@@ -468,6 +470,21 @@
     #mainSidebar .notif-badge{margin-left:auto!important;background:#facc15!important;color:#172554!important;min-width:18px!important;border-radius:999px!important;font-size:10px!important;font-weight:800!important}
     @media(max-width:900px){#mainSidebar{width:210px!important}}
     @media(max-width:650px){#mainSidebar{position:fixed!important;top:0!important;left:0!important;width:250px!important;height:100vh!important;border-radius:0!important;padding:22px 14px!important}}
+    /* Summary cards shared by PB/PD and expansion pages. */
+    .summary-cards{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:12px;margin:0 0 16px}
+    .summary-card{min-height:92px;padding:15px 16px;border:1px solid #d9e2ec;border-top:3px solid #1e6fa8;border-radius:12px;background:#fff;box-shadow:0 2px 8px rgba(18,59,93,.08);display:flex;flex-direction:column;justify-content:space-between;gap:8px}
+    .summary-card-total{border-top-color:#111c91;background:linear-gradient(145deg,#111c91,#123b5d);color:#fff}
+    .summary-card-sent{border-top-color:#facc15}
+    .summary-card-label{color:#627d98;font-size:11px;font-weight:700;line-height:1.25;letter-spacing:.035em;text-transform:uppercase}
+    .summary-card-total .summary-card-label{color:rgba(255,255,255,.78)}
+    .summary-card strong{color:#123b5d;font-size:25px;line-height:1;font-weight:800}
+    .summary-card-total strong{color:#fff}
+    .summary-card-sent strong{color:#123b5d}
+    .summary-card-caption{color:#627d98;font-size:10px;line-height:1.2}
+    .content>header form[action$="/logout"] button{background:#111c91!important;color:#fff!important;border-color:#111c91!important}
+    .content>header form[action$="/logout"] button:hover{background:#0d166f!important;color:#fff!important;border-color:#0d166f!important}
+    @media(max-width:1100px){.summary-cards{grid-template-columns:repeat(3,minmax(0,1fr))}}
+    @media(max-width:650px){.summary-cards{grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}.summary-card{min-height:82px;padding:12px}.summary-card strong{font-size:22px}}
 </style>
 <script>document.getElementById('menuToggle')?.addEventListener('click',()=>document.body.classList.toggle('menu-open'));document.getElementById('mainSidebar')?.addEventListener('click',e=>{if(e.target.closest('a'))document.body.classList.remove('menu-open')});</script>
 </body>

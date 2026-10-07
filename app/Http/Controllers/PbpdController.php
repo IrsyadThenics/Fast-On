@@ -44,6 +44,38 @@ class PbpdController extends Controller
             ->paginate(20)
             ->withQueryString();
 
+        $summaryBase = PelangganPbpd::query()
+            ->when($ulpUser, fn ($q) => $q->where('ulp_id', $ulpUser))
+            ->when($role?->type === 'ULP' && ! $request->filled('import'), fn ($q) => $q->where('tahap', 'ULP'))
+            ->when($request->filled('import'), fn ($q) => $q->where('import_id', $request->import))
+            ->where('status', '!=', 'MOHON')
+            ->whereNotIn('jenis_transaksi', ['BN', 'BALIK NAMA', 'PS', 'PENERANGAN SEMENTARA']);
+
+        $summaryByJenisRaw = (clone $summaryBase)
+            ->selectRaw('UPPER(TRIM(jenis_transaksi)) AS jenis, COUNT(*) AS jumlah')
+            ->whereNotNull('jenis_transaksi')
+            ->groupByRaw('UPPER(TRIM(jenis_transaksi))')
+            ->pluck('jumlah', 'jenis');
+        $summaryByJenis = collect([
+            'CETAK PK' => (int) ($summaryByJenisRaw['CETAK PK'] ?? 0),
+            'PASANG BARU' => (int) (($summaryByJenisRaw['PASANG BARU'] ?? 0) + ($summaryByJenisRaw['PB'] ?? 0)),
+            'PERUBAHAN DAYA' => (int) (($summaryByJenisRaw['PERUBAHAN DAYA'] ?? 0) + ($summaryByJenisRaw['PD'] ?? 0)),
+            'PENGESAHAN PDL' => (int) ($summaryByJenisRaw['PENGESAHAN PDL'] ?? 0),
+            'PDL AWAL' => (int) ($summaryByJenisRaw['PDL AWAL'] ?? 0),
+        ]);
+        $isUlpSummary = $isUlpRole;
+        $showSummaryCards = in_array($role?->type, ['ULP', 'UP3'], true);
+        $summaryTotal = (clone $summaryBase)->count();
+        $summarySentByUlp = (clone $summaryBase)
+            ->whereNotNull('tahap')->where('tahap', '!=', 'ULP')
+            ->selectRaw('ulp_id, COUNT(*) AS jumlah')
+            ->whereNotNull('ulp_id')->groupBy('ulp_id')->orderByDesc('jumlah')->get();
+        $summarySentCounts = $summarySentByUlp->pluck('jumlah', 'ulp_id');
+        $summaryUlpNames = Ulp::orderBy('nama')->get()->keyBy('id');
+        $summarySentByUlp = $summaryUlpNames->map(function ($ulp) use ($summarySentCounts) {
+            return (object) ['ulp_id' => $ulp->id, 'jumlah' => (int) ($summarySentCounts[$ulp->id] ?? 0)];
+        })->values();
+
         return view('pbpd.index', [
             'data'    => $data,
             'canKirim' => $canKirim,
@@ -56,6 +88,12 @@ class PbpdController extends Controller
                 ->distinct()->orderBy('status')->pluck('status'),
             'tahaps'  => ['ULP', 'PERENCANAAN', 'VENDOR_TIANG', 'KONSTRUKSI',
                           'VENDOR_KONSTRUKSI', 'PENGOPERASIAN', 'SELESAI'],
+            'showSummaryCards' => $showSummaryCards,
+            'isUlpSummary' => $isUlpSummary,
+            'summaryTotal' => $summaryTotal,
+            'summarySentByUlp' => $summarySentByUlp,
+            'summaryUlpNames' => $summaryUlpNames,
+            'summaryByJenis' => $summaryByJenis,
         ]);
     }
 
@@ -275,6 +313,7 @@ class PbpdController extends Controller
             $paths[] = $file->store('hasil-transaksi', 'public');
         }
         $pelanggan->update(['hasil_transaksi_paths' => $paths, 'hasil_transaksi_at' => now()]);
+        $pelanggan->tandaiSelesaiJikaLengkap(auth()->id());
         NotifikasiService::untukData($pelanggan, 'Berkas hasil transaksi diupload', 'Berkas hasil transaksi untuk ' . $pelanggan->no_agenda . ' telah diupload.', route('laporan'));
 
         return back()->with('success', 'Berkas hasil transaksi berhasil disimpan.');
@@ -301,6 +340,7 @@ class PbpdController extends Controller
             $paths[] = $file->store('hasil-jaringan', 'public');
         }
         $pelanggan->update(['hasil_jaringan_paths' => $paths, 'hasil_jaringan_at' => now()]);
+        $pelanggan->tandaiSelesaiJikaLengkap(auth()->id());
         NotifikasiService::untukData($pelanggan, 'Berkas hasil jaringan diupload', 'Berkas hasil jaringan untuk ' . $pelanggan->no_agenda . ' telah diupload.', route('laporan'));
 
         return back()->with('success', 'Berkas hasil jaringan berhasil disimpan.');
