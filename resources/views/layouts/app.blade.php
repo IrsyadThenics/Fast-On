@@ -83,13 +83,19 @@
         <h2><span class="brand-fast">FAST</span> <span class="brand-accent">ON 360</span></h2>
         <div class="role">{{ auth()->user()->role?->name ?? auth()->user()->user_id }}</div>
 
+        @php
+            $sidebarRoleCode = (string) auth()->user()->role?->role_code;
+            $isVendorRole = auth()->user()->role?->type === 'VENDOR' || str_starts_with($sidebarRoleCode, 'VENDOR');
+        @endphp
         @foreach (config('menu') as $m)
-            @can($m['permission'])
-                <a href="{{ route($m['route']) }}"
-                   class="{{ request()->routeIs($m['route']) ? 'active' : '' }}">
-                    {{ $m['label'] }}@if ($m['route'] === 'notifikasi' && auth()->check()) <span class="notif-badge">{{ \App\Models\AppNotification::where('user_id', auth()->id())->whereNull('read_at')->count() }}</span>@endif
-                </a>
-            @endcan
+            @if (!($isVendorRole && $m['route'] === 'laporan'))
+                @can($m['permission'])
+                    <a href="{{ route($m['route']) }}"
+                       class="{{ request()->routeIs($m['route']) ? 'active' : '' }}">
+                        {{ $m['label'] }}@if ($m['route'] === 'notifikasi' && auth()->check()) <span class="notif-badge">{{ \App\Models\AppNotification::where('user_id', auth()->id())->whereNull('read_at')->count() }}</span>@endif
+                    </a>
+                @endcan
+            @endif
         @endforeach
     </aside>
 

@@ -66,11 +66,15 @@ Route::middleware('auth')->group(function () {
         ->name('pbpd.transaksi.result.upload');
     Route::get('/pbpd/{pelanggan}/hasil-transaksi/{index}', [PbpdController::class, 'hasilTransaksiFile'])
         ->name('pbpd.transaksi.result.file');
+    Route::delete('/pbpd/{pelanggan}/hasil-transaksi/{index}', [PbpdController::class, 'hapusHasilTransaksi'])
+        ->middleware('permission:pengoperasian.upload')->name('pbpd.transaksi.result.delete');
     Route::post('/pbpd/{pelanggan}/hasil-jaringan', [PbpdController::class, 'uploadHasilJaringan'])
         ->middleware('permission:jaringan.upload')
         ->name('pbpd.jaringan.result.upload');
     Route::get('/pbpd/{pelanggan}/hasil-jaringan/{index}', [PbpdController::class, 'hasilJaringanFile'])
         ->name('pbpd.jaringan.result.file');
+    Route::delete('/pbpd/{pelanggan}/hasil-jaringan/{index}', [PbpdController::class, 'hapusHasilJaringan'])
+        ->middleware('permission:jaringan.upload')->name('pbpd.jaringan.result.delete');
     Route::post('/pbpd/{pelanggan}/syarat/{jenis}', [PbpdController::class, 'uploadSyarat'])
         ->middleware('permission:permintaan.create')->name('pbpd.syarat.upload');
     Route::get('/pbpd/{pelanggan}/syarat/{jenis}/{index}', [PbpdController::class, 'syaratFile'])
@@ -109,6 +113,8 @@ Route::middleware('auth')->group(function () {
         ->middleware('permission:konstruksi.process')->name('vendor.konstruksi.construction-result.upload');
     Route::get('/vendor/konstruksi/{pelanggan}/hasil-konstruksi/{index}', [VendorKonstruksiController::class, 'hasilKonstruksiFile'])
         ->name('vendor.konstruksi.result.file');
+    Route::delete('/vendor/konstruksi/{pelanggan}/hasil-konstruksi/{index}', [VendorKonstruksiController::class, 'hapusHasilKonstruksi'])
+        ->middleware('permission:konstruksi.process')->name('vendor.konstruksi.result.delete');
     Route::post('/vendor/tiang/{pelanggan}/hasil/{index}/hapus', [VendorTiangController::class, 'hapusHasil'])
         ->middleware('permission:perencanaan.process')
         ->name('vendor.tiang.result.delete');

@@ -169,6 +169,21 @@ class VendorKonstruksiController extends Controller
         return $this->publicFileResponse($path);
     }
 
+    public function hapusHasilKonstruksi(PelangganPbpd $pelanggan, int $index)
+    {
+        abort_unless($this->currentUser()->role?->role_code === '5180KON', 403);
+
+        $paths = is_array($pelanggan->hasil_konstruksi_paths) ? $pelanggan->hasil_konstruksi_paths : [];
+        $path = $paths[$index] ?? null;
+        abort_unless($path, 404);
+
+        Storage::disk('public')->delete($path);
+        array_splice($paths, $index, 1);
+        $pelanggan->update(['hasil_konstruksi_paths' => $paths ?: null]);
+
+        return back()->with('success', 'Berkas BA Checklist berhasil dihapus.');
+    }
+
     private function paths(mixed $value): array
     {
         if (is_array($value)) return $value;

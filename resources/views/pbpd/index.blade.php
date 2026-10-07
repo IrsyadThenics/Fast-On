@@ -279,6 +279,12 @@
                                     <td><input name="jml_kwh_meter" type="number" min="0" placeholder="Isi jumlah meter"></td>
                                     <td>METER</td>
                                 </tr>
+                                <tr>
+                                    <th>JUMLAH PANEL METER</th>
+                                    <td><select name="jenis_panel_meter"><option value="">Pilih</option><option>53 kva</option><option>66 kva</option><option>105 kva</option><option>164 kva</option><option>197 kva</option></select></td>
+                                    <td><input name="jml_panel_meter" type="number" min="0" placeholder="Isi jumlah buah"></td>
+                                    <td>BUAH</td>
+                                </tr>
                             </tbody>
                         </table>
                     </div>

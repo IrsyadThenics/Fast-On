@@ -57,7 +57,6 @@
     <div id="historyPanel" class="box history-panel" @if (!$showHistory) hidden @endif>
         <div class="kartu-judul">
             <span>RIWAYAT PENGIRIMAN</span>
-            <button type="button" class="history-close" id="closeHistory">Tutup</button>
         </div>
         @forelse ($riwayat as $row)
             @php $laporan = $row->laporanVendor; @endphp
@@ -110,6 +109,47 @@
         .history-edit-form label { color:#536477; font-size:13px; }
         .history-edit-form textarea { min-height:60px; padding:9px; border:1px solid #b9c7d5; border-radius:6px; }
         .history-edit-form input[type=file] { padding:8px; border:1px solid #b9c7d5; border-radius:6px; }
+        .vendor-card{margin-top:16px;padding:0;overflow:hidden;border:1px solid #d6e2ee;border-radius:14px;background:#fff;box-shadow:0 6px 18px rgba(13,27,140,.07)}
+        .vendor-card-head{align-items:flex-start;padding:16px 18px;background:#0d1b8c;border-bottom:0;color:#fff}
+        .vendor-card-head b,.vendor-card-head strong{color:#fff!important}
+        .vendor-card-head b{font-size:13px;letter-spacing:.01em}
+        .vendor-card-head strong{margin:5px 0;font-size:14px}
+        .vendor-card-head span{color:#dbeafe;font-size:12px}
+        .vendor-card-head>.pill{display:inline-flex!important;align-items:center;justify-content:center;min-width:118px;min-height:34px;padding:7px 12px!important;border:1px solid rgba(255,255,255,.35)!important;border-radius:999px!important;background:#eaf3ff!important;color:#0d1b8c!important;font-size:11px!important;font-weight:800;white-space:nowrap}
+        .vendor-berkas,.vendor-report{margin:14px 16px;padding:15px;border:1px solid #d6e2ee;border-radius:10px;background:#f8fbff;box-shadow:none}
+        .vendor-berkas b,.vendor-report>b{color:#123b5d;font-size:13px}
+        .vendor-berkas a{display:flex;align-items:center;gap:7px;padding:10px 12px;border:1px solid #c8def5;border-radius:8px;background:#eaf3ff;color:#1e6fa8;font-size:12px;font-weight:700;text-decoration:none}
+        .vendor-berkas a:hover{background:#1e6fa8;color:#fff}
+        .vendor-berkas span{color:#64748b;font-size:12px}
+        .vendor-report label{display:flex;align-items:center;gap:8px;color:#334155;font-size:12px;line-height:1.4}
+        .vendor-report label input[type=checkbox]{width:15px;height:15px;accent-color:#0d1b8c}
+        .vendor-report textarea,.history-edit-form textarea{min-height:72px;padding:10px;border:1px solid #b8c9da;border-radius:8px;background:#fff;color:#334155;font:inherit;resize:vertical}
+        .vendor-report textarea::placeholder,.history-edit-form textarea::placeholder{color:#94a3b8}
+        .vendor-report input[type=file],.history-edit-form input[type=file]{padding:8px;border:1px solid #b8c9da;border-radius:8px;background:#fff;color:#475569;font-size:12px}
+        .vendor-report textarea,.history-edit-form textarea,.vendor-report input[type=file],.history-edit-form input[type=file]{background:#fff!important;color:#334155!important;border:1px solid #b8c9da!important}
+        .vendor-report label,.history-edit-form label{color:#334155!important}
+        .vendor-report input[type=file]::file-selector-button,.history-edit-form input[type=file]::file-selector-button{margin-right:8px;padding:5px 9px;border:1px solid #b8c9da;border-radius:6px;background:#f1f5f9;color:#334155;cursor:pointer}
+        .vendor-report .btn,.history-edit-form .btn{min-height:36px;border:0;border-radius:8px;background:#0d1b8c;color:#fff;font-weight:700;box-shadow:0 4px 10px rgba(13,27,140,.18)}
+        .vendor-report .btn:hover,.history-edit-form .btn:hover{background:#091267}
+        .history-item{padding:14px 16px;background:#f8fbff;border:1px solid #d6e2ee;border-radius:10px}
+        .history-close{background:#0d1b8c;color:#fff}
+        .history-close:hover{background:#091267}
+        .history-edit-form{margin:10px 16px 16px;padding:15px;border-color:#d6e2ee;border-radius:10px;background:#f8fbff}
+        .history-panel{overflow:hidden;padding:0!important;border:1px solid #d6e2ee!important;border-radius:14px!important;background:#fff!important;box-shadow:0 6px 18px rgba(13,27,140,.07)!important}
+        .history-panel>.kartu-judul{display:flex;align-items:center;justify-content:space-between;min-height:45px;margin:0!important;padding:12px 16px!important;background:#0d1b8c!important;color:#fff!important;border-radius:12px 12px 0 0!important;font-size:13px;font-weight:800;letter-spacing:.03em}
+        .history-panel>.kartu-judul span{color:#fff!important}
+        .history-close{min-height:30px;padding:6px 12px;border:1px solid rgba(255,255,255,.35);border-radius:8px;background:#fff;color:#0d1b8c;font-size:11px;font-weight:800;cursor:pointer}
+        .history-close:hover{background:#eaf3ff;color:#091267}
+        .history-item{margin:14px 16px 0;padding:14px 16px;border:1px solid #d6e2ee;border-radius:10px;background:#f8fbff}
+        .history-item b,.history-item strong{color:#123b5d!important}
+        .history-item div span{color:#64748b!important;font-size:12px}
+        .history-item>.pill{display:inline-flex;align-items:center;min-height:28px;padding:6px 10px!important;border-radius:999px!important;background:#eaf3ff!important;color:#1e6fa8!important;font-size:10px!important;font-weight:800}
+        .history-edit-form{gap:10px;margin:10px 16px 16px;padding:15px;border:1px solid #d6e2ee!important;border-radius:10px;background:#f8fbff!important}
+        .history-edit-form>b{color:#123b5d;font-size:13px}
+        .history-edit-form label{display:flex;align-items:center;gap:8px;color:#334155!important;font-size:12px}
+        .history-edit-form label input[type=checkbox]{width:15px;height:15px;accent-color:#0d1b8c}
+        .history-edit-form textarea,.history-edit-form input[type=file]{background:#fff!important;color:#334155!important;border:1px solid #b8c9da!important;border-radius:8px}
+        .history-edit-form textarea::placeholder{color:#94a3b8}
         @media (max-width:600px) { .history-button { float:none; margin:12px 0 0; } .history-item { align-items:flex-start; flex-direction:column; } }
     </style>
     <script>
@@ -117,7 +157,6 @@
             const panel = document.getElementById('historyPanel');
             const openHistory = document.getElementById('openHistory');
             if (openHistory) openHistory.addEventListener('click', () => { panel.hidden = false; panel.scrollIntoView({ behavior: 'smooth' }); });
-            document.getElementById('closeHistory').addEventListener('click', () => { panel.hidden = true; });
         })();
     </script>
 @endsection

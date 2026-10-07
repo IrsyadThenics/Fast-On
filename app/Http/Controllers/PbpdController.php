@@ -133,6 +133,8 @@ class PbpdController extends Controller
             'jml_trafo' => ['nullable', 'integer', 'min:0'],
             'jml_kwh_meter' => ['nullable', 'integer', 'min:0'],
             'jenis_kwh_meter' => ['nullable', 'string', 'max:30'],
+            'jenis_panel_meter' => ['nullable', 'string', 'max:30'],
+            'jml_panel_meter' => ['nullable', 'integer', 'min:0'],
         ]);
 
         $pelanggan = PelangganPbpd::whereIn('id', $data['pelanggan'])
@@ -175,6 +177,8 @@ class PbpdController extends Controller
                         'jml_trafo' => $data['jml_trafo'] ?? null,
                         'jml_kwh_meter' => $data['jml_kwh_meter'] ?? null,
                         'jenis_kwh_meter' => $data['jenis_kwh_meter'] ?? null,
+                        'jenis_panel_meter' => $data['jenis_panel_meter'] ?? null,
+                        'jml_panel_meter' => $data['jml_panel_meter'] ?? null,
                         'dikirim_oleh' => Auth::id(),
                         'dikirim_at' => now(),
                     ]
@@ -210,6 +214,8 @@ class PbpdController extends Controller
                 'jml_trafo' => ['nullable', 'integer', 'min:0'],
                 'jenis_kwh_meter' => ['nullable', 'string', 'max:30'],
                 'jml_kwh_meter' => ['nullable', 'integer', 'min:0'],
+                'jenis_panel_meter' => ['nullable', 'string', 'max:30'],
+                'jml_panel_meter' => ['nullable', 'integer', 'min:0'],
             ];
         }
         $data = $request->validate($rules);
@@ -229,6 +235,8 @@ class PbpdController extends Controller
                         'jml_trafo' => $data['jml_trafo'] ?? null,
                         'jenis_kwh_meter' => $data['jenis_kwh_meter'] ?? null,
                         'jml_kwh_meter' => $data['jml_kwh_meter'] ?? null,
+                        'jenis_panel_meter' => $data['jenis_panel_meter'] ?? null,
+                        'jml_panel_meter' => $data['jml_panel_meter'] ?? null,
                         'dikirim_oleh' => Auth::id(),
                         'dikirim_at' => now(),
                     ]
@@ -329,6 +337,21 @@ class PbpdController extends Controller
         return $this->publicFileResponse($path);
     }
 
+    public function hapusHasilTransaksi(PelangganPbpd $pelanggan, int $index): \Illuminate\Http\RedirectResponse
+    {
+        abort_unless($this->currentUser()->role?->role_code === '5180TEL', 403);
+
+        $paths = is_array($pelanggan->hasil_transaksi_paths) ? $pelanggan->hasil_transaksi_paths : [];
+        $path = $paths[$index] ?? null;
+        abort_unless($path, 404);
+
+        Storage::disk('public')->delete($path);
+        array_splice($paths, $index, 1);
+        $pelanggan->update(['hasil_transaksi_paths' => $paths ?: null]);
+
+        return back()->with('success', 'Foto Cek KWH Meter berhasil dihapus.');
+    }
+
     public function uploadHasilJaringan(Request $request, PelangganPbpd $pelanggan): \Illuminate\Http\RedirectResponse
     {
         abort_unless($this->currentUser()->role?->role_code === '5180JAR', 403);
@@ -354,6 +377,21 @@ class PbpdController extends Controller
         abort_unless($path && Storage::disk('public')->exists($path), 404);
 
         return $this->publicFileResponse($path);
+    }
+
+    public function hapusHasilJaringan(PelangganPbpd $pelanggan, int $index): \Illuminate\Http\RedirectResponse
+    {
+        abort_unless($this->currentUser()->role?->role_code === '5180JAR', 403);
+
+        $paths = is_array($pelanggan->hasil_jaringan_paths) ? $pelanggan->hasil_jaringan_paths : [];
+        $path = $paths[$index] ?? null;
+        abort_unless($path, 404);
+
+        Storage::disk('public')->delete($path);
+        array_splice($paths, $index, 1);
+        $pelanggan->update(['hasil_jaringan_paths' => $paths ?: null]);
+
+        return back()->with('success', 'Berkas BA Operasi berhasil dihapus.');
     }
 
     public function uploadSyarat(Request $request, PelangganPbpd $pelanggan, string $jenis): \Illuminate\Http\RedirectResponse
