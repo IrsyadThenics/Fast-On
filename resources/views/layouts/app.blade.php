@@ -407,7 +407,7 @@
     body:has(#detailModalPerluasan) .content .kartu .kartu-kaki{margin:14px 16px 4px!important;line-height:1.5!important}
     body:has(#detailModalPerluasan) .content .kartu .halaman{margin:0 16px 16px!important}
     /* Apply the same readable spacing to the Data PB/PD table. */
-    body:has(#sendModal) .content .kartu .scroll{margin:0 8px 16px!important;overflow-x:auto!important;overflow-y:visible!important}
+    body:has(#sendModal) .content .kartu .scroll{margin:0!important;overflow-x:auto!important;overflow-y:visible!important;border-radius:0 0 11px 11px!important}
     body:has(#sendModal) .content .kartu .tabel{font-size:12px!important;line-height:1.45!important}
     body:has(#sendModal) .content .kartu .tabel th,
     body:has(#sendModal) .content .kartu .tabel td{padding:11px 12px!important;line-height:1.45!important}
@@ -418,6 +418,32 @@
     body:has(#sendModal) .content .kartu .tabel tbody tr{min-height:46px!important}
     body:has(#sendModal) .content .kartu .tabel th,
     body:has(#sendModal) .content .kartu .tabel td{padding:12px 13px!important}
+    body:has(#detailModalPerluasan) .content .perluasan-filter input,
+    body:has(#detailModalPerluasan) .content .perluasan-filter select{background:#fff!important;border-color:#9fb4ca!important;color:#243b53!important}
+    body:has(#detailModalPerluasan) .content .perluasan-filter input::placeholder{color:#627d98!important;opacity:1}
+    body:has(#detailModalPerluasan) .content .perluasan-filter button[type="submit"]{background:#0d1b8c!important;color:#fff!important;border-color:#0d1b8c!important;box-shadow:0 4px 10px rgba(13,27,140,.22)!important}
+    body:has(#detailModalPerluasan) .content .perluasan-filter button[type="submit"]:hover{background:#091267!important;border-color:#091267!important}
+    /* Shared modal polish: consistent close action and spacing across the application. */
+    .detail-modal,.laporan-modal{padding:24px!important;background:rgba(2,7,55,.58)!important;backdrop-filter:blur(3px)}
+    .detail-modal-box,.laporan-modal-box{position:relative!important;border:1px solid #d9e2ec!important;border-radius:16px!important;background:#fff!important;color:#243b53!important;box-shadow:0 18px 48px rgba(13,27,140,.22)!important;overflow:auto!important}
+    .detail-modal-box h3,.laporan-modal-box h3{padding:16px 54px 16px 20px!important;margin:0 0 18px!important;border-radius:15px 15px 0 0!important;background:#0d1b8c!important;color:#fff!important;font-size:16px!important;line-height:1.35!important}
+    .detail-modal-close,.laporan-close,.history-close{position:absolute!important;top:12px!important;right:12px!important;z-index:20!important;display:grid!important;place-items:center!important;width:30px!important;height:30px!important;min-width:30px!important;min-height:30px!important;padding:0!important;border:1px solid #d9e2ec!important;border-radius:50%!important;background:#fff!important;color:#0d1b8c!important;font-size:21px!important;font-family:Arial,sans-serif!important;font-weight:700!important;line-height:30px!important;text-align:center!important;box-shadow:0 2px 7px rgba(0,0,0,.16)!important;cursor:pointer!important;opacity:1!important;visibility:visible!important;transition:background .18s,transform .18s,border-color .18s!important}
+    .detail-modal-close:hover,.laporan-close:hover,.history-close:hover{background:#d9534f!important;border-color:#d9534f!important;color:#fff!important;transform:rotate(90deg)!important}
+    .detail-modal-box form,.laporan-modal-box form{margin:0}.detail-modal-box h4,.laporan-modal-box h4{margin:18px 0 9px!important;color:#123b5d!important;font-size:14px!important}.detail-modal-box .detail-grid,.laporan-modal-box .laporan-detail-grid,.laporan-modal-box .laporan-material-grid{gap:10px!important}
+    .detail-modal-box label,.laporan-modal-box label{color:#627d98!important;font-size:12px!important;font-weight:700!important;line-height:1.35!important}
+    .detail-modal-box input:not([type="checkbox"]):not([type="radio"]),.detail-modal-box select,.detail-modal-box textarea,.laporan-modal-box input,.laporan-modal-box select,.laporan-modal-box textarea{border:1px solid #b8c9da!important;border-radius:8px!important;background:#fff!important;color:#243b53!important;font-family:Inter,Arial,sans-serif!important;font-size:13px!important;box-shadow:none!important}
+    .detail-modal-box input:not([type="checkbox"]):not([type="radio"]):focus,.detail-modal-box select:focus,.detail-modal-box textarea:focus,.laporan-modal-box input:focus,.laporan-modal-box select:focus,.laporan-modal-box textarea:focus{outline:0!important;border-color:#1e6fa8!important;box-shadow:0 0 0 3px rgba(30,111,168,.13)!important}
+    .detail-modal-box input[type="file"],.laporan-modal-box input[type="file"]{padding:7px!important;background:#f8fafc!important;color:#475569!important}
+    .detail-modal-box button:not(.detail-modal-close),.laporan-modal-box button:not(.laporan-close){border-radius:8px!important;font-weight:700!important;box-shadow:0 3px 8px rgba(18,59,93,.12)!important}
+    .detail-modal-box .kebutuhan-tabel,.detail-modal-box .proses-tabel,.laporan-modal-box .proses-tabel{border:1px solid #d9e2ec!important;border-radius:10px!important;background:#fff!important;overflow:hidden!important}
+    .detail-modal-box .kebutuhan-tabel th,.detail-modal-box .proses-tabel th,.laporan-modal-box .proses-tabel th{background:#edf4ff!important;color:#123b5d!important;font-weight:700!important;border-color:#d9e2ec!important}
+    .detail-modal-box .kebutuhan-tabel td,.detail-modal-box .kebutuhan-tabel th,.detail-modal-box .proses-tabel td,.detail-modal-box .proses-tabel th,.laporan-modal-box .proses-tabel td,.laporan-modal-box .proses-tabel th{padding:9px 10px!important;border-bottom:1px solid #e2e8f0!important}
+    .detail-modal-box .detail-grid>div,.laporan-modal-box .laporan-detail-grid>div,.laporan-modal-box .laporan-material-grid>div{padding:11px!important;border:1px solid #d9e2ec!important;border-radius:9px!important;background:#f8fbff!important}
+    .detail-modal-box .detail-grid small,.laporan-modal-box small{color:#627d98!important}.detail-modal-box .detail-grid b,.laporan-modal-box b{color:#243b53!important}
+    .detail-modal-box .vendor-form,.detail-modal-box .planning-result-box,.detail-modal-box .construction-report-box,.detail-modal-box .proses-box,.laporan-modal-box .laporan-proses-box{padding:13px!important;border:1px solid #d9e2ec!important;border-radius:10px!important;background:#f8fbff!important;box-shadow:none!important}
+    .detail-modal-box .syarat-files,.detail-modal-box .laporan-files,.laporan-modal-box .laporan-files{padding:10px!important;border:1px solid #d9e2ec!important;border-radius:9px!important;background:#f8fafc!important}
+    .detail-modal-box a,.laporan-modal-box a{color:#1e6fa8!important}.detail-modal-box .proses-selesai,.laporan-modal-box .proses-selesai{color:#2e9b68!important}.detail-modal-box .proses-belum,.laporan-modal-box .proses-belum{color:#d9534f!important}
+    @media(max-width:600px){.detail-modal,.laporan-modal{padding:12px!important}.detail-modal-box,.laporan-modal-box{width:100%!important;max-height:calc(100vh - 24px)!important}.detail-modal-box h3,.laporan-modal-box h3{padding-left:16px!important}}
 
     /* Sidebar visual refresh only: existing links, permissions and routes remain unchanged. */
     #mainSidebar{position:sticky!important;top:0!important;align-self:flex-start;width:230px!important;height:100vh!important;overflow-y:auto!important;overflow-x:hidden!important;padding:26px 14px 20px!important;background:#111c91!important;color:#fff!important;border-right:0!important;border-radius:0 0 18px 0;box-shadow:6px 0 20px rgba(17,28,145,.16)!important;scrollbar-width:thin;scrollbar-color:rgba(255,255,255,.3) transparent}

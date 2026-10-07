@@ -4,6 +4,36 @@
 @section('judul', $judul)
 
 @section('isi')
+    <form class="box filter perluasan-filter" method="GET">
+        <input type="text" name="cari" value="{{ request('cari') }}" placeholder="Cari nama / no agenda / alamat">
+        <select name="ulp">
+            <option value="">Semua ULP</option>
+            @foreach ($ulps as $ulp)
+                <option value="{{ $ulp->id }}" @selected((string) request('ulp') === (string) $ulp->id)>{{ $ulp->nama }}</option>
+            @endforeach
+        </select>
+        <select name="jenis">
+            <option value="">Semua jenis transaksi</option>
+            @foreach ($jenisPilihan as $jenis)
+                <option value="{{ $jenis }}" @selected(request('jenis') === $jenis)>{{ $jenis }}</option>
+            @endforeach
+        </select>
+        <select name="status">
+            <option value="">Semua status</option>
+            @foreach ($statusPilihan as $status)
+                <option value="{{ $status }}" @selected(request('status') === $status)>{{ $status }}</option>
+            @endforeach
+        </select>
+        <select name="tahap">
+            <option value="">Semua tahap</option>
+            @foreach ($tahapPilihan as $tahapOption)
+                <option value="{{ $tahapOption }}" @selected(request('tahap') === $tahapOption)>{{ $tahapOption }}</option>
+            @endforeach
+        </select>
+        <button type="submit" class="btn">Filter</button>
+        <a href="{{ url()->current() }}" class="btn btn-abu">Reset</a>
+    </form>
+
     <div class="box kartu">
         <div class="kartu-judul">
             <span>DATA {{ strtoupper($judul) }}</span>
@@ -347,6 +377,13 @@
     </div>
 
     <style>
+        .perluasan-filter{position:relative;display:flex;align-items:center;column-gap:9px!important;row-gap:10px!important;flex-wrap:wrap;padding:64px 16px 16px!important;margin-bottom:16px!important;background:#fff!important;border:1px solid #dbe5f0!important;border-radius:14px!important;box-shadow:0 6px 18px rgba(13,27,140,.06)!important}
+        .perluasan-filter::before{content:'DAFTAR TRANSAKSI';position:absolute;inset:0 0 auto;height:44px;display:flex;align-items:flex-start;padding:9px 16px 0;border-radius:14px 14px 0 0;background:#0d1b8c;color:#fff;font-size:12px;font-weight:800;letter-spacing:.04em;line-height:1.1}
+        .perluasan-filter::after{content:'Daftar Transaksi {{ strtoupper($judul) }}';position:absolute;top:25px;left:16px;color:#dbeafe;font-size:9px;line-height:1.1}
+        .perluasan-filter input,.perluasan-filter select{min-height:36px;padding:8px 11px;border:1px solid #9fb4ca;border-radius:9px;background:#fff;color:#243b53;font-size:12px;box-shadow:0 1px 3px rgba(18,59,93,.06)}
+        .perluasan-filter input::placeholder{color:#627d98;opacity:1}.perluasan-filter select option{background:#fff;color:#243b53}
+        .perluasan-filter input{width:165px;min-width:165px;flex:0 1 165px}.perluasan-filter select{min-width:0;flex:0 0 auto}.perluasan-filter select[name="ulp"]{width:125px}.perluasan-filter select[name="jenis"]{width:155px}.perluasan-filter select[name="status"]{width:115px}.perluasan-filter select[name="tahap"]{width:155px}.perluasan-filter input:focus,.perluasan-filter select:focus{outline:0;border-color:#1e6fa8;box-shadow:0 0 0 3px rgba(30,111,168,.13);background:#fff}
+        .perluasan-filter .btn{min-height:36px;padding:8px 13px;border:0;border-radius:9px;background:#123b5d;color:#fff;font-weight:700;box-shadow:0 4px 10px rgba(18,59,93,.2)}.perluasan-filter .btn:hover{background:#0d2e49}.perluasan-filter .btn-abu{background:#eef3f8;color:#243b53;border:1px solid #b8c9da;box-shadow:none}.perluasan-filter .btn-abu:hover{background:#dfe9f2;color:#123b5d}
         .detail-modal { position:fixed; inset:0; z-index:20; display:grid; place-items:center; padding:20px; background:rgba(0,0,0,.45); }
         .detail-modal[hidden] { display:none; }
         .detail-modal-box { position:relative; width:min(620px, 100%); max-height:90vh; overflow:auto; padding:24px; border-radius:10px; background:#fff; box-shadow:0 12px 40px rgba(0,0,0,.25); }
@@ -394,7 +431,7 @@
         .proses-tabel tr:last-child td { border-bottom:0; }
         .proses-selesai { color:#159447; font-weight:600; }
         .proses-belum { color:#d33; font-weight:600; }
-        @media (max-width:600px) { .detail-grid { grid-template-columns:1fr; } .detail-full { grid-column:auto; } .detail-rab-form { align-items:stretch; flex-direction:column; } }
+        @media (max-width:600px) { .perluasan-filter{padding:58px 12px 14px!important}.perluasan-filter::before{padding-left:12px}.perluasan-filter::after{left:12px}.perluasan-filter>*{flex:1 1 100%}.detail-grid { grid-template-columns:1fr; } .detail-full { grid-column:auto; } .detail-rab-form { align-items:stretch; flex-direction:column; } }
     </style>
 
     <script>

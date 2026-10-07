@@ -57,20 +57,19 @@
     </form>
 
     <div class="box kartu">
-        <div class="kartu-judul">
-            <span>RECORD, JUMLAH TRANSAKSI PB/PD</span>
-            <span class="pill">{{ $data->total() }} data</span>
-        </div>
-
-        @if ($canKirim)
-            <div style="display:flex;justify-content:flex-end;margin-bottom:12px">
-                <button type="button" class="btn" id="openSendModal" disabled>Kirim data terpilih</button>
-            </div>
-        @endif
-
         <div class="scroll">
             <table class="tabel tabel-biru">
                 <thead>
+                    <tr class="table-title-row">
+                        <th colspan="{{ ($canKirim ? 1 : 0) + 16 + ($showSyarat ? 2 : 0) }}">
+                            <div class="table-title-content">
+                                <span>RECORD, JUMLAH TRANSAKSI PB/PD</span>
+                                @if ($canKirim)
+                                    <button type="button" class="btn table-send-button" id="openSendModal" disabled>Kirim data terpilih</button>
+                                @endif
+                            </div>
+                        </th>
+                    </tr>
                     <tr>
                         @if ($canKirim)
                             <th rowspan="2"><input type="checkbox" id="checkAll" title="Pilih semua"></th>
@@ -202,13 +201,15 @@
                 <form method="POST" action="{{ route('pbpd.kirim') }}" id="sendForm">
                     @csrf
                     <div id="selectedPelanggan"></div>
-                    <label for="tujuanKirim">Tujuan pengiriman</label>
-                    <select name="tujuan" id="tujuanKirim" required style="width:100%;margin:8px 0 16px;padding:9px;border:1px solid #b9c7d5;border-radius:6px">
-                        <option value="">Pilih tujuan</option>
-                        <option value="JTM">Perluasan JTM</option>
-                        <option value="JTR">Perluasan JTR</option>
-                        <option value="TANPA_PERLUASAN">Tanpa Perluasan</option>
+                    <label>Tujuan pengiriman</label>
+                    <select name="tujuan" id="tujuanKirim" required class="tujuan-hidden-select" aria-hidden="true" tabindex="-1">
+                        <option value="">Pilih tujuan</option><option value="JTM">Perluasan JTM</option><option value="JTR">Perluasan JTR</option><option value="TANPA_PERLUASAN">Tanpa Perluasan</option>
                     </select>
+                    <div class="tujuan-cards" role="radiogroup" aria-label="Pilih tujuan pengiriman">
+                        <button type="button" class="tujuan-card" data-tujuan="JTM"><span class="tujuan-card-icon">ϟ</span><strong>Perluasan JTM</strong><small>Jaringan Tegangan Menengah</small></button>
+                        <button type="button" class="tujuan-card" data-tujuan="JTR"><span class="tujuan-card-icon">ϟ</span><strong>Perluasan JTR</strong><small>Jaringan Tegangan Rendah</small></button>
+                        <button type="button" class="tujuan-card" data-tujuan="TANPA_PERLUASAN"><span class="tujuan-card-icon tujuan-card-icon-green">▣</span><strong>Tanpa Perluasan</strong><small>Langsung Sampai Tujuan</small></button>
+                    </div>
                     <div id="expansionNeeds" hidden>
                         <table class="kebutuhan-tabel">
                             <thead>
@@ -318,12 +319,22 @@
         .kebutuhan-tabel thead th { background:#eef3f8; color:#536477; }
         .kebutuhan-tabel tbody tr:last-child th, .kebutuhan-tabel tbody tr:last-child td { border-bottom:0; }
         .kebutuhan-tabel select, .kebutuhan-tabel input { width:100%; padding:6px; border:1px solid #c8d6e5; border-radius:4px; background:#fff8ee; }
+        .tujuan-hidden-select{position:absolute!important;width:1px!important;height:1px!important;padding:0!important;margin:-1px!important;overflow:hidden!important;clip:rect(0,0,0,0)!important;white-space:nowrap!important;border:0!important}
+        #sendModal .detail-modal-box{width:min(560px,100%)!important;padding:0!important;border-radius:14px!important;overflow:auto!important;background:#f8fafc!important}
+        #sendModal .detail-modal-box h3{margin:0!important;padding:16px 20px!important;background:#0d1b8c!important;color:#fff!important;font-size:15px!important;line-height:1.3!important}
+        #sendModal .detail-modal-box form{padding:16px 20px 18px!important}#sendModal .detail-modal-box form>label{display:block;margin-bottom:9px;color:#243b53;font-size:12px;font-weight:700}
+        .tujuan-cards{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin:0 0 16px}
+        .tujuan-card{display:flex!important;align-items:center;flex-direction:column;justify-content:center;gap:4px!important;min-height:102px!important;padding:12px 8px!important;border:1px solid #d9e2ec!important;border-radius:10px!important;background:#fff!important;color:#243b53!important;box-shadow:none!important;text-align:center;cursor:pointer;transition:border-color .18s,background .18s,transform .18s!important}
+        .tujuan-card:hover{border-color:#2b73fe!important;background:#f4f8ff!important;transform:translateY(-1px)!important}.tujuan-card.is-selected{border-color:#2b73fe!important;background:#eef4ff!important;box-shadow:inset 0 0 0 2px rgba(43,115,254,.16)!important}
+        .tujuan-card-icon{display:grid;place-items:center;width:32px;height:32px;border-radius:50%;background:#e9edff;color:#293bc0;font-size:20px;font-weight:800;line-height:1}.tujuan-card-icon-green{background:#d9f8e9;color:#159447}.tujuan-card strong{font-size:11px;line-height:1.2}.tujuan-card small{max-width:120px;color:#8191aa;font-size:9px;line-height:1.2}
+        #sendModal #expansionNeeds{margin-top:4px;padding:12px;border:1px solid #d9e2ec;border-radius:10px;background:#fff}#sendModal .kebutuhan-tabel{margin:0!important;border-radius:8px!important;background:#fff!important}#sendModal .kebutuhan-tabel th,#sendModal .kebutuhan-tabel td{padding:9px!important}#sendModal .kebutuhan-tabel select,#sendModal .kebutuhan-tabel input{min-height:32px!important;background:#fff8ee!important;border-radius:6px!important}
+        #sendModal #sendForm>button[type="submit"]{width:100%;min-height:38px;margin-top:4px;background:#0d1b8c!important;color:#fff!important;border-radius:8px!important;font-weight:700!important}
         .ikon-syarat { padding:4px 8px; background:#e8eef5; color:#0b3d6b; }
         .syarat-files { display:grid; gap:8px; padding:12px; border:1px solid #d6e2ee; border-radius:6px; }
         .syarat-files a { color:#0b3d6b; overflow-wrap:anywhere; }
         .syarat-upload-form { display:flex; gap:10px; align-items:center; margin-top:16px; flex-wrap:wrap; }
         .syarat-upload-form input[type=file] { flex:1; min-width:220px; padding:8px; border:1px solid #b9c7d5; border-radius:6px; }
-        @media (max-width:600px) { .detail-grid { grid-template-columns:1fr; } .detail-full { grid-column:auto; } .detail-rab-form { align-items:stretch; flex-direction:column; } }
+        @media (max-width:600px) { .tujuan-cards{grid-template-columns:1fr}.tujuan-card{min-height:72px!important}.detail-grid { grid-template-columns:1fr; } .detail-full { grid-column:auto; } .detail-rab-form { align-items:stretch; flex-direction:column; } }
     </style>
 
     <script>
@@ -385,10 +396,13 @@
             const selectedPelanggan = document.getElementById('selectedPelanggan');
             const tujuanKirim = document.getElementById('tujuanKirim');
             const expansionNeeds = document.getElementById('expansionNeeds');
+            const tujuanCards = document.querySelectorAll('.tujuan-card');
             const updateExpansionNeeds = () => {
                 if (tujuanKirim && expansionNeeds) expansionNeeds.hidden = !['JTM', 'JTR'].includes(tujuanKirim.value);
+                tujuanCards.forEach((card) => card.classList.toggle('is-selected', card.dataset.tujuan === tujuanKirim?.value));
             };
             if (tujuanKirim) tujuanKirim.addEventListener('change', updateExpansionNeeds);
+            tujuanCards.forEach((card) => card.addEventListener('click', () => { tujuanKirim.value = card.dataset.tujuan; updateExpansionNeeds(); }));
             const updateSendButton = () => {
                 if (sendButton) sendButton.disabled = !checks.some((check) => check.checked);
             };
@@ -430,6 +444,8 @@
         .kartu .scroll{margin:0 18px 16px;border:1px solid #dbe5f0!important;border-radius:11px!important;box-shadow:none;overflow:auto;background:#fff!important}
         .tabel{border:0!important;border-radius:10px!important;overflow:hidden;font-size:12px!important}
         .tabel thead th{background:#0d1b8c!important;border-color:#263aa8!important;color:#fff!important;font-size:11px!important;letter-spacing:.035em;white-space:nowrap}
+        .tabel thead .table-title-row th{height:52px!important;padding:8px 16px!important;text-align:left!important;font-size:12px!important;font-weight:800!important;letter-spacing:.035em!important;background:#0d1b8c!important;border-color:#0d1b8c!important}
+        .table-title-content{display:flex;align-items:center;justify-content:space-between;gap:16px;width:100%}.table-send-button{min-height:32px!important;padding:7px 14px!important;background:#2b73fe!important;color:#fff!important;border:0!important;border-radius:8px!important;font-size:11px!important;font-weight:700!important;letter-spacing:0!important;white-space:nowrap}.table-send-button:hover{background:#1e5ed8!important}.table-send-button:disabled{opacity:.65;cursor:not-allowed}
         .tabel thead th.grup,.tabel thead th.sub{background:#0d1b8c!important}
         .tabel tbody tr{transition:background .16s,box-shadow .16s}.tabel tbody tr:nth-child(even){background:#f8fbff!important}.tabel tbody tr:hover{background:#eef6ff!important;box-shadow:inset 3px 0 #f4c300}
         .tabel tbody td{border-color:#e2e8f0!important;color:#475569!important;vertical-align:middle}.tabel tbody td b{color:#123b5d!important}.tabel tbody td:nth-child(2),.tabel tbody td:nth-child(3){font-weight:650}
@@ -437,6 +453,6 @@
         .tabel .ikon-dtl:hover,.tabel .detail-link:hover{background:#1e6fa8!important;color:#fff!important;transform:translateY(-1px)!important}
         .tabel .ikon-syarat{width:28px;height:28px;border-radius:8px!important;background:#f8fbff!important;color:#1e6fa8!important;border:1px solid #d5e5f5!important}.tabel .ikon-syarat.berkas-lengkap{background:#e8f7ef!important;color:#2e9b68!important;border-color:#b9e4ca!important}.tabel .ikon-syarat.berkas-belum{background:#fff7ed!important;color:#d97706!important;border-color:#f5d7a1!important}
         .tabel .pill{font-size:11px!important;font-weight:700;border-radius:999px!important;padding:5px 9px!important}
-        @media(max-width:760px){.filter{padding:58px 12px 14px!important}.filter>*{flex:1 1 100%}.filter::before{padding-left:12px}.filter::after{left:12px}.kartu-judul{align-items:flex-start;flex-direction:column}.kartu .scroll{margin:0 10px 10px}.kartu>#openSendModal,.kartu>div:has(>#openSendModal){padding-left:10px;padding-right:10px}}
+        @media(max-width:760px){.filter{padding:58px 12px 14px!important}.filter>*{flex:1 1 100%}.filter::before{padding-left:12px}.filter::after{left:12px}.kartu-judul{align-items:flex-start;flex-direction:column}.kartu .scroll{margin:0 10px 10px}.table-title-content{align-items:flex-start;flex-direction:column;gap:8px}.table-send-button{align-self:flex-end}}
     </style>
 @endsection
