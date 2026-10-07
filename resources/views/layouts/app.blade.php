@@ -108,11 +108,14 @@
             </form>
         </header>
         <main>
+            @if (session('error'))
+                <div class="global-flash-error" role="alert">{{ session('error') }}</div>
+            @endif
             @yield('isi')
         </main>
     </div>
 </div>
-<style>.notif-badge{display:inline-block;min-width:18px;margin-left:6px;padding:2px 5px;border-radius:10px;background:#c0392b;color:#fff;font-size:11px;text-align:center}</style>
+<style>.notif-badge{display:inline-block;min-width:18px;margin-left:6px;padding:2px 5px;border-radius:10px;background:#c0392b;color:#fff;font-size:11px;text-align:center}.global-flash-error{margin:14px 20px;padding:11px 14px;border:1px solid #f1c1bd;border-left:4px solid #d9534f;border-radius:9px;background:#fff5f4;color:#a33b36;font-size:13px;font-weight:600}</style>
 <style>
     :root { --pln-navy:#003b70; --pln-blue:#0072ce; --pln-light:#eef7fd; --pln-yellow:#ffc900; --ink:#183247; }
     aside { background:#fbfdff; color:#183247; border-right:1px solid #e4edf4; box-shadow:4px 0 18px rgba(0,45,85,.035); }

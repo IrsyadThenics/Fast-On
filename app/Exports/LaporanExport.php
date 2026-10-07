@@ -26,7 +26,7 @@ class LaporanExport implements FromCollection, WithHeadings, WithMapping, Should
             'ALAMAT', 'TRANSAKSI', 'STATUS', 'JENIS PERLUASAN', 'RAB',
             'JENIS TIANG', 'JUMLAH TIANG', 'JENIS KONDUKTOR', 'JUMLAH KONDUKTOR',
             'JENIS TRAFO', 'JUMLAH TRAFO', 'JENIS KWH METER', 'JUMLAH KWH METER',
-            'JENIS PANEL METER', 'JUMLAH PANEL METER',
+            'JENIS PANEL', 'JUMLAH PANEL',
             'TOTAL BIAYA', 'TANGGAL MOHON', 'TANGGAL BAYAR',
             'TARIF LAMA', 'DAYA LAMA', 'TARIF BARU', 'DAYA BARU',
             'DURASI HARI KERJA', 'BERKAS PENDUKUNG', 'BERKAS IJIN',
