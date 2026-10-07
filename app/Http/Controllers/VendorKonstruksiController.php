@@ -5,13 +5,14 @@ namespace App\Http\Controllers;
 use App\Models\PelangganPbpd;
 use App\Services\NotifikasiService;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 
 class VendorKonstruksiController extends Controller
 {
     private function authorizeVendor(): void
     {
-        abort_unless(in_array(auth()->user()->role?->role_code, ['VENDOR_KONSTRUKSI', 'VENDOR_KONSTRUKSI2'], true), 403);
+        abort_unless(in_array($this->currentUser()->role?->role_code, ['VENDOR_KONSTRUKSI', 'VENDOR_KONSTRUKSI2'], true), 403);
     }
 
     public function index()
@@ -20,7 +21,7 @@ class VendorKonstruksiController extends Controller
         $data = PelangganPbpd::with(['ulp', 'pengirimanKonstruksi.vendor', 'pengirimanKonstruksi.dikirimOleh.role'])
             ->where('tahap', 'VENDOR_KONSTRUKSI')
             ->whereHas('pengirimanKonstruksi', fn ($q) => $q
-                ->whereHas('vendor', fn ($v) => $v->where('jenis', 'KONSTRUKSI')->where('user_id', auth()->id()))
+                ->whereHas('vendor', fn ($v) => $v->where('jenis', 'KONSTRUKSI')->where('user_id', Auth::id()))
                 ->whereHas('dikirimOleh.role', fn ($r) => $r->where('role_code', '5180KON'))
             )
             ->orderByDesc('id')->get();
@@ -33,7 +34,7 @@ class VendorKonstruksiController extends Controller
         $this->authorizeVendor();
         $riwayat = PelangganPbpd::with(['ulp', 'pengirimanKonstruksi.vendor', 'pengirimanKonstruksi.dikirimOleh.role'])
             ->whereHas('pengirimanKonstruksi', fn ($q) => $q
-                ->whereHas('vendor', fn ($v) => $v->where('jenis', 'KONSTRUKSI')->where('user_id', auth()->id()))
+                ->whereHas('vendor', fn ($v) => $v->where('jenis', 'KONSTRUKSI')->where('user_id', Auth::id()))
                 ->whereHas('dikirimOleh.role', fn ($r) => $r->where('role_code', '5180KON'))
                 ->whereNotNull('laporan_at')
             )
@@ -57,7 +58,7 @@ class VendorKonstruksiController extends Controller
 
         $pengiriman = $pelanggan->pengirimanKonstruksi()->with('vendor')->firstOrFail();
         abort_unless($pengiriman->vendor?->jenis === 'KONSTRUKSI', 403);
-        abort_unless($pengiriman->vendor?->user_id === auth()->id(), 403);
+        abort_unless($pengiriman->vendor?->user_id === Auth::id(), 403);
         $paths = is_array($pengiriman->laporan_paths) ? $pengiriman->laporan_paths : [];
         foreach ($request->file('berkas_laporan', []) as $file) {
             $paths[] = $file->store('laporan-konstruksi', 'public');
@@ -83,7 +84,7 @@ class VendorKonstruksiController extends Controller
         $this->authorizeVendor();
         $pengiriman = $pelanggan->pengirimanKonstruksi()->with('vendor')->firstOrFail();
         abort_unless($pengiriman->vendor?->jenis === 'KONSTRUKSI', 403);
-        abort_unless($pengiriman->vendor?->user_id === auth()->id(), 403);
+        abort_unless($pengiriman->vendor?->user_id === Auth::id(), 403);
 
         foreach ($this->paths($pengiriman->laporan_paths) as $path) {
             Storage::disk('public')->delete($path);
@@ -104,7 +105,7 @@ class VendorKonstruksiController extends Controller
 
     public function uploadHasil(Request $request, PelangganPbpd $pelanggan)
     {
-        abort_unless(auth()->user()->role?->role_code === '5180REN', 403);
+        abort_unless($this->currentUser()->role?->role_code === '5180REN', 403);
         $request->validate([
             'berkas_hasil.*' => ['required', 'file', 'mimes:pdf,doc,docx,xls,xlsx,jpg,jpeg,png', 'max:10240'],
         ]);
@@ -115,7 +116,7 @@ class VendorKonstruksiController extends Controller
             $paths[] = $file->store('hasil-konstruksi', 'public');
         }
         $pengiriman->update(['hasil_paths' => $paths, 'hasil_perencanaan_at' => now()]);
-        $pelanggan->tandaiSelesaiJikaLengkap(auth()->id());
+        $pelanggan->tandaiSelesaiJikaLengkap(Auth::id());
         NotifikasiService::untukData($pelanggan, 'Berkas hasil perencanaan diupload', 'Berkas hasil perencanaan untuk konstruksi ' . $pelanggan->no_agenda . ' telah diupload.', route('laporan'));
 
         return back()->with('success', 'Berkas hasil Perencanaan berhasil disimpan.');
@@ -123,7 +124,7 @@ class VendorKonstruksiController extends Controller
 
     public function laporanFile(PelangganPbpd $pelanggan, int $index)
     {
-        $roleCode = auth()->user()->role?->role_code;
+        $roleCode = $this->currentUser()->role?->role_code;
         $isPlanning = $roleCode === '5180REN';
         $isConstructionUp3 = $roleCode === '5180KON';
         $isVendor = in_array($roleCode, ['VENDOR_KONSTRUKSI', 'VENDOR_KONSTRUKSI2'], true);
@@ -132,18 +133,18 @@ class VendorKonstruksiController extends Controller
         $pengiriman = $pelanggan->pengirimanKonstruksi()->with('vendor')->firstOrFail();
         abort_unless($pengiriman->vendor?->jenis === 'KONSTRUKSI', 403);
         if ($isVendor) {
-            abort_unless($pengiriman->vendor?->user_id === auth()->id(), 403);
+            abort_unless($pengiriman->vendor?->user_id === Auth::id(), 403);
         }
 
         $path = $this->paths($pengiriman->laporan_paths)[$index] ?? null;
         abort_unless($path && Storage::disk('public')->exists($path), 404);
 
-        return Storage::disk('public')->response($path);
+        return $this->publicFileResponse($path);
     }
 
     public function uploadHasilKonstruksi(Request $request, PelangganPbpd $pelanggan)
     {
-        abort_unless(auth()->user()->role?->role_code === '5180KON', 403);
+        abort_unless($this->currentUser()->role?->role_code === '5180KON', 403);
         $request->validate([
             'berkas_hasil_konstruksi.*' => ['required', 'file', 'mimes:pdf,doc,docx,xls,xlsx,jpg,jpeg,png', 'max:10240'],
         ]);
@@ -153,7 +154,7 @@ class VendorKonstruksiController extends Controller
             $paths[] = $file->store('hasil-konstruksi', 'public');
         }
         $pelanggan->update(['hasil_konstruksi_paths' => $paths, 'hasil_konstruksi_at' => now()]);
-        $pelanggan->tandaiSelesaiJikaLengkap(auth()->id());
+        $pelanggan->tandaiSelesaiJikaLengkap(Auth::id());
         NotifikasiService::untukData($pelanggan, 'Berkas hasil konstruksi diupload', 'Berkas hasil konstruksi untuk ' . $pelanggan->no_agenda . ' telah diupload.', route('laporan'));
 
         return back()->with('success', 'Berkas hasil konstruksi berhasil disimpan.');
@@ -161,11 +162,11 @@ class VendorKonstruksiController extends Controller
 
     public function hasilKonstruksiFile(PelangganPbpd $pelanggan, int $index)
     {
-        abort_unless(auth()->user()->role?->type === 'UP3', 403);
+        abort_unless($this->currentUser()->role?->type === 'UP3', 403);
         $path = (is_array($pelanggan->hasil_konstruksi_paths) ? $pelanggan->hasil_konstruksi_paths : [])[$index] ?? null;
         abort_unless($path && Storage::disk('public')->exists($path), 404);
 
-        return Storage::disk('public')->response($path);
+        return $this->publicFileResponse($path);
     }
 
     private function paths(mixed $value): array

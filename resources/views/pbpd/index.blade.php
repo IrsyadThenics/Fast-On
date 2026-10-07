@@ -76,12 +76,14 @@
             @endforeach
         </select>
 
-        <select name="tahap">
-            <option value="">Semua tahap</option>
-            @foreach ($tahaps as $t)
-                <option value="{{ $t }}" @selected(request('tahap') == $t)>{{ $t }}</option>
-            @endforeach
-        </select>
+        @if (auth()->user()->role?->type !== 'UP3')
+            <select name="tahap">
+                <option value="">Semua tahap</option>
+                @foreach ($tahaps as $t)
+                    <option value="{{ $t }}" @selected(request('tahap') == $t)>{{ $t }}</option>
+                @endforeach
+            </select>
+        @endif
 
         @if (request('import'))
             <input type="hidden" name="import" value="{{ request('import') }}">
@@ -208,17 +210,17 @@
                             <td>{{ $row->keterangan }}</td>
                         </tr>
                     @empty
-                        <tr><td colspan="{{ ($canKirim ? 17 : 16) + ($showSyarat ? 2 : 0) }}" style="text-align:center">Tidak ada data.</td></tr>
+                        <tr><td colspan="{{ ($canKirim ? 1 : 0) + 16 + ($showSyarat ? 2 : 0) }}" style="text-align:center">Tidak ada data.</td></tr>
                     @endforelse
                 </tbody>
             </table>
         </div>
 
-        <div class="kartu-kaki">
-            Records {{ $data->firstItem() ?? 0 }} to {{ $data->lastItem() ?? 0 }} of {{ $data->total() }}
-        </div>
-
-        <div class="halaman">
+        <div class="pagination-footer">
+            <div class="kartu-kaki">
+                Records {{ $data->firstItem() ?? 0 }} to {{ $data->lastItem() ?? 0 }} of {{ $data->total() }}
+            </div>
+            <div class="halaman">
             @if ($data->previousPageUrl())
                 <a class="btn btn-abu" href="{{ $data->previousPageUrl() }}">« Sebelumnya</a>
             @endif
@@ -226,6 +228,7 @@
             @if ($data->nextPageUrl())
                 <a class="btn btn-abu" href="{{ $data->nextPageUrl() }}">Berikutnya »</a>
             @endif
+            </div>
         </div>
     </div>
 

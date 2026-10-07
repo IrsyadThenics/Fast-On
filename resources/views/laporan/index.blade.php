@@ -7,7 +7,7 @@
         @foreach ($perJenis as $jenis => $jumlah)<div class="stat-card"><small>{{ $jenis ?: 'LAINNYA' }}</small><strong>{{ number_format($jumlah, 0, ',', '.') }}</strong></div>@endforeach
     </div>
     <div class="box">
-        <form class="filter" method="GET"><select name="tahap"><option value="">Semua tahap</option>@foreach ($tahapPilihan as $tahap)<option value="{{ $tahap }}" @selected(request('tahap') === $tahap)>{{ $tahap }}</option>@endforeach</select><select name="jenis"><option value="">Semua transaksi</option>@foreach ($jenisPilihan as $jenis)<option value="{{ $jenis }}" @selected(request('jenis') === $jenis)>{{ $jenis }}</option>@endforeach</select><button type="submit" class="btn">Filter</button><a class="btn btn-excel" href="{{ route('laporan.export', request()->only(['tahap', 'jenis'])) }}">Export Excel</a></form>
+        <form class="filter" method="GET">@if (auth()->user()->role?->type !== 'UP3')<select name="tahap"><option value="">Semua tahap</option>@foreach ($tahapPilihan as $tahap)<option value="{{ $tahap }}" @selected(request('tahap') === $tahap)>{{ $tahap }}</option>@endforeach</select>@endif<select name="jenis"><option value="">Semua transaksi</option>@foreach ($jenisPilihan as $jenis)<option value="{{ $jenis }}" @selected(request('jenis') === $jenis)>{{ $jenis }}</option>@endforeach</select><button type="submit" class="btn">Filter</button><a class="btn btn-excel" href="{{ route('laporan.export', request()->only(['tahap', 'jenis'])) }}">Export Excel</a></form>
         @php($showSyarat = ! in_array(auth()->user()->role?->type, ['UP3', 'ULP'], true))
         @php($processMap = $data->getCollection()->mapWithKeys(function ($row) {
             $material = $row->permintaan;
@@ -52,10 +52,10 @@
             const statusCell = (done, label) => `<span class="${done ? 'proses-selesai' : 'proses-belum'}">${done ? '✓ ' + label : '× Belum diunggah'}</span>`;
             const processMarkup = (item) => `<div class="proses-box laporan-proses-box"><h4>Proses</h4><table class="proses-tabel"><thead><tr><th>Proses</th><th>Status</th><th>Tanggal</th></tr></thead><tbody>
                 <tr><td>Pengiriman ULP</td><td>${statusCell(item.ulp, 'Sudah dikirim ULP')}</td><td>${formatDate(item.ulpDate)}</td></tr>
-                <tr><td>Berkas Hasil Perencanaan</td><td>${statusCell(item.planning, 'Sudah lengkap')}</td><td>${formatDate(item.planningDate)}</td></tr>
-                <tr><td>Berkas Hasil Konstruksi</td><td>${statusCell(item.construction, 'Sudah lengkap')}</td><td>${formatDate(item.constructionDate)}</td></tr>
-                <tr><td>Berkas Hasil Transaksi</td><td>${statusCell(item.transaction, 'Sudah lengkap')}</td><td>${formatDate(item.transactionDate)}</td></tr>
-                <tr><td>Berkas Hasil Jaringan</td><td>${statusCell(item.network, 'Sudah lengkap')}</td><td>${formatDate(item.networkDate)}</td></tr>
+                <tr><td>Berkas WO</td><td>${statusCell(item.planning, 'Sudah lengkap')}</td><td>${formatDate(item.planningDate)}</td></tr>
+                <tr><td>Berkas BA Checklist</td><td>${statusCell(item.construction, 'Sudah lengkap')}</td><td>${formatDate(item.constructionDate)}</td></tr>
+                <tr><td>Foto Cek KWH Meter</td><td>${statusCell(item.transaction, 'Sudah lengkap')}</td><td>${formatDate(item.transactionDate)}</td></tr>
+                <tr><td>Berkas BA Operasi</td><td>${statusCell(item.network, 'Sudah lengkap')}</td><td>${formatDate(item.networkDate)}</td></tr>
             </tbody></table></div>`;
             const modal = document.getElementById('laporanDetailModal');
             document.querySelectorAll('.laporan-detail').forEach((button) => button.addEventListener('click', () => {
@@ -170,8 +170,8 @@
         .box>.filter{display:flex;align-items:center;gap:10px!important;margin:0 0 16px!important;padding:0!important}
         .box>.filter select{min-height:38px!important;padding:8px 30px 8px 11px!important;border:1px solid #cbd9e8!important;border-radius:9px!important;background:#f8fafc!important;color:#243b53!important;font-size:12px!important}
         .box>.filter select:focus{border-color:#1e6fa8!important;box-shadow:0 0 0 3px rgba(30,111,168,.13)!important;outline:0}
-        .box>.filter .btn{min-height:38px!important;border:0!important;border-radius:9px!important;background:#123b5d!important;color:#fff!important;font-weight:700!important;box-shadow:0 4px 10px rgba(18,59,93,.16)!important}
-        .box>.filter .btn:hover{background:#0d2e49!important}.box>.filter .btn-excel{background:#123b5d!important}.box>.filter .btn-excel:hover{background:#0d2e49!important}
+        .box>.filter button.btn{min-height:38px!important;border:0!important;border-radius:9px!important;background:#111c91!important;color:#fff!important;font-weight:700!important;box-shadow:0 4px 10px rgba(17,28,145,.2)!important}
+        .box>.filter button.btn:hover{background:#0d166f!important;color:#fff!important}.box>.filter .btn-excel{background:#111c91!important;color:#fff!important;box-shadow:0 4px 10px rgba(17,28,145,.2)!important}.box>.filter .btn-excel:hover{background:#0d166f!important;color:#fff!important}
         @media(max-width:700px){.box>.filter{align-items:stretch;flex-wrap:wrap}.box>.filter select,.box>.filter .btn{flex:1 1 145px}}
     </style>
 @endsection

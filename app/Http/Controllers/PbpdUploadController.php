@@ -6,6 +6,7 @@ use App\Imports\PelangganPbpdImport;
 use App\Models\ImportExcel;
 use App\Models\Ulp;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Maatwebsite\Excel\Facades\Excel;
 
 class PbpdUploadController extends Controller
@@ -29,7 +30,7 @@ class PbpdUploadController extends Controller
 
         $import = ImportExcel::create([
             'file_name'   => $file->getClientOriginalName(),
-            'uploaded_by' => auth()->id(),
+            'uploaded_by' => Auth::id(),
         ]);
 
         // Gunakan ULP pilihan form sebagai cadangan ketika kolom ULP di Excel kosong.

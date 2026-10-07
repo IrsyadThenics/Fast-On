@@ -6,13 +6,14 @@ use App\Models\LaporanVendor;
 use App\Models\PelangganPbpd;
 use App\Services\NotifikasiService;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 
 class VendorTiangController extends Controller
 {
     private function authorizeVendor(): void
     {
-        abort_unless(in_array(auth()->user()->role?->role_code, ['VENDOR_TIANG', 'VENDOR_TIANG2'], true), 403);
+        abort_unless(in_array($this->currentUser()->role?->role_code, ['VENDOR_TIANG', 'VENDOR_TIANG2'], true), 403);
     }
 
     public function index()
@@ -23,7 +24,7 @@ class VendorTiangController extends Controller
             ->where('tahap', 'VENDOR_TIANG')
             ->whereHas('pengirimanVendor', fn ($q) => $q->whereHas('vendor', fn ($v) => $v
                 ->where('jenis', 'TIANG')
-                ->where('user_id', auth()->id())
+                ->where('user_id', Auth::id())
             ))
             ->orderByDesc('id')
             ->get();
@@ -32,7 +33,7 @@ class VendorTiangController extends Controller
             ->whereHas('laporanVendor')
             ->whereHas('pengirimanVendor.vendor', fn ($q) => $q
                 ->where('jenis', 'TIANG')
-                ->where('user_id', auth()->id())
+                ->where('user_id', Auth::id())
             )
             ->orderByDesc('id')
             ->get();
@@ -48,7 +49,7 @@ class VendorTiangController extends Controller
             ->whereHas('laporanVendor')
             ->whereHas('pengirimanVendor.vendor', fn ($q) => $q
                 ->where('jenis', 'TIANG')
-                ->where('user_id', auth()->id())
+                ->where('user_id', Auth::id())
             )
             ->orderByDesc('id')
             ->get();
@@ -61,7 +62,7 @@ class VendorTiangController extends Controller
         $this->authorizeVendor();
         abort_unless(in_array($pelanggan->tahap, ['VENDOR_TIANG', 'PERENCANAAN'], true), 422);
         $pengiriman = $pelanggan->pengirimanVendor()->with('vendor')->firstOrFail();
-        abort_unless($pengiriman->vendor?->user_id === auth()->id(), 403);
+        abort_unless($pengiriman->vendor?->user_id === Auth::id(), 403);
 
         $data = $request->validate([
             'pekerjaan_lengkap' => ['nullable', 'boolean'],
@@ -86,7 +87,7 @@ class VendorTiangController extends Controller
             'siap_dilanjutkan' => $request->boolean('siap_dilanjutkan'),
             'catatan' => $data['catatan'] ?? null,
             'berkas_paths' => $paths,
-            'dikirim_oleh' => auth()->id(),
+            'dikirim_oleh' => Auth::id(),
             'dikirim_at' => now(),
         ])->save();
 
@@ -100,7 +101,7 @@ class VendorTiangController extends Controller
 
     public function wo(PelangganPbpd $pelanggan)
     {
-        $roleCode = auth()->user()->role?->role_code;
+        $roleCode = $this->currentUser()->role?->role_code;
         $isPlanning = $roleCode === '5180REN';
         $isVendor = in_array($roleCode, ['VENDOR_TIANG', 'VENDOR_TIANG2'], true);
 
@@ -108,37 +109,37 @@ class VendorTiangController extends Controller
 
         $pengiriman = $pelanggan->pengirimanVendor()->with('vendor')->firstOrFail();
         if ($isVendor) {
-            abort_unless($pengiriman->vendor?->user_id === auth()->id(), 403);
+            abort_unless($pengiriman->vendor?->user_id === Auth::id(), 403);
         }
 
         abort_unless($pengiriman->wo_tiang_path && Storage::disk('public')->exists($pengiriman->wo_tiang_path), 404);
 
-        return Storage::disk('public')->response($pengiriman->wo_tiang_path);
+        return $this->publicFileResponse($pengiriman->wo_tiang_path);
     }
 
     public function laporanFile(PelangganPbpd $pelanggan, int $index)
     {
-        $roleCode = auth()->user()->role?->role_code;
+        $roleCode = $this->currentUser()->role?->role_code;
         $isPlanning = $roleCode === '5180REN';
-        $isUp3 = auth()->user()->role?->type === 'UP3';
+        $isUp3 = $this->currentUser()->role?->type === 'UP3';
         $isVendor = in_array($roleCode, ['VENDOR_TIANG', 'VENDOR_TIANG2'], true);
         abort_unless($isPlanning || $isUp3 || $isVendor, 403);
 
         $pengiriman = $pelanggan->pengirimanVendor()->with('vendor')->firstOrFail();
         if ($isVendor) {
-            abort_unless($pengiriman->vendor?->user_id === auth()->id(), 403);
+            abort_unless($pengiriman->vendor?->user_id === Auth::id(), 403);
         }
 
         $laporan = $pelanggan->laporanVendor()->firstOrFail();
         $path = $this->paths($laporan->berkas_paths)[$index] ?? null;
         abort_unless($path && Storage::disk('public')->exists($path), 404);
 
-        return Storage::disk('public')->response($path);
+        return $this->publicFileResponse($path);
     }
 
     public function uploadHasil(Request $request, PelangganPbpd $pelanggan)
     {
-        abort_unless(auth()->user()->role?->role_code === '5180REN', 403);
+        abort_unless($this->currentUser()->role?->role_code === '5180REN', 403);
 
         $data = $request->validate([
             'berkas_hasil.*' => ['required', 'file', 'mimes:pdf,doc,docx,xls,xlsx,jpg,jpeg,png', 'max:10240'],
@@ -151,7 +152,7 @@ class VendorTiangController extends Controller
         }
 
         $laporan->update(['berkas_hasil_paths' => $paths, 'berkas_hasil_at' => now()]);
-        $pelanggan->tandaiSelesaiJikaLengkap(auth()->id());
+        $pelanggan->tandaiSelesaiJikaLengkap(Auth::id());
         NotifikasiService::untukData($pelanggan, 'Berkas hasil perencanaan diupload', 'Berkas hasil perencanaan untuk ' . $pelanggan->no_agenda . ' telah diupload.', route('laporan'));
 
         return back()->with('success', 'Berkas hasil perencanaan berhasil disimpan.');
@@ -169,7 +170,7 @@ class VendorTiangController extends Controller
 
     public function uploadHasilFromExpansion(Request $request)
     {
-        abort_unless(auth()->user()->role?->role_code === '5180REN', 403);
+        abort_unless($this->currentUser()->role?->role_code === '5180REN', 403);
         $request->validate(['pelanggan_id' => ['required', 'integer', 'exists:pelanggan_pbpd,id']]);
 
         return $this->uploadHasil($request, PelangganPbpd::findOrFail($request->integer('pelanggan_id')));
@@ -177,27 +178,27 @@ class VendorTiangController extends Controller
 
     public function hasilFile(PelangganPbpd $pelanggan, int $index)
     {
-        $roleCode = auth()->user()->role?->role_code;
+        $roleCode = $this->currentUser()->role?->role_code;
         $isPlanning = $roleCode === '5180REN';
-        $isUp3 = auth()->user()->role?->type === 'UP3';
+        $isUp3 = $this->currentUser()->role?->type === 'UP3';
         $isVendor = in_array($roleCode, ['VENDOR_TIANG', 'VENDOR_TIANG2'], true);
         abort_unless($isPlanning || $isUp3 || $isVendor, 403);
 
         $pengiriman = $pelanggan->pengirimanVendor()->with('vendor')->firstOrFail();
         if ($isVendor) {
-            abort_unless($pengiriman->vendor?->user_id === auth()->id(), 403);
+            abort_unless($pengiriman->vendor?->user_id === Auth::id(), 403);
         }
 
         $laporan = $pelanggan->laporanVendor()->firstOrFail();
         $path = $this->paths($laporan->berkas_hasil_paths)[$index] ?? null;
         abort_unless($path && Storage::disk('public')->exists($path), 404);
 
-        return Storage::disk('public')->response($path);
+        return $this->publicFileResponse($path);
     }
 
     public function hapusHasil(PelangganPbpd $pelanggan, int $index)
     {
-        abort_unless(auth()->user()->role?->role_code === '5180REN', 403);
+        abort_unless($this->currentUser()->role?->role_code === '5180REN', 403);
 
         $laporan = $pelanggan->laporanVendor()->firstOrFail();
         $paths = $this->paths($laporan->berkas_hasil_paths);

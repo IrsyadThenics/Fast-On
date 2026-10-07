@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Exports\LaporanExport;
 use App\Models\PelangganPbpd;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Maatwebsite\Excel\Facades\Excel;
 
 class LaporanController extends Controller
@@ -37,7 +38,7 @@ class LaporanController extends Controller
 
     private function laporanQuery(Request $request)
     {
-        $ulpId = auth()->user()->ulpId();
+        $ulpId = $this->currentUser()->ulpId();
 
         return PelangganPbpd::query()
             ->when($ulpId, fn ($q) => $q->where('ulp_id', $ulpId))

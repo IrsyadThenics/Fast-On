@@ -6,6 +6,7 @@ use App\Models\PelangganPbpd;
 use App\Models\Ulp;
 use App\Models\Vendor;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class PerluasanController extends Controller
 {
@@ -13,8 +14,8 @@ class PerluasanController extends Controller
     {
         abort_unless(in_array($tujuan, ['JTM', 'JTR', 'TANPA_PERLUASAN'], true), 404);
 
-        $ulpUser = auth()->user()->ulpId();
-        $role = auth()->user()->role;
+        $ulpUser = $this->currentUser()->ulpId();
+        $role = $this->currentUser()->role;
         $canEditRab = (bool) $role?->ulp_id || $role?->role_code === '5180REN';
         $canEditMaterial = (bool) $role?->ulp_id;
         $canSendVendor = $role?->role_code === '5180REN';
@@ -22,9 +23,10 @@ class PerluasanController extends Controller
         $canUploadTransaksi = $role?->role_code === '5180TEL';
         $canUploadJaringan = $role?->role_code === '5180JAR';
         $canViewMaterial = $canEditRab || in_array($role?->role_code, ['5180KON', '5180TEL', '5180JAR'], true);
+        $showBerkasUlp = $role?->type === 'UP3';
         // ULP tetap melihat data miliknya setelah diteruskan ke tahap/vendor berikutnya.
         $visibleTahaps = in_array($role?->type, ['UP3', 'ULP'], true)
-            ? ['PERENCANAAN', 'VENDOR_TIANG', 'VENDOR_KONSTRUKSI']
+            ? ['PERENCANAAN', 'VENDOR_TIANG', 'VENDOR_KONSTRUKSI', 'SELESAI']
             : ['PERENCANAAN'];
         $judul = match ($tujuan) {
             'JTM' => 'Perluasan JTM',
@@ -98,6 +100,6 @@ class PerluasanController extends Controller
         $vendors = Vendor::with('user')->where('jenis', 'TIANG')->orderBy('nama')->get();
         $vendorsKonstruksi = Vendor::with('user')->where('jenis', 'KONSTRUKSI')->orderBy('nama')->get();
 
-        return view('perluasan.index', compact('data', 'judul', 'tujuan', 'canEditRab', 'canEditMaterial', 'canViewMaterial', 'canSendVendor', 'canSendKonstruksi', 'canUploadTransaksi', 'canUploadJaringan', 'vendors', 'vendorsKonstruksi', 'ulps', 'jenisPilihan', 'statusPilihan', 'tahapPilihan', 'showSummaryCards', 'isUlpSummary', 'summaryTotal', 'summarySentByUlp', 'summaryUlpNames', 'summaryByJenis'));
+        return view('perluasan.index', compact('data', 'judul', 'tujuan', 'canEditRab', 'canEditMaterial', 'canViewMaterial', 'canSendVendor', 'canSendKonstruksi', 'canUploadTransaksi', 'canUploadJaringan', 'vendors', 'vendorsKonstruksi', 'ulps', 'jenisPilihan', 'statusPilihan', 'tahapPilihan', 'showSummaryCards', 'isUlpSummary', 'summaryTotal', 'summarySentByUlp', 'summaryUlpNames', 'summaryByJenis', 'showBerkasUlp'));
     }
 }

@@ -481,6 +481,13 @@
     .summary-card-total strong{color:#fff}
     .summary-card-sent strong{color:#123b5d}
     .summary-card-caption{color:#627d98;font-size:10px;line-height:1.2}
+    .pagination-footer{display:flex;align-items:center;justify-content:space-between;gap:16px;margin:14px 16px 16px;padding-top:12px;border-top:1px solid #e2e8f0}
+    .pagination-footer .kartu-kaki{margin:0!important;color:#627d98!important;font-size:12px!important;line-height:1.4}
+    .pagination-footer .halaman{display:flex;align-items:center;justify-content:flex-end;gap:8px;margin:0!important;color:#627d98!important;font-size:12px}
+    .pagination-footer .halaman span{padding:7px 9px;border:1px solid #d9e2ec;border-radius:8px;background:#f8fafc;color:#627d98;white-space:nowrap}
+    .pagination-footer .halaman a{min-height:32px;padding:7px 11px!important;border:1px solid #c5d4e3!important;border-radius:8px!important;background:#fff!important;color:#123b5d!important;text-decoration:none;white-space:nowrap;box-shadow:none!important}
+    .pagination-footer .halaman a:hover{background:#111c91!important;border-color:#111c91!important;color:#fff!important}
+    @media(max-width:650px){.pagination-footer{align-items:stretch;flex-direction:column;gap:9px}.pagination-footer .halaman{justify-content:flex-start;flex-wrap:wrap}}
     .content>header form[action$="/logout"] button{background:#111c91!important;color:#fff!important;border-color:#111c91!important}
     .content>header form[action$="/logout"] button:hover{background:#0d166f!important;color:#fff!important;border-color:#0d166f!important}
     @media(max-width:1100px){.summary-cards{grid-template-columns:repeat(3,minmax(0,1fr))}}

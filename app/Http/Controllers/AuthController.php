@@ -22,7 +22,7 @@ class AuthController extends Controller
             'password' => 'required|string',
         ]);
 
-        $key = str::lower($data['user_id']) . '|' . $request->ip();
+        $key = Str::lower($data['user_id']) . '|' . $request->ip();
 
         if (RateLimiter::tooManyAttempts($key, 5)) {
              $detik = RateLimiter::availableIn($key);
@@ -48,10 +48,10 @@ class AuthController extends Controller
         RateLimiter::clear($key);
         $request->session()->regenerate();
 
-        if (in_array(Auth::user()->role?->role_code, ['VENDOR_TIANG', 'VENDOR_TIANG2'], true)) {
+        if (in_array($this->currentUser()->role?->role_code, ['VENDOR_TIANG', 'VENDOR_TIANG2'], true)) {
             return redirect()->route('vendor.tiang');
         }
-        if (in_array(Auth::user()->role?->role_code, ['VENDOR_KONSTRUKSI', 'VENDOR_KONSTRUKSI2'], true)) {
+        if (in_array($this->currentUser()->role?->role_code, ['VENDOR_KONSTRUKSI', 'VENDOR_KONSTRUKSI2'], true)) {
             return redirect()->route('vendor.konstruksi');
         }
 

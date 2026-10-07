@@ -3,12 +3,13 @@
 namespace App\Http\Controllers;
 
 use App\Models\PelangganPbpd;
+use Illuminate\Support\Facades\Auth;
 
 class DashboardController extends Controller
 {
     public function index()
     {
-        $ulpId = auth()->user()->ulpId();
+        $ulpId = $this->currentUser()->ulpId();
         $base = PelangganPbpd::query()
             ->when($ulpId, fn ($q) => $q->where('ulp_id', $ulpId))
             ->where('status', '!=', 'MOHON')

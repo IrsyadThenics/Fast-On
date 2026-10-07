@@ -9,6 +9,7 @@ use App\Models\PengirimanKonstruksi;
 use App\Models\Ulp;
 use App\Services\NotifikasiService;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 
@@ -16,16 +17,16 @@ class PbpdController extends Controller
 {
     public function index(Request $request)
     {
-        $role = auth()->user()->role;
+        $role = $this->currentUser()->role;
         $isUlpRole = $role?->type === 'ULP' && (bool) $role?->ulp_id;
-        $ulpUser = $isUlpRole ? auth()->user()->ulpId() : null;
+        $ulpUser = $isUlpRole ? $this->currentUser()->ulpId() : null;
         $canKirim = $isUlpRole;
         $canEditRab = $canKirim || $role?->role_code === '5180REN';
 
         $data = PelangganPbpd::with('ulp')
             ->when($ulpUser, fn ($q) => $q->where('ulp_id', $ulpUser))
             ->when(! $ulpUser && $request->filled('ulp'), fn ($q) => $q->where('ulp_id', $request->ulp))
-            ->when($role?->type === 'ULP' && ! $request->filled('import'), fn ($q) => $q->where('tahap', 'ULP'))
+            ->when($role?->type === 'ULP' && ! $request->filled('import'), fn ($q) => $q->whereIn('tahap', ['ULP', 'SELESAI']))
             ->where('status', '!=', 'MOHON')
             ->whereNotIn('jenis_transaksi', ['BN', 'BALIK NAMA', 'PS', 'PENERANGAN SEMENTARA'])
             ->when($request->filled('import'), fn ($q) => $q->where('import_id', $request->import))
@@ -46,7 +47,7 @@ class PbpdController extends Controller
 
         $summaryBase = PelangganPbpd::query()
             ->when($ulpUser, fn ($q) => $q->where('ulp_id', $ulpUser))
-            ->when($role?->type === 'ULP' && ! $request->filled('import'), fn ($q) => $q->where('tahap', 'ULP'))
+            ->when($role?->type === 'ULP' && ! $request->filled('import'), fn ($q) => $q->whereIn('tahap', ['ULP', 'SELESAI']))
             ->when($request->filled('import'), fn ($q) => $q->where('import_id', $request->import))
             ->where('status', '!=', 'MOHON')
             ->whereNotIn('jenis_transaksi', ['BN', 'BALIK NAMA', 'PS', 'PENERANGAN SEMENTARA']);
@@ -99,11 +100,11 @@ class PbpdController extends Controller
 
     public function updateRab(Request $request, PelangganPbpd $pelanggan): \Illuminate\Http\RedirectResponse
     {
-        $role = auth()->user()->role;
+        $role = $this->currentUser()->role;
         $canEditRab = (bool) $role?->ulp_id || $role?->role_code === '5180REN';
         abort_unless($canEditRab, 403);
 
-        $ulpUser = auth()->user()->ulpId();
+        $ulpUser = $this->currentUser()->ulpId();
         abort_if($ulpUser && (int) $pelanggan->ulp_id !== (int) $ulpUser, 403);
 
         $data = $request->validate([
@@ -118,7 +119,7 @@ class PbpdController extends Controller
 
     public function kirim(Request $request): \Illuminate\Http\RedirectResponse
     {
-        abort_unless((bool) auth()->user()->role?->ulp_id, 403);
+        abort_unless((bool) $this->currentUser()->role?->ulp_id, 403);
 
         $data = $request->validate([
             'tujuan' => ['required', 'in:JTM,JTR,TANPA_PERLUASAN'],
@@ -174,7 +175,7 @@ class PbpdController extends Controller
                         'jml_trafo' => $data['jml_trafo'] ?? null,
                         'jml_kwh_meter' => $data['jml_kwh_meter'] ?? null,
                         'jenis_kwh_meter' => $data['jenis_kwh_meter'] ?? null,
-                        'dikirim_oleh' => auth()->id(),
+                        'dikirim_oleh' => Auth::id(),
                         'dikirim_at' => now(),
                     ]
                 );
@@ -188,12 +189,12 @@ class PbpdController extends Controller
 
     public function updateDetail(Request $request, PelangganPbpd $pelanggan): \Illuminate\Http\RedirectResponse
     {
-        $role = auth()->user()->role;
+        $role = $this->currentUser()->role;
         $isUlp = (bool) $role?->ulp_id;
         $isPerencanaan = $role?->role_code === '5180REN';
         abort_unless($isUlp || $isPerencanaan, 403);
 
-        $ulpUser = auth()->user()->ulpId();
+        $ulpUser = $this->currentUser()->ulpId();
         abort_if($ulpUser && (int) $pelanggan->ulp_id !== (int) $ulpUser, 403);
 
         abort_unless(in_array($pelanggan->tujuan_perluasan, ['JTM', 'JTR'], true), 422);
@@ -228,7 +229,7 @@ class PbpdController extends Controller
                         'jml_trafo' => $data['jml_trafo'] ?? null,
                         'jenis_kwh_meter' => $data['jenis_kwh_meter'] ?? null,
                         'jml_kwh_meter' => $data['jml_kwh_meter'] ?? null,
-                        'dikirim_oleh' => auth()->id(),
+                        'dikirim_oleh' => Auth::id(),
                         'dikirim_at' => now(),
                     ]
                 );
@@ -242,7 +243,7 @@ class PbpdController extends Controller
 
     public function kirimVendor(Request $request, PelangganPbpd $pelanggan): \Illuminate\Http\RedirectResponse
     {
-        abort_unless(auth()->user()->role?->role_code === '5180REN', 403);
+        abort_unless($this->currentUser()->role?->role_code === '5180REN', 403);
 
         $data = $request->validate([
             'vendor_id' => ['required', 'exists:vendors,id'],
@@ -263,7 +264,7 @@ class PbpdController extends Controller
         $pengiriman->fill([
             'vendor_id' => $vendor->id,
             'status_kelayakan' => $data['status_kelayakan'],
-            'dikirim_oleh' => auth()->id(),
+            'dikirim_oleh' => Auth::id(),
             'dikirim_at' => now(),
         ])->save();
 
@@ -275,7 +276,7 @@ class PbpdController extends Controller
 
     public function kirimKonstruksi(Request $request, PelangganPbpd $pelanggan): \Illuminate\Http\RedirectResponse
     {
-        abort_unless(auth()->user()->role?->role_code === '5180KON', 403);
+        abort_unless($this->currentUser()->role?->role_code === '5180KON', 403);
 
         $data = $request->validate([
             'vendor_id' => ['required', 'exists:vendors,id'],
@@ -292,7 +293,7 @@ class PbpdController extends Controller
         $pengiriman->fill([
             'vendor_id' => $vendor->id,
             'berkas_paths' => $paths,
-            'dikirim_oleh' => auth()->id(),
+            'dikirim_oleh' => Auth::id(),
             'dikirim_at' => now(),
         ])->save();
         $pelanggan->update(['tahap' => 'VENDOR_KONSTRUKSI']);
@@ -303,7 +304,7 @@ class PbpdController extends Controller
 
     public function uploadHasilTransaksi(Request $request, PelangganPbpd $pelanggan): \Illuminate\Http\RedirectResponse
     {
-        abort_unless(auth()->user()->role?->role_code === '5180TEL', 403);
+        abort_unless($this->currentUser()->role?->role_code === '5180TEL', 403);
         $request->validate([
             'berkas_hasil_transaksi.*' => ['required', 'file', 'mimes:pdf,doc,docx,xls,xlsx,jpg,jpeg,png', 'max:10240'],
         ]);
@@ -313,7 +314,7 @@ class PbpdController extends Controller
             $paths[] = $file->store('hasil-transaksi', 'public');
         }
         $pelanggan->update(['hasil_transaksi_paths' => $paths, 'hasil_transaksi_at' => now()]);
-        $pelanggan->tandaiSelesaiJikaLengkap(auth()->id());
+        $pelanggan->tandaiSelesaiJikaLengkap(Auth::id());
         NotifikasiService::untukData($pelanggan, 'Berkas hasil transaksi diupload', 'Berkas hasil transaksi untuk ' . $pelanggan->no_agenda . ' telah diupload.', route('laporan'));
 
         return back()->with('success', 'Berkas hasil transaksi berhasil disimpan.');
@@ -321,16 +322,16 @@ class PbpdController extends Controller
 
     public function hasilTransaksiFile(PelangganPbpd $pelanggan, int $index)
     {
-        abort_unless(auth()->user()->role?->type === 'UP3', 403);
+        abort_unless($this->currentUser()->role?->type === 'UP3', 403);
         $path = (is_array($pelanggan->hasil_transaksi_paths) ? $pelanggan->hasil_transaksi_paths : [])[$index] ?? null;
         abort_unless($path && Storage::disk('public')->exists($path), 404);
 
-        return Storage::disk('public')->response($path);
+        return $this->publicFileResponse($path);
     }
 
     public function uploadHasilJaringan(Request $request, PelangganPbpd $pelanggan): \Illuminate\Http\RedirectResponse
     {
-        abort_unless(auth()->user()->role?->role_code === '5180JAR', 403);
+        abort_unless($this->currentUser()->role?->role_code === '5180JAR', 403);
         $request->validate([
             'berkas_hasil_jaringan.*' => ['required', 'file', 'mimes:pdf,doc,docx,xls,xlsx,jpg,jpeg,png', 'max:10240'],
         ]);
@@ -340,7 +341,7 @@ class PbpdController extends Controller
             $paths[] = $file->store('hasil-jaringan', 'public');
         }
         $pelanggan->update(['hasil_jaringan_paths' => $paths, 'hasil_jaringan_at' => now()]);
-        $pelanggan->tandaiSelesaiJikaLengkap(auth()->id());
+        $pelanggan->tandaiSelesaiJikaLengkap(Auth::id());
         NotifikasiService::untukData($pelanggan, 'Berkas hasil jaringan diupload', 'Berkas hasil jaringan untuk ' . $pelanggan->no_agenda . ' telah diupload.', route('laporan'));
 
         return back()->with('success', 'Berkas hasil jaringan berhasil disimpan.');
@@ -348,18 +349,18 @@ class PbpdController extends Controller
 
     public function hasilJaringanFile(PelangganPbpd $pelanggan, int $index)
     {
-        abort_unless(auth()->user()->role?->type === 'UP3', 403);
+        abort_unless($this->currentUser()->role?->type === 'UP3', 403);
         $path = (is_array($pelanggan->hasil_jaringan_paths) ? $pelanggan->hasil_jaringan_paths : [])[$index] ?? null;
         abort_unless($path && Storage::disk('public')->exists($path), 404);
 
-        return Storage::disk('public')->response($path);
+        return $this->publicFileResponse($path);
     }
 
     public function uploadSyarat(Request $request, PelangganPbpd $pelanggan, string $jenis): \Illuminate\Http\RedirectResponse
     {
-        abort_unless(auth()->user()->role?->ulp_id, 403);
+        abort_unless($this->currentUser()->role?->ulp_id, 403);
         abort_unless(in_array($jenis, ['pendukung', 'ijin'], true), 404);
-        abort_if((int) $pelanggan->ulp_id !== (int) auth()->user()->role?->ulp_id, 403);
+        abort_if((int) $pelanggan->ulp_id !== (int) $this->currentUser()->role?->ulp_id, 403);
 
         $request->validate([
             'berkas.*' => ['required', 'file', 'mimes:pdf,doc,docx,xls,xlsx,jpg,jpeg,png', 'max:10240'],
@@ -382,6 +383,6 @@ class PbpdController extends Controller
         $path = (is_array($pelanggan->{$column}) ? $pelanggan->{$column} : [])[$index] ?? null;
         abort_unless($path && Storage::disk('public')->exists($path), 404);
 
-        return Storage::disk('public')->response($path);
+        return $this->publicFileResponse($path);
     }
 }

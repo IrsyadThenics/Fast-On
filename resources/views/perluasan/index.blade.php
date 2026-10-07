@@ -60,12 +60,14 @@
                 <option value="{{ $status }}" @selected(request('status') === $status)>{{ $status }}</option>
             @endforeach
         </select>
-        <select name="tahap">
-            <option value="">Semua tahap</option>
-            @foreach ($tahapPilihan as $tahapOption)
-                <option value="{{ $tahapOption }}" @selected(request('tahap') === $tahapOption)>{{ $tahapOption }}</option>
-            @endforeach
-        </select>
+        @if (auth()->user()->role?->type !== 'UP3')
+            <select name="tahap">
+                <option value="">Semua tahap</option>
+                @foreach ($tahapPilihan as $tahapOption)
+                    <option value="{{ $tahapOption }}" @selected(request('tahap') === $tahapOption)>{{ $tahapOption }}</option>
+                @endforeach
+            </select>
+        @endif
         <button type="submit" class="btn">Filter</button>
         <a href="{{ url()->current() }}" class="btn btn-abu">Reset</a>
     </form>
@@ -82,8 +84,9 @@
                     <tr>
                         <th rowspan="2"><input type="checkbox" title="Pilih semua"></th>
                         <th rowspan="2">NO.</th>
-                        <th rowspan="2">ASAL ULP</th>
+                        <th rowspan="2">{{ $showBerkasUlp ? 'ULP PENGIRIM' : 'ASAL ULP' }}</th>
                         <th rowspan="2">DETAIL</th>
+                        @if ($showBerkasUlp)<th rowspan="2">BERKAS</th>@endif
                         <th rowspan="2">TRANSAKSI</th>
                         <th rowspan="2">STATUS</th>
                         <th rowspan="2">NO AGENDA</th>
@@ -186,6 +189,22 @@
                                     data-laporan-exists="{{ $row->laporanVendor ? '1' : '0' }}"
                                 ><svg class="icon-inline" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 3.5h9l3 3V20.5H6z"/><path d="M15 3.5v4h3M9 12h6M9 16h6"/></svg></button>
                             </td>
+                            @if ($showBerkasUlp)
+                                <td>
+                                    <div class="berkas-ulp-cell">
+                                        @forelse (($row->berkas_pendukung_paths ?? []) as $index => $path)
+                                            <a href="{{ route('pbpd.syarat.file', ['pelanggan' => $row->id, 'jenis' => 'pendukung', 'index' => $index]) }}" target="_blank" rel="noopener" title="Buka berkas pendukung">Pendukung {{ $index + 1 }}</a>
+                                        @empty
+                                            <span class="berkas-ulp-empty">Pendukung -</span>
+                                        @endforelse
+                                        @forelse (($row->berkas_ijin_paths ?? []) as $index => $path)
+                                            <a href="{{ route('pbpd.syarat.file', ['pelanggan' => $row->id, 'jenis' => 'ijin', 'index' => $index]) }}" target="_blank" rel="noopener" title="Buka berkas ijin">Ijin {{ $index + 1 }}</a>
+                                        @empty
+                                            <span class="berkas-ulp-empty">Ijin -</span>
+                                        @endforelse
+                                    </div>
+                                </td>
+                            @endif
                             <td>
                                 <span class="pill pill-ungu">
                                     {{ [
@@ -213,17 +232,17 @@
                             <td>{{ $row->keterangan }}</td>
                         </tr>
                     @empty
-                        <tr><td colspan="17" style="text-align:center">Belum ada data dikirim.</td></tr>
+                        <tr><td colspan="{{ 17 + ($showBerkasUlp ? 1 : 0) }}" style="text-align:center">Belum ada data dikirim.</td></tr>
                     @endforelse
                 </tbody>
             </table>
         </div>
 
-        <div class="kartu-kaki">
-            Records {{ $data->firstItem() ?? 0 }} to {{ $data->lastItem() ?? 0 }} of {{ $data->total() }}
-        </div>
-
-        <div class="halaman">
+        <div class="pagination-footer">
+            <div class="kartu-kaki">
+                Records {{ $data->firstItem() ?? 0 }} to {{ $data->lastItem() ?? 0 }} of {{ $data->total() }}
+            </div>
+            <div class="halaman">
             @if ($data->previousPageUrl())
                 <a class="btn btn-abu" href="{{ $data->previousPageUrl() }}">« Sebelumnya</a>
             @endif
@@ -231,6 +250,7 @@
             @if ($data->nextPageUrl())
                 <a class="btn btn-abu" href="{{ $data->nextPageUrl() }}">Berikutnya »</a>
             @endif
+            </div>
         </div>
     </div>
 
@@ -255,10 +275,10 @@
                 <h4>Proses</h4>
                 <table class="proses-tabel"><thead><tr><th>Proses</th><th>Status</th><th>Tanggal</th></tr></thead><tbody>
                     <tr><td>Pengiriman ULP</td><td id="prosesUlpStatus"></td><td id="prosesUlpDate">-</td></tr>
-                    <tr><td>Berkas Hasil Perencanaan</td><td id="prosesPerencanaanStatus"></td><td id="prosesPerencanaanDate">-</td></tr>
-                    <tr><td>Berkas Hasil Konstruksi</td><td id="prosesKonstruksiStatus"></td><td id="prosesKonstruksiDate">-</td></tr>
-                    <tr><td>Berkas Hasil Transaksi</td><td id="prosesTransaksiStatus"></td><td id="prosesTransaksiDate">-</td></tr>
-                    <tr><td>Berkas Hasil Jaringan</td><td id="prosesJaringanStatus"></td><td id="prosesJaringanDate">-</td></tr>
+                    <tr><td>Berkas WO</td><td id="prosesPerencanaanStatus"></td><td id="prosesPerencanaanDate">-</td></tr>
+                    <tr><td>Berkas BA Checklist</td><td id="prosesKonstruksiStatus"></td><td id="prosesKonstruksiDate">-</td></tr>
+                    <tr><td>Foto Cek KWH Meter</td><td id="prosesTransaksiStatus"></td><td id="prosesTransaksiDate">-</td></tr>
+                    <tr><td>Berkas BA Operasi</td><td id="prosesJaringanStatus"></td><td id="prosesJaringanDate">-</td></tr>
                 </tbody></table>
             </div>
             @if ($canViewMaterial)
@@ -349,7 +369,7 @@
                 </form>
             @endif
             <div class="planning-result-box">
-                <h4>Berkas Hasil Perencanaan</h4>
+                <h4>Berkas WO</h4>
                 <div id="resultFiles">-</div>
                 @if ($canSendVendor)
                     <div id="resultWaitingMessage" class="result-waiting-message" hidden>Menunggu laporan dari vendor terlebih dahulu.</div>
@@ -362,7 +382,7 @@
                 @endif
             </div>
             <div class="planning-result-box construction-result-upload-box">
-                <h4>Berkas Hasil Konstruksi</h4>
+                <h4>Berkas BA Checklist</h4>
                 <div id="constructionResultFiles">-</div>
                 @if ($canSendKonstruksi)
                     <form id="constructionResultUploadForm" method="POST" action="#" enctype="multipart/form-data">
@@ -373,7 +393,7 @@
                 @endif
             </div>
             <div class="planning-result-box transaksi-result-upload-box">
-                <h4>Berkas Hasil Transaksi</h4>
+                <h4>Foto Cek KWH Meter</h4>
                 <div id="transaksiResultFiles">-</div>
                 @if ($canUploadTransaksi)
                     <form id="transaksiResultUploadForm" method="POST" action="#" enctype="multipart/form-data">
@@ -384,7 +404,7 @@
                 @endif
             </div>
             <div class="planning-result-box jaringan-result-upload-box">
-                <h4>Berkas Hasil Jaringan</h4>
+                <h4>Berkas BA Operasi</h4>
                 <div id="jaringanResultFiles">-</div>
                 @if ($canUploadJaringan && $tujuan !== 'TANPA_PERLUASAN')
                     <form id="jaringanResultUploadForm" method="POST" action="#" enctype="multipart/form-data">
@@ -457,7 +477,22 @@
         .construction-report-box { display:grid; gap:10px; margin-top:16px; padding:14px; border:1px solid #c8d6e5; border-radius:8px; background:#f3f8ff; }
         .construction-report-box h4 { margin:0; color:#0b3d6b; }
         .construction-report-box a { color:#0b3d6b; }
+        .berkas-ulp-cell{display:flex;flex-direction:column;align-items:flex-start;gap:5px;min-width:105px}
+        .berkas-ulp-cell a{display:inline-flex;align-items:center;gap:5px;padding:4px 7px;border:1px solid #c8def5;border-radius:7px;background:#f3f8ff;color:#1e6fa8!important;font-size:10px;font-weight:700;text-decoration:none;white-space:nowrap}
+        .berkas-ulp-cell a::before{content:'↗';font-size:10px}
+        .berkas-ulp-cell a:hover{background:#1e6fa8;color:#fff!important;border-color:#1e6fa8}
+        .berkas-ulp-empty{color:#94a3b8;font-size:10px}
         .planning-result-box input[type=file] { padding:8px; border:1px solid #b9c7d5; border-radius:6px; background:#fff; }
+        .detail-modal-box .planning-result-box{display:grid!important;gap:11px!important;margin-top:12px!important;padding:15px!important;border:1px solid #d9e2ec!important;border-radius:12px!important;background:#f8fbff!important;box-shadow:0 2px 8px rgba(18,59,93,.05)!important}
+        .detail-modal-box .planning-result-box h4{margin:0!important;padding-bottom:8px!important;border-bottom:1px solid #e2e8f0!important;color:#123b5d!important;font-size:14px!important;line-height:1.35!important}
+        .detail-modal-box .planning-result-box>div[id$="Files"]{min-height:32px;padding:8px 10px;border:1px solid #d9e2ec;border-radius:8px;background:#fff;color:#627d98;font-size:12px;line-height:1.4;overflow-wrap:anywhere}
+        .detail-modal-box .planning-result-box>div[id$="Files"] a{color:#1e6fa8!important;font-weight:600;text-decoration:underline;overflow-wrap:anywhere}
+        .detail-modal-box .planning-result-box form{display:flex!important;align-items:center!important;gap:9px!important;flex-wrap:wrap!important;margin:0!important}
+        .detail-modal-box .planning-result-box form input[type=file]{flex:1 1 220px;min-height:36px;padding:6px 8px!important;border:1px solid #b8c9da!important;border-radius:8px!important;background:#fff!important;color:#627d98!important;font-size:12px!important}
+        .detail-modal-box .planning-result-box form button{min-height:36px!important;padding:8px 12px!important;background:#111c91!important;color:#fff!important;border:0!important;border-radius:8px!important;font-size:12px!important;white-space:nowrap}
+        .detail-modal-box .planning-result-box form button:hover{background:#0d166f!important}
+        .detail-modal-box .result-waiting-message{padding:9px 10px;border:1px solid #f1d28a;border-radius:8px;background:#fffaf0;color:#8a6417;font-size:12px}
+        @media(max-width:600px){.detail-modal-box .planning-result-box form{align-items:stretch!important;flex-direction:column!important}.detail-modal-box .planning-result-box form input[type=file],.detail-modal-box .planning-result-box form button{width:100%!important;flex-basis:auto}}
         .result-file-row { display:flex; align-items:center; justify-content:space-between; gap:10px; margin:4px 0; }
         .result-delete { padding:4px 8px; border:0; border-radius:4px; background:#a61b1b; color:#fff; cursor:pointer; font-size:12px; }
         .result-waiting-message { padding:10px; border-radius:6px; background:#fff5d6; color:#795900; }
