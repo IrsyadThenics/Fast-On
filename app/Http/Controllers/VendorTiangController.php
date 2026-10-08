@@ -13,7 +13,7 @@ class VendorTiangController extends Controller
 {
     private function authorizeVendor(): void
     {
-        abort_unless(in_array($this->currentUser()->role?->role_code, ['VENDOR_TIANG', 'VENDOR_TIANG2'], true), 403);
+        abort_unless(in_array($this->currentUser()->role?->role_code, ['VENDOR_TIANG', 'VENDOR_TIANG2', '5180T1', '5180T2', '5180T3', '5180T4', '5180T5', '5180T6', '5180T7', '5180T8', '5180T9'], true), 403);
     }
 
     public function index()
@@ -103,7 +103,7 @@ class VendorTiangController extends Controller
     {
         $roleCode = $this->currentUser()->role?->role_code;
         $isPlanning = $roleCode === '5180REN';
-        $isVendor = in_array($roleCode, ['VENDOR_TIANG', 'VENDOR_TIANG2'], true);
+        $isVendor = in_array($roleCode, ['VENDOR_TIANG', 'VENDOR_TIANG2', '5180T1', '5180T2', '5180T3', '5180T4', '5180T5', '5180T6', '5180T7', '5180T8', '5180T9'], true);
 
         abort_unless($isPlanning || $isVendor, 403);
 
@@ -122,7 +122,7 @@ class VendorTiangController extends Controller
         $roleCode = $this->currentUser()->role?->role_code;
         $isPlanning = $roleCode === '5180REN';
         $isUp3 = $this->currentUser()->role?->type === 'UP3';
-        $isVendor = in_array($roleCode, ['VENDOR_TIANG', 'VENDOR_TIANG2'], true);
+        $isVendor = in_array($roleCode, ['VENDOR_TIANG', 'VENDOR_TIANG2', '5180T1', '5180T2', '5180T3', '5180T4', '5180T5', '5180T6', '5180T7', '5180T8', '5180T9'], true);
         abort_unless($isPlanning || $isUp3 || $isVendor, 403);
 
         $pengiriman = $pelanggan->pengirimanVendor()->with('vendor')->firstOrFail();
@@ -181,7 +181,7 @@ class VendorTiangController extends Controller
         $roleCode = $this->currentUser()->role?->role_code;
         $isPlanning = $roleCode === '5180REN';
         $isUp3 = $this->currentUser()->role?->type === 'UP3';
-        $isVendor = in_array($roleCode, ['VENDOR_TIANG', 'VENDOR_TIANG2'], true);
+        $isVendor = in_array($roleCode, ['VENDOR_TIANG', 'VENDOR_TIANG2', '5180T1', '5180T2', '5180T3', '5180T4', '5180T5', '5180T6', '5180T7', '5180T8', '5180T9'], true);
         abort_unless($isPlanning || $isUp3 || $isVendor, 403);
 
         $pengiriman = $pelanggan->pengirimanVendor()->with('vendor')->firstOrFail();

@@ -36,11 +36,20 @@ class RoleSeeder extends Seeder
             ['role_code' => '51807', 'name' => 'ULP Jatirogo',   'type' => 'ULP'],
             ['role_code' => '51808', 'name' => 'ULP Sumberrejo', 'type' => 'ULP'],
 
-            // VENDOR TIANG DAN VENDOR KONSTRUKSI
-            ['role_code' => 'VENDOR_TIANG', 'name' => 'Vendor Tiang', 'type' => 'ULP'],
-            ['role_code' => 'VENDOR_TIANG2', 'name' => 'Vendor Tiang', 'type' => 'ULP'],
-            ['role_code' => 'VENDOR_KONSTRUKSI', 'name' => 'Vendor Konstruksi', 'type' => 'ULP'],
-            ['role_code' => 'VENDOR_KONSTRUKSI2', 'name' => 'Vendor Konstruksi', 'type' => 'ULP'],
+            // VENDOR TIANG
+            ['role_code' => '5180T1', 'name' => 'PT. JAYA BETON INDONESIA', 'type' => 'VENDOR'],
+            ['role_code' => '5180T2', 'name' => 'PT. HUME SAKTI INDONESIA', 'type' => 'VENDOR'],
+            ['role_code' => '5180T3', 'name' => 'PT. TONGGAK AMPUH', 'type' => 'VENDOR'],
+            ['role_code' => '5180T4', 'name' => 'PT. TJAKRINDO MAS', 'type' => 'VENDOR'],
+            ['role_code' => '5180T5', 'name' => 'PT. WIJAYA KARYA BETON', 'type' => 'VENDOR'],
+            ['role_code' => '5180T6', 'name' => 'PT. SENTOSA SAKTI MAKMUR', 'type' => 'VENDOR'],
+            ['role_code' => '5180T7', 'name' => 'PT. TJAKRINDO MAS', 'type' => 'VENDOR'],
+            ['role_code' => '5180T8', 'name' => 'PT KENCANA TEKNIKATAMA SENTOSA', 'type' => 'VENDOR'],
+            ['role_code' => '5180T9', 'name' => 'PT. MAKMUR JAYA', 'type' => 'VENDOR'],
+
+            // VENDOR KONSTRUKSI
+            ['role_code' => '5180K1', 'name' => 'PT. JAYA WIJAYA', 'type' => 'VENDOR'],
+            ['role_code' => '5180K2', 'name' => 'PT. KONSTRUKSI JAYA', 'type' => 'VENDOR'],
 
             // UP3
             ['role_code' => '5180PA',  'name' => 'Pelayanan UP3', 'type' => 'UP3'],

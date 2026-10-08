@@ -12,7 +12,7 @@ class VendorKonstruksiController extends Controller
 {
     private function authorizeVendor(): void
     {
-        abort_unless(in_array($this->currentUser()->role?->role_code, ['VENDOR_KONSTRUKSI', 'VENDOR_KONSTRUKSI2'], true), 403);
+        abort_unless(in_array($this->currentUser()->role?->role_code, ['VENDOR_KONSTRUKSI', 'VENDOR_KONSTRUKSI2', '5180K1', '5180K2'], true), 403);
     }
 
     public function index()
@@ -127,7 +127,7 @@ class VendorKonstruksiController extends Controller
         $roleCode = $this->currentUser()->role?->role_code;
         $isPlanning = $roleCode === '5180REN';
         $isConstructionUp3 = $roleCode === '5180KON';
-        $isVendor = in_array($roleCode, ['VENDOR_KONSTRUKSI', 'VENDOR_KONSTRUKSI2'], true);
+        $isVendor = in_array($roleCode, ['VENDOR_KONSTRUKSI', 'VENDOR_KONSTRUKSI2', '5180K1', '5180K2'], true);
         abort_unless($isPlanning || $isConstructionUp3 || $isVendor, 403);
 
         $pengiriman = $pelanggan->pengirimanKonstruksi()->with('vendor')->firstOrFail();

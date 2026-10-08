@@ -48,10 +48,10 @@ class AuthController extends Controller
         RateLimiter::clear($key);
         $request->session()->regenerate();
 
-        if (in_array($this->currentUser()->role?->role_code, ['VENDOR_TIANG', 'VENDOR_TIANG2'], true)) {
+        if (in_array($this->currentUser()->role?->role_code, ['VENDOR_TIANG', 'VENDOR_TIANG2', '5180T1', '5180T2', '5180T3', '5180T4', '5180T5', '5180T6', '5180T7', '5180T8', '5180T9'], true)) {
             return redirect()->route('vendor.tiang');
         }
-        if (in_array($this->currentUser()->role?->role_code, ['VENDOR_KONSTRUKSI', 'VENDOR_KONSTRUKSI2'], true)) {
+        if (in_array($this->currentUser()->role?->role_code, ['VENDOR_KONSTRUKSI', 'VENDOR_KONSTRUKSI2', '5180K1', '5180K2'], true)) {
             return redirect()->route('vendor.konstruksi');
         }
 
