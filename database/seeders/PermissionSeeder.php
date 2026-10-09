@@ -78,8 +78,9 @@ class PermissionSeeder extends Seeder
                 ?->permissions()->sync(Permission::whereIn('name', $names)->pluck('id'));
         }
 
-        // Administrator: semua privilege (sementara, termasuk upload Excel pelayanan)
+        // Role 5180 menggunakan tampilan dan privilege yang sama dengan Manager UP3.
+        $managerUp3Permissions = $map['5180MAN'] ?? [];
         Role::where('role_code', '5180')->first()
-            ?->permissions()->sync(Permission::pluck('id'));
+            ?->permissions()->sync(Permission::whereIn('name', $managerUp3Permissions)->pluck('id'));
     }
 }

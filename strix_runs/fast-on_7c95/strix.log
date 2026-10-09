@@ -1,0 +1,184 @@
+2026-10-09 11:13:28.103 INFO    fast-on_7c95 - strix.core.runner: Starting Strix scan fast-on_7c95 (image=ghcr.io/usestrix/strix-sandbox:1.3.0, max_turns=10, interactive=True, run_dir=/mnt/c/Users/Ibad/OneDrive/Dokumen/magang/program/Fast-On/strix_runs/fast-on_7c95)
+2026-10-09 11:13:28.104 INFO    fast-on_7c95 - strix.config.models: OpenAI API route for openai/gemini/gemini-3.7-flash: chat_completions
+2026-10-09 11:13:28.104 INFO    fast-on_7c95 - strix.core.runner: LLM model resolved: openai/gemini/gemini-3.7-flash
+2026-10-09 11:13:28.110 INFO    fast-on_7c95 - strix.core.runner: Bringing up sandbox session for scan fast-on_7c95
+2026-10-09 11:13:28.111 DEBUG   fast-on_7c95 - strix.runtime.backends: Selected sandbox backend: docker
+2026-10-09 11:13:28.120 INFO    fast-on_7c95 - strix.runtime.session_manager: Creating sandbox session for scan fast-on_7c95 (backend=docker, image=ghcr.io/usestrix/strix-sandbox:1.3.0)
+2026-10-09 11:13:28.293 DEBUG   fast-on_7c95 - strix.runtime.docker_client: Creating sandbox container: image=ghcr.io/usestrix/strix-sandbox:1.3.0 caps=['NET_ADMIN', 'NET_RAW'] exposed_ports=[48080]
+2026-10-09 11:13:28.504 INFO    fast-on_7c95 - strix.runtime.docker_client: Sandbox container created: id=517c36ee09f6 image=ghcr.io/usestrix/strix-sandbox:1.3.0
+2026-10-09 11:13:29.604 DEBUG   fast-on_7c95 - strix.runtime.session_manager: Caido host endpoint resolved: http://127.0.0.1:51186
+2026-10-09 11:13:29.605 INFO    fast-on_7c95 - strix.runtime.session_manager: Sandbox session for scan fast-on_7c95 ready and cached
+2026-10-09 11:13:29.605 INFO    fast-on_7c95 - strix.core.runner: Sandbox ready for scan fast-on_7c95
+2026-10-09 11:13:29.610 DEBUG   fast-on_7c95 - strix.skills: Loaded skill: scan_modes/quick -> quick
+2026-10-09 11:13:29.611 DEBUG   fast-on_7c95 - strix.skills: Loaded skill: tooling/agent_browser -> agent_browser
+2026-10-09 11:13:29.613 DEBUG   fast-on_7c95 - strix.skills: Loaded skill: tooling/python -> python
+2026-10-09 11:13:29.614 DEBUG   fast-on_7c95 - strix.skills: Loaded skill: analysis/counterevidence -> counterevidence
+2026-10-09 11:13:29.615 DEBUG   fast-on_7c95 - strix.skills: Loaded skill: analysis/severity_calibration -> severity_calibration
+2026-10-09 11:13:29.617 DEBUG   fast-on_7c95 - strix.skills: Loaded skill: coordination/root_agent -> root_agent
+2026-10-09 11:13:29.618 DEBUG   fast-on_7c95 - strix.skills: Loaded skill: coordination/source_aware_whitebox -> source_aware_whitebox
+2026-10-09 11:13:29.619 DEBUG   fast-on_7c95 - strix.skills: Loaded skill: custom/source_aware_sast -> source_aware_sast
+2026-10-09 11:13:29.620 DEBUG   fast-on_7c95 - strix.skills: Loaded skill: analysis/source_aware_discovery -> source_aware_discovery
+2026-10-09 11:13:29.621 DEBUG   fast-on_7c95 - strix.skills: Loaded skill: analysis/fix_verification -> fix_verification
+2026-10-09 11:13:29.621 DEBUG   fast-on_7c95 - strix.skills: load_skills: 10 skill(s) resolved
+2026-10-09 11:13:29.641 DEBUG   fast-on_7c95 - strix.agents.prompt: render_system_prompt: scan_mode=quick root=True whitebox=True skills=10 prompt_len=131017
+2026-10-09 11:13:29.641 INFO    fast-on_7c95 - strix.agents.factory: Built root agent 'Root Agent' (skills=0, tools=45, scan_mode=quick, whitebox=True)
+2026-10-09 11:13:29.642 INFO    fast-on_7c95 - strix.core.agents: agent.register f7d73515 (Root Agent) parent=-
+2026-10-09 11:13:29.765 INFO    fast-on_7c95 - strix.runtime.caido_bootstrap: Bootstrapping Caido client (host=http://127.0.0.1:51186, container=http://127.0.0.1:48080)
+2026-10-09 11:13:29.975 DEBUG   fast-on_7c95 - openai.agents: Tracing is disabled. Not creating trace
+2026-10-09 11:13:29.976 DEBUG   fast-on_7c95 - openai.agents: Setting current trace: no-op
+2026-10-09 11:13:29.977 DEBUG   fast-on_7c95 - openai.agents: Tracing is disabled. Not creating span
+2026-10-09 11:13:30.026 DEBUG   fast-on_7c95 - openai.agents: Tracing is disabled. Not creating span
+2026-10-09 11:13:30.026 DEBUG   fast-on_7c95 - openai.agents: Starting turn 1, current_agent=Root Agent
+2026-10-09 11:13:30.027 DEBUG   fast-on_7c95 - openai.agents: Tracing is disabled. Not creating span
+2026-10-09 11:13:30.030 DEBUG   fast-on_7c95 - openai.agents: No conversation_id available for request
+2026-10-09 11:13:30.038 DEBUG   fast-on_7c95 - openai.agents: Tracing is disabled. Not creating span
+2026-10-09 11:13:30.040 DEBUG   fast-on_7c95 - openai.agents: Calling LLM
+2026-10-09 11:13:30.613 INFO    fast-on_7c95 - strix.runtime.caido_bootstrap: Caido project selected: 747e3474-8a7d-41ec-b7d9-6aa652efe202
+2026-10-09 11:13:48.365 DEBUG   fast-on_7c95 - strix.llm.request_log: llm_request route=openai provider=openai model=openai/gemini/gemini-3.7-flash host=172.26.240.1 outcome=success status=200 request_id=- response_id=- stream=1 duration_ms=18335 ttft_ms=10473 req_bytes=262211 res_bytes=3705 finish=- in=62862 out=1504 cached=56188 cost=- agent=f7d73515 attempt=0
+2026-10-09 11:13:48.398 INFO    fast-on_7c95 - strix.report.coverage: Saved coverage record to: /mnt/c/Users/Ibad/OneDrive/Dokumen/magang/program/Fast-On/strix_runs/fast-on_7c95/coverage.json (0 surface(s), 1 gap(s))
+2026-10-09 11:13:48.413 INFO    fast-on_7c95 - strix.report.sarif: Wrote SARIF 2.1.0 report: /mnt/c/Users/Ibad/OneDrive/Dokumen/magang/program/Fast-On/strix_runs/fast-on_7c95/findings.sarif (0 results)
+2026-10-09 11:13:48.430 INFO    fast-on_7c95 - strix.report.state: Essential scan data saved to: /mnt/c/Users/Ibad/OneDrive/Dokumen/magang/program/Fast-On/strix_runs/fast-on_7c95
+2026-10-09 11:13:48.431 DEBUG   fast-on_7c95 - openai.agents: Processing output item type=reasoning class=ResponseReasoningItem
+2026-10-09 11:13:48.432 DEBUG   fast-on_7c95 - openai.agents: Processing output item type=message class=ResponseOutputMessage
+2026-10-09 11:13:48.433 DEBUG   fast-on_7c95 - openai.agents: Processing output item type=function_call class=ResponseFunctionToolCall
+2026-10-09 11:13:48.435 DEBUG   fast-on_7c95 - openai.agents: Tracing is disabled. Not creating span
+2026-10-09 11:13:48.756 DEBUG   fast-on_7c95 - openai.agents: Turn 1 complete, next_step type=NextStepRunAgain
+2026-10-09 11:13:48.852 DEBUG   fast-on_7c95 - openai.agents: Starting turn 2, current_agent=Root Agent
+2026-10-09 11:13:48.854 DEBUG   fast-on_7c95 - openai.agents: Tracing is disabled. Not creating span
+2026-10-09 11:13:48.856 DEBUG   fast-on_7c95 - openai.agents: No conversation_id available for request
+2026-10-09 11:13:48.863 DEBUG   fast-on_7c95 - openai.agents: Tracing is disabled. Not creating span
+2026-10-09 11:13:48.866 DEBUG   fast-on_7c95 - openai.agents: Calling LLM
+2026-10-09 11:13:53.366 DEBUG   fast-on_7c95 - strix.llm.request_log: llm_request route=openai provider=openai model=openai/gemini/gemini-3.7-flash host=172.26.240.1 outcome=success status=200 request_id=- response_id=- stream=1 duration_ms=4508 ttft_ms=3088 req_bytes=267623 res_bytes=1451 finish=- in=63972 out=362 cached=57121 cost=- agent=f7d73515 attempt=0
+2026-10-09 11:13:53.395 INFO    fast-on_7c95 - strix.report.coverage: Saved coverage record to: /mnt/c/Users/Ibad/OneDrive/Dokumen/magang/program/Fast-On/strix_runs/fast-on_7c95/coverage.json (0 surface(s), 1 gap(s))
+2026-10-09 11:13:53.413 INFO    fast-on_7c95 - strix.report.sarif: Wrote SARIF 2.1.0 report: /mnt/c/Users/Ibad/OneDrive/Dokumen/magang/program/Fast-On/strix_runs/fast-on_7c95/findings.sarif (0 results)
+2026-10-09 11:13:53.435 INFO    fast-on_7c95 - strix.report.state: Essential scan data saved to: /mnt/c/Users/Ibad/OneDrive/Dokumen/magang/program/Fast-On/strix_runs/fast-on_7c95
+2026-10-09 11:13:53.436 DEBUG   fast-on_7c95 - openai.agents: Processing output item type=reasoning class=ResponseReasoningItem
+2026-10-09 11:13:53.437 DEBUG   fast-on_7c95 - openai.agents: Processing output item type=message class=ResponseOutputMessage
+2026-10-09 11:13:53.438 DEBUG   fast-on_7c95 - openai.agents: Processing output item type=function_call class=ResponseFunctionToolCall
+2026-10-09 11:13:53.440 DEBUG   fast-on_7c95 - openai.agents: Tracing is disabled. Not creating span
+2026-10-09 11:13:53.607 DEBUG   fast-on_7c95 - openai.agents: Turn 2 complete, next_step type=NextStepRunAgain
+2026-10-09 11:13:53.678 DEBUG   fast-on_7c95 - openai.agents: Starting turn 3, current_agent=Root Agent
+2026-10-09 11:13:53.678 DEBUG   fast-on_7c95 - openai.agents: Tracing is disabled. Not creating span
+2026-10-09 11:13:53.680 DEBUG   fast-on_7c95 - openai.agents: No conversation_id available for request
+2026-10-09 11:13:53.684 DEBUG   fast-on_7c95 - openai.agents: Tracing is disabled. Not creating span
+2026-10-09 11:13:53.687 DEBUG   fast-on_7c95 - openai.agents: Calling LLM
+2026-10-09 11:13:58.291 DEBUG   fast-on_7c95 - strix.llm.request_log: llm_request route=openai provider=openai model=openai/gemini/gemini-3.7-flash host=172.26.240.1 outcome=success status=200 request_id=- response_id=- stream=1 duration_ms=4608 ttft_ms=4151 req_bytes=268881 res_bytes=1576 finish=- in=64258 out=241 cached=57113 cost=- agent=f7d73515 attempt=0
+2026-10-09 11:13:58.342 INFO    fast-on_7c95 - strix.report.coverage: Saved coverage record to: /mnt/c/Users/Ibad/OneDrive/Dokumen/magang/program/Fast-On/strix_runs/fast-on_7c95/coverage.json (0 surface(s), 1 gap(s))
+2026-10-09 11:13:58.359 INFO    fast-on_7c95 - strix.report.sarif: Wrote SARIF 2.1.0 report: /mnt/c/Users/Ibad/OneDrive/Dokumen/magang/program/Fast-On/strix_runs/fast-on_7c95/findings.sarif (0 results)
+2026-10-09 11:13:58.368 INFO    fast-on_7c95 - strix.report.state: Essential scan data saved to: /mnt/c/Users/Ibad/OneDrive/Dokumen/magang/program/Fast-On/strix_runs/fast-on_7c95
+2026-10-09 11:13:58.369 DEBUG   fast-on_7c95 - openai.agents: Processing output item type=reasoning class=ResponseReasoningItem
+2026-10-09 11:13:58.370 DEBUG   fast-on_7c95 - openai.agents: Processing output item type=message class=ResponseOutputMessage
+2026-10-09 11:13:58.370 DEBUG   fast-on_7c95 - openai.agents: Processing output item type=function_call class=ResponseFunctionToolCall
+2026-10-09 11:13:58.378 DEBUG   fast-on_7c95 - openai.agents: Tracing is disabled. Not creating span
+2026-10-09 11:13:58.674 DEBUG   fast-on_7c95 - openai.agents: Turn 3 complete, next_step type=NextStepRunAgain
+2026-10-09 11:13:58.769 DEBUG   fast-on_7c95 - openai.agents: Starting turn 4, current_agent=Root Agent
+2026-10-09 11:13:58.769 DEBUG   fast-on_7c95 - openai.agents: Tracing is disabled. Not creating span
+2026-10-09 11:13:58.771 DEBUG   fast-on_7c95 - openai.agents: No conversation_id available for request
+2026-10-09 11:13:58.775 DEBUG   fast-on_7c95 - openai.agents: Tracing is disabled. Not creating span
+2026-10-09 11:13:58.778 DEBUG   fast-on_7c95 - openai.agents: Calling LLM
+2026-10-09 11:14:01.413 DEBUG   fast-on_7c95 - strix.llm.request_log: llm_request route=openai provider=openai model=openai/gemini/gemini-3.7-flash host=172.26.240.1 outcome=success status=200 request_id=- response_id=- stream=1 duration_ms=2639 ttft_ms=2343 req_bytes=270242 res_bytes=1475 finish=- in=64554 out=232 cached=57105 cost=- agent=f7d73515 attempt=0
+2026-10-09 11:14:01.440 INFO    fast-on_7c95 - strix.report.coverage: Saved coverage record to: /mnt/c/Users/Ibad/OneDrive/Dokumen/magang/program/Fast-On/strix_runs/fast-on_7c95/coverage.json (0 surface(s), 1 gap(s))
+2026-10-09 11:14:01.457 INFO    fast-on_7c95 - strix.report.sarif: Wrote SARIF 2.1.0 report: /mnt/c/Users/Ibad/OneDrive/Dokumen/magang/program/Fast-On/strix_runs/fast-on_7c95/findings.sarif (0 results)
+2026-10-09 11:14:01.470 INFO    fast-on_7c95 - strix.report.state: Essential scan data saved to: /mnt/c/Users/Ibad/OneDrive/Dokumen/magang/program/Fast-On/strix_runs/fast-on_7c95
+2026-10-09 11:14:01.471 DEBUG   fast-on_7c95 - openai.agents: Processing output item type=reasoning class=ResponseReasoningItem
+2026-10-09 11:14:01.472 DEBUG   fast-on_7c95 - openai.agents: Processing output item type=message class=ResponseOutputMessage
+2026-10-09 11:14:01.473 DEBUG   fast-on_7c95 - openai.agents: Processing output item type=function_call class=ResponseFunctionToolCall
+2026-10-09 11:14:01.475 DEBUG   fast-on_7c95 - openai.agents: Tracing is disabled. Not creating span
+2026-10-09 11:14:01.735 DEBUG   fast-on_7c95 - openai.agents: Turn 4 complete, next_step type=NextStepRunAgain
+2026-10-09 11:14:01.802 DEBUG   fast-on_7c95 - openai.agents: Starting turn 5, current_agent=Root Agent
+2026-10-09 11:14:01.803 DEBUG   fast-on_7c95 - openai.agents: Tracing is disabled. Not creating span
+2026-10-09 11:14:01.804 DEBUG   fast-on_7c95 - openai.agents: No conversation_id available for request
+2026-10-09 11:14:01.808 DEBUG   fast-on_7c95 - openai.agents: Tracing is disabled. Not creating span
+2026-10-09 11:14:01.810 DEBUG   fast-on_7c95 - openai.agents: Calling LLM
+2026-10-09 11:14:04.717 DEBUG   fast-on_7c95 - strix.llm.request_log: llm_request route=openai provider=openai model=openai/gemini/gemini-3.7-flash host=172.26.240.1 outcome=success status=200 request_id=- response_id=- stream=1 duration_ms=2911 ttft_ms=2389 req_bytes=272118 res_bytes=1608 finish=- in=65095 out=251 cached=57098 cost=- agent=f7d73515 attempt=0
+2026-10-09 11:14:04.733 INFO    fast-on_7c95 - strix.report.coverage: Saved coverage record to: /mnt/c/Users/Ibad/OneDrive/Dokumen/magang/program/Fast-On/strix_runs/fast-on_7c95/coverage.json (0 surface(s), 1 gap(s))
+2026-10-09 11:14:04.754 INFO    fast-on_7c95 - strix.report.sarif: Wrote SARIF 2.1.0 report: /mnt/c/Users/Ibad/OneDrive/Dokumen/magang/program/Fast-On/strix_runs/fast-on_7c95/findings.sarif (0 results)
+2026-10-09 11:14:04.773 INFO    fast-on_7c95 - strix.report.state: Essential scan data saved to: /mnt/c/Users/Ibad/OneDrive/Dokumen/magang/program/Fast-On/strix_runs/fast-on_7c95
+2026-10-09 11:14:04.774 DEBUG   fast-on_7c95 - openai.agents: Processing output item type=reasoning class=ResponseReasoningItem
+2026-10-09 11:14:04.775 DEBUG   fast-on_7c95 - openai.agents: Processing output item type=message class=ResponseOutputMessage
+2026-10-09 11:14:04.775 DEBUG   fast-on_7c95 - openai.agents: Processing output item type=function_call class=ResponseFunctionToolCall
+2026-10-09 11:14:04.777 DEBUG   fast-on_7c95 - openai.agents: Tracing is disabled. Not creating span
+2026-10-09 11:14:14.803 DEBUG   fast-on_7c95 - openai.agents: Turn 5 complete, next_step type=NextStepRunAgain
+2026-10-09 11:14:14.896 DEBUG   fast-on_7c95 - openai.agents: Starting turn 6, current_agent=Root Agent
+2026-10-09 11:14:14.896 DEBUG   fast-on_7c95 - openai.agents: Tracing is disabled. Not creating span
+2026-10-09 11:14:14.899 DEBUG   fast-on_7c95 - openai.agents: No conversation_id available for request
+2026-10-09 11:14:14.903 DEBUG   fast-on_7c95 - openai.agents: Tracing is disabled. Not creating span
+2026-10-09 11:14:14.906 DEBUG   fast-on_7c95 - openai.agents: Calling LLM
+2026-10-09 11:14:18.203 DEBUG   fast-on_7c95 - strix.llm.request_log: llm_request route=openai provider=openai model=openai/gemini/gemini-3.7-flash host=172.26.240.1 outcome=success status=200 request_id=- response_id=- stream=1 duration_ms=3302 ttft_ms=2884 req_bytes=273508 res_bytes=1472 finish=- in=65400 out=233 cached=61168 cost=- agent=f7d73515 attempt=0
+2026-10-09 11:14:18.236 INFO    fast-on_7c95 - strix.report.coverage: Saved coverage record to: /mnt/c/Users/Ibad/OneDrive/Dokumen/magang/program/Fast-On/strix_runs/fast-on_7c95/coverage.json (0 surface(s), 1 gap(s))
+2026-10-09 11:14:18.249 INFO    fast-on_7c95 - strix.report.sarif: Wrote SARIF 2.1.0 report: /mnt/c/Users/Ibad/OneDrive/Dokumen/magang/program/Fast-On/strix_runs/fast-on_7c95/findings.sarif (0 results)
+2026-10-09 11:14:18.260 INFO    fast-on_7c95 - strix.report.state: Essential scan data saved to: /mnt/c/Users/Ibad/OneDrive/Dokumen/magang/program/Fast-On/strix_runs/fast-on_7c95
+2026-10-09 11:14:18.262 DEBUG   fast-on_7c95 - openai.agents: Processing output item type=reasoning class=ResponseReasoningItem
+2026-10-09 11:14:18.263 DEBUG   fast-on_7c95 - openai.agents: Processing output item type=message class=ResponseOutputMessage
+2026-10-09 11:14:18.264 DEBUG   fast-on_7c95 - openai.agents: Processing output item type=function_call class=ResponseFunctionToolCall
+2026-10-09 11:14:18.270 DEBUG   fast-on_7c95 - openai.agents: Tracing is disabled. Not creating span
+2026-10-09 11:14:33.272 DEBUG   fast-on_7c95 - openai.agents: Turn 6 complete, next_step type=NextStepRunAgain
+2026-10-09 11:14:33.362 DEBUG   fast-on_7c95 - openai.agents: Starting turn 7, current_agent=Root Agent
+2026-10-09 11:14:33.363 DEBUG   fast-on_7c95 - openai.agents: Tracing is disabled. Not creating span
+2026-10-09 11:14:33.365 DEBUG   fast-on_7c95 - openai.agents: No conversation_id available for request
+2026-10-09 11:14:33.369 DEBUG   fast-on_7c95 - openai.agents: Tracing is disabled. Not creating span
+2026-10-09 11:14:33.371 DEBUG   fast-on_7c95 - openai.agents: Calling LLM
+2026-10-09 11:14:44.121 WARNING fast-on_7c95 - strix.llm.request_log: llm_request route=openai provider=openai model=openai/gemini/gemini-3.7-flash host=172.26.240.1 outcome=error status=429 request_id=- response_id=- stream=1 duration_ms=10754 ttft_ms=- req_bytes=275142 res_bytes=1568 finish=- in=- out=- cached=- cost=- agent=f7d73515 attempt=0 error=RateLimitError: Error code: 429 - {'error': {'message': '[gemini/gemini-3.7-flash] [429]: {\n  "error": {\n    "code": 429,\n    "message": "You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota exceeded for metric: generativelanguage.googleapis.com/generate_content_free_tier_input_token_count, limit: 250000, model: gemini-3.7-flash\\nPlease retry in 14.529199432s.",\n    "status": "RESOURCE_EXHAUSTED",\n    "details": [\n      {\n        "@type": "type.googleapis.com/google.rpc.Help",\n        "links": [\n          {\n            "description": "Learn more about Gemini API quotas",\n            "url": "https://ai.google.dev/gemini-api/docs/rate-limits"\n          }\n        ]\n      },\n      {\n        "@type": "type.googleapis.com/google.rpc.QuotaFailure",\n        "violations": [\n          {\n            "quotaMetric": "generativelanguage.googleapis.com/generate_content_free_tier_input_token_count",\n            "quotaId": "GenerateContentInputTokensPerModelPerMinute-FreeTier",\n            "quotaDimensions": {\n              "model": "gemini-3.7-flash",\n              "location": "global"\n            },\n            "quotaValue": "250000"\n          }\n        ]\n      },\n      {\n        "@type": "type.googleapis.com/google.rpc.RetryInfo",\n        "retryDelay": "14s"\n      }\n    ]\n  }\n}\n (reset after 8s)'}}
+2026-10-09 11:14:44.121 DEBUG   fast-on_7c95 - openai.agents: Retrying failed streamed model request in 8.0s (attempt 1/5).
+2026-10-09 11:14:52.128 DEBUG   fast-on_7c95 - openai.agents: Tracing is disabled. Not creating span
+2026-10-09 11:14:52.131 DEBUG   fast-on_7c95 - openai.agents: Calling LLM
+2026-10-09 11:14:52.704 WARNING fast-on_7c95 - strix.llm.request_log: llm_request route=openai provider=openai model=openai/gemini/gemini-3.7-flash host=172.26.240.1 outcome=error status=429 request_id=- response_id=- stream=1 duration_ms=579 ttft_ms=- req_bytes=275142 res_bytes=1567 finish=- in=- out=- cached=- cost=- agent=f7d73515 attempt=0 error=RateLimitError: Error code: 429 - {'error': {'message': '[gemini/gemini-3.7-flash] [429]: {\n  "error": {\n    "code": 429,\n    "message": "You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota exceeded for metric: generativelanguage.googleapis.com/generate_content_free_tier_input_token_count, limit: 250000, model: gemini-3.7-flash\\nPlease retry in 5.946812191s.",\n    "status": "RESOURCE_EXHAUSTED",\n    "details": [\n      {\n        "@type": "type.googleapis.com/google.rpc.Help",\n        "links": [\n          {\n            "description": "Learn more about Gemini API quotas",\n            "url": "https://ai.google.dev/gemini-api/docs/rate-limits"\n          }\n        ]\n      },\n      {\n        "@type": "type.googleapis.com/google.rpc.QuotaFailure",\n        "violations": [\n          {\n            "quotaMetric": "generativelanguage.googleapis.com/generate_content_free_tier_input_token_count",\n            "quotaId": "GenerateContentInputTokensPerModelPerMinute-FreeTier",\n            "quotaDimensions": {\n              "location": "global",\n              "model": "gemini-3.7-flash"\n            },\n            "quotaValue": "250000"\n          }\n        ]\n      },\n      {\n        "@type": "type.googleapis.com/google.rpc.RetryInfo",\n        "retryDelay": "5s"\n      }\n    ]\n  }\n}\n (reset after 16s)'}}
+2026-10-09 11:14:52.705 DEBUG   fast-on_7c95 - openai.agents: Retrying failed streamed model request in 16.0s (attempt 2/5).
+2026-10-09 11:15:08.707 DEBUG   fast-on_7c95 - openai.agents: Tracing is disabled. Not creating span
+2026-10-09 11:15:08.710 DEBUG   fast-on_7c95 - openai.agents: Calling LLM
+2026-10-09 11:15:38.564 DEBUG   fast-on_7c95 - strix.llm.request_log: llm_request route=openai provider=openai model=openai/gemini/gemini-3.7-flash host=172.26.240.1 outcome=success status=200 request_id=- response_id=- stream=1 duration_ms=29861 ttft_ms=23902 req_bytes=275142 res_bytes=1672 finish=- in=65770 out=273 cached=56179 cost=- agent=f7d73515 attempt=0
+2026-10-09 11:15:38.593 INFO    fast-on_7c95 - strix.report.coverage: Saved coverage record to: /mnt/c/Users/Ibad/OneDrive/Dokumen/magang/program/Fast-On/strix_runs/fast-on_7c95/coverage.json (0 surface(s), 1 gap(s))
+2026-10-09 11:15:38.629 INFO    fast-on_7c95 - strix.report.sarif: Wrote SARIF 2.1.0 report: /mnt/c/Users/Ibad/OneDrive/Dokumen/magang/program/Fast-On/strix_runs/fast-on_7c95/findings.sarif (0 results)
+2026-10-09 11:15:38.673 INFO    fast-on_7c95 - strix.report.state: Essential scan data saved to: /mnt/c/Users/Ibad/OneDrive/Dokumen/magang/program/Fast-On/strix_runs/fast-on_7c95
+2026-10-09 11:15:38.675 DEBUG   fast-on_7c95 - openai.agents: Processing output item type=reasoning class=ResponseReasoningItem
+2026-10-09 11:15:38.677 DEBUG   fast-on_7c95 - openai.agents: Processing output item type=message class=ResponseOutputMessage
+2026-10-09 11:15:38.679 DEBUG   fast-on_7c95 - openai.agents: Processing output item type=function_call class=ResponseFunctionToolCall
+2026-10-09 11:15:38.681 DEBUG   fast-on_7c95 - openai.agents: Tracing is disabled. Not creating span
+2026-10-09 11:15:48.716 DEBUG   fast-on_7c95 - openai.agents: Turn 7 complete, next_step type=NextStepRunAgain
+2026-10-09 11:15:48.828 DEBUG   fast-on_7c95 - openai.agents: Starting turn 8, current_agent=Root Agent
+2026-10-09 11:15:48.828 DEBUG   fast-on_7c95 - openai.agents: Tracing is disabled. Not creating span
+2026-10-09 11:15:48.830 DEBUG   fast-on_7c95 - openai.agents: No conversation_id available for request
+2026-10-09 11:15:48.834 DEBUG   fast-on_7c95 - openai.agents: Tracing is disabled. Not creating span
+2026-10-09 11:15:48.837 DEBUG   fast-on_7c95 - openai.agents: Calling LLM
+2026-10-09 11:16:05.831 DEBUG   fast-on_7c95 - strix.llm.request_log: llm_request route=openai provider=openai model=openai/gemini/gemini-3.7-flash host=172.26.240.1 outcome=success status=200 request_id=- response_id=- stream=1 duration_ms=17001 ttft_ms=16995 req_bytes=276573 res_bytes=1448 finish=- in=66093 out=220 cached=60189 cost=- agent=f7d73515 attempt=0
+2026-10-09 11:16:05.865 INFO    fast-on_7c95 - strix.report.coverage: Saved coverage record to: /mnt/c/Users/Ibad/OneDrive/Dokumen/magang/program/Fast-On/strix_runs/fast-on_7c95/coverage.json (0 surface(s), 1 gap(s))
+2026-10-09 11:16:05.886 INFO    fast-on_7c95 - strix.report.sarif: Wrote SARIF 2.1.0 report: /mnt/c/Users/Ibad/OneDrive/Dokumen/magang/program/Fast-On/strix_runs/fast-on_7c95/findings.sarif (0 results)
+2026-10-09 11:16:05.909 INFO    fast-on_7c95 - strix.report.state: Essential scan data saved to: /mnt/c/Users/Ibad/OneDrive/Dokumen/magang/program/Fast-On/strix_runs/fast-on_7c95
+2026-10-09 11:16:05.911 DEBUG   fast-on_7c95 - openai.agents: Processing output item type=reasoning class=ResponseReasoningItem
+2026-10-09 11:16:05.913 DEBUG   fast-on_7c95 - openai.agents: Processing output item type=message class=ResponseOutputMessage
+2026-10-09 11:16:05.914 DEBUG   fast-on_7c95 - openai.agents: Processing output item type=function_call class=ResponseFunctionToolCall
+2026-10-09 11:16:05.919 DEBUG   fast-on_7c95 - openai.agents: Tracing is disabled. Not creating span
+2026-10-09 11:16:05.920 DEBUG   fast-on_7c95 - openai.agents: Invoking tool view_agent_graph
+2026-10-09 11:16:05.921 DEBUG   fast-on_7c95 - openai.agents: Tool view_agent_graph completed.
+2026-10-09 11:16:05.922 DEBUG   fast-on_7c95 - openai.agents: Turn 8 complete, next_step type=NextStepRunAgain
+2026-10-09 11:16:06.015 DEBUG   fast-on_7c95 - openai.agents: Starting turn 9, current_agent=Root Agent
+2026-10-09 11:16:06.016 DEBUG   fast-on_7c95 - openai.agents: Tracing is disabled. Not creating span
+2026-10-09 11:16:06.017 DEBUG   fast-on_7c95 - openai.agents: No conversation_id available for request
+2026-10-09 11:16:06.021 DEBUG   fast-on_7c95 - openai.agents: Tracing is disabled. Not creating span
+2026-10-09 11:16:06.023 DEBUG   fast-on_7c95 - openai.agents: Calling LLM
+2026-10-09 11:16:27.876 DEBUG   fast-on_7c95 - strix.llm.request_log: llm_request route=openai provider=openai model=openai/gemini/gemini-3.7-flash host=172.26.240.1 outcome=success status=200 request_id=- response_id=- stream=1 duration_ms=21857 ttft_ms=17075 req_bytes=277948 res_bytes=3882 finish=- in=66392 out=630 cached=60185 cost=- agent=f7d73515 attempt=0
+2026-10-09 11:16:27.901 INFO    fast-on_7c95 - strix.report.coverage: Saved coverage record to: /mnt/c/Users/Ibad/OneDrive/Dokumen/magang/program/Fast-On/strix_runs/fast-on_7c95/coverage.json (0 surface(s), 1 gap(s))
+2026-10-09 11:16:27.916 INFO    fast-on_7c95 - strix.report.sarif: Wrote SARIF 2.1.0 report: /mnt/c/Users/Ibad/OneDrive/Dokumen/magang/program/Fast-On/strix_runs/fast-on_7c95/findings.sarif (0 results)
+2026-10-09 11:16:27.931 INFO    fast-on_7c95 - strix.report.state: Essential scan data saved to: /mnt/c/Users/Ibad/OneDrive/Dokumen/magang/program/Fast-On/strix_runs/fast-on_7c95
+2026-10-09 11:16:27.932 DEBUG   fast-on_7c95 - openai.agents: Processing output item type=reasoning class=ResponseReasoningItem
+2026-10-09 11:16:27.933 DEBUG   fast-on_7c95 - openai.agents: Processing output item type=message class=ResponseOutputMessage
+2026-10-09 11:16:27.933 DEBUG   fast-on_7c95 - openai.agents: Processing output item type=function_call class=ResponseFunctionToolCall
+2026-10-09 11:16:27.935 DEBUG   fast-on_7c95 - openai.agents: Tracing is disabled. Not creating span
+2026-10-09 11:16:27.936 DEBUG   fast-on_7c95 - openai.agents: Invoking tool finish_scan
+2026-10-09 11:16:27.938 INFO    fast-on_7c95 - strix.report.state: Updated scan final fields
+2026-10-09 11:16:27.961 INFO    fast-on_7c95 - strix.report.coverage: Saved coverage record to: /mnt/c/Users/Ibad/OneDrive/Dokumen/magang/program/Fast-On/strix_runs/fast-on_7c95/coverage.json (0 surface(s), 1 gap(s))
+2026-10-09 11:16:27.966 INFO    fast-on_7c95 - strix.report.writer: Saved final penetration test report to: /mnt/c/Users/Ibad/OneDrive/Dokumen/magang/program/Fast-On/strix_runs/fast-on_7c95/penetration_test_report.md
+2026-10-09 11:16:27.978 INFO    fast-on_7c95 - strix.report.sarif: Wrote SARIF 2.1.0 report: /mnt/c/Users/Ibad/OneDrive/Dokumen/magang/program/Fast-On/strix_runs/fast-on_7c95/findings.sarif (0 results)
+2026-10-09 11:16:27.989 INFO    fast-on_7c95 - strix.report.state: Essential scan data saved to: /mnt/c/Users/Ibad/OneDrive/Dokumen/magang/program/Fast-On/strix_runs/fast-on_7c95
+2026-10-09 11:16:30.231 DEBUG   fast-on_7c95 - strix.telemetry.posthog: posthog event sent: scan_ended
+2026-10-09 11:16:31.668 DEBUG   fast-on_7c95 - strix.telemetry.scarf: scarf event sent: scan_ended
+2026-10-09 11:16:31.668 INFO    fast-on_7c95 - strix.tools.finish.tool: finish_scan: completed scan with 0 vulnerability report(s)
+2026-10-09 11:16:31.669 INFO    fast-on_7c95 - strix.core.agents: agent.status f7d73515=completed
+2026-10-09 11:16:31.681 DEBUG   fast-on_7c95 - openai.agents: Tool finish_scan completed.
+2026-10-09 11:16:31.682 DEBUG   fast-on_7c95 - openai.agents: Turn 9 complete, next_step type=NextStepFinalOutput
+2026-10-09 11:16:31.772 DEBUG   fast-on_7c95 - openai.agents: Resetting current trace
+2026-10-09 11:19:37.998 INFO    fast-on_7c95 - strix.core.runner: Tearing down sandbox session for scan fast-on_7c95
+2026-10-09 11:19:38.417 INFO    - - strix.report.coverage: Saved coverage record to: /mnt/c/Users/Ibad/OneDrive/Dokumen/magang/program/Fast-On/strix_runs/fast-on_7c95/coverage.json (0 surface(s), 1 gap(s))
+2026-10-09 11:19:38.421 INFO    - - strix.report.writer: Saved final penetration test report to: /mnt/c/Users/Ibad/OneDrive/Dokumen/magang/program/Fast-On/strix_runs/fast-on_7c95/penetration_test_report.md
+2026-10-09 11:19:38.435 INFO    - - strix.report.sarif: Wrote SARIF 2.1.0 report: /mnt/c/Users/Ibad/OneDrive/Dokumen/magang/program/Fast-On/strix_runs/fast-on_7c95/findings.sarif (0 results)
+2026-10-09 11:19:38.456 INFO    - - strix.report.state: Essential scan data saved to: /mnt/c/Users/Ibad/OneDrive/Dokumen/magang/program/Fast-On/strix_runs/fast-on_7c95

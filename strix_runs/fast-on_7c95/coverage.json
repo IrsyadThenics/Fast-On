@@ -1,0 +1,60 @@
+{
+  "schema_version": 1,
+  "generated_at": "2026-10-09 04:19:38 UTC",
+  "run_id": "fast-on_7c95",
+  "run_name": "fast-on_7c95",
+  "scope": {
+    "targets": [
+      {
+        "type": "local_code",
+        "details": {
+          "target_path": "/mnt/c/Users/Ibad/OneDrive/Dokumen/magang/program/Fast-On",
+          "workspace_subdir": "Fast-On"
+        },
+        "original": "/mnt/c/Users/Ibad/OneDrive/Dokumen/magang/program/Fast-On"
+      }
+    ],
+    "scan_mode": "quick",
+    "scope_mode": "auto",
+    "diff_scope": {
+      "active": false,
+      "mode": "auto"
+    },
+    "instruction": ""
+  },
+  "summary": {
+    "surfaces_reviewed": 0,
+    "outcomes": {},
+    "findings_filed": 0,
+    "gaps": 1
+  },
+  "machine_observed": {
+    "agents": [
+      {
+        "agent_id": "f7d73515",
+        "agent_name": "Root Agent",
+        "status": "completed",
+        "skills": [],
+        "task": "\n\nLocal Codebases: - /mnt/c/Users/Ibad/OneDrive/Dokumen/magang/program/Fast-On (available at: /workspace/Fast-On; this is the user's real directory, mounted live and writable — .git/.agents/.codex are read-only)",
+        "is_root": true
+      }
+    ],
+    "skills_exercised": [],
+    "findings_filed": 0,
+    "source": "runtime"
+  },
+  "completeness": {
+    "complete": true,
+    "scan_status": "completed",
+    "exit_reason": "finished_by_tool",
+    "caveats": []
+  },
+  "entries": [],
+  "gaps": [
+    {
+      "kind": "agent_recorded_no_coverage",
+      "agent_name": "Root Agent",
+      "detail": "Root Agent ran (status: completed) without recording any coverage. Whatever it examined is absent from this record."
+    }
+  ]
+}

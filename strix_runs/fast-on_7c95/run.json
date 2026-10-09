@@ -1,0 +1,356 @@
+{
+  "run_id": "fast-on_7c95",
+  "run_name": "fast-on_7c95",
+  "start_time": "2026-10-09T04:13:23.875956+00:00",
+  "end_time": "2026-10-09T04:16:27.938885+00:00",
+  "status": "completed",
+  "auth_mode": "api_key",
+  "targets_info": [
+    {
+      "type": "local_code",
+      "details": {
+        "target_path": "/mnt/c/Users/Ibad/OneDrive/Dokumen/magang/program/Fast-On",
+        "workspace_subdir": "Fast-On"
+      },
+      "original": "/mnt/c/Users/Ibad/OneDrive/Dokumen/magang/program/Fast-On"
+    }
+  ],
+  "llm_usage": {
+    "requests": 11,
+    "input_tokens": 584396,
+    "input_tokens_details": [
+      {
+        "cache_write_tokens": 0,
+        "cached_tokens": 522346
+      }
+    ],
+    "output_tokens": 3946,
+    "output_tokens_details": [
+      {
+        "reasoning_tokens": 3119
+      }
+    ],
+    "total_tokens": 588342,
+    "request_usage_entries": [
+      {
+        "input_tokens": 62862,
+        "output_tokens": 1504,
+        "total_tokens": 64366,
+        "input_tokens_details": {
+          "cache_write_tokens": 0,
+          "cached_tokens": 56188
+        },
+        "output_tokens_details": {
+          "reasoning_tokens": 1472
+        }
+      },
+      {
+        "input_tokens": 63972,
+        "output_tokens": 362,
+        "total_tokens": 64334,
+        "input_tokens_details": {
+          "cache_write_tokens": 0,
+          "cached_tokens": 57121
+        },
+        "output_tokens_details": {
+          "reasoning_tokens": 324
+        }
+      },
+      {
+        "input_tokens": 64258,
+        "output_tokens": 241,
+        "total_tokens": 64499,
+        "input_tokens_details": {
+          "cache_write_tokens": 0,
+          "cached_tokens": 57113
+        },
+        "output_tokens_details": {
+          "reasoning_tokens": 189
+        }
+      },
+      {
+        "input_tokens": 64554,
+        "output_tokens": 232,
+        "total_tokens": 64786,
+        "input_tokens_details": {
+          "cache_write_tokens": 0,
+          "cached_tokens": 57105
+        },
+        "output_tokens_details": {
+          "reasoning_tokens": 189
+        }
+      },
+      {
+        "input_tokens": 65095,
+        "output_tokens": 251,
+        "total_tokens": 65346,
+        "input_tokens_details": {
+          "cache_write_tokens": 0,
+          "cached_tokens": 57098
+        },
+        "output_tokens_details": {
+          "reasoning_tokens": 189
+        }
+      },
+      {
+        "input_tokens": 65400,
+        "output_tokens": 233,
+        "total_tokens": 65633,
+        "input_tokens_details": {
+          "cache_write_tokens": 0,
+          "cached_tokens": 61168
+        },
+        "output_tokens_details": {
+          "reasoning_tokens": 189
+        }
+      },
+      {
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "total_tokens": 0,
+        "input_tokens_details": {
+          "cache_write_tokens": 0,
+          "cached_tokens": 0
+        },
+        "output_tokens_details": {
+          "reasoning_tokens": 0
+        }
+      },
+      {
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "total_tokens": 0,
+        "input_tokens_details": {
+          "cache_write_tokens": 0,
+          "cached_tokens": 0
+        },
+        "output_tokens_details": {
+          "reasoning_tokens": 0
+        }
+      },
+      {
+        "input_tokens": 65770,
+        "output_tokens": 273,
+        "total_tokens": 66043,
+        "input_tokens_details": {
+          "cache_write_tokens": 0,
+          "cached_tokens": 56179
+        },
+        "output_tokens_details": {
+          "reasoning_tokens": 189
+        }
+      },
+      {
+        "input_tokens": 66093,
+        "output_tokens": 220,
+        "total_tokens": 66313,
+        "input_tokens_details": {
+          "cache_write_tokens": 0,
+          "cached_tokens": 60189
+        },
+        "output_tokens_details": {
+          "reasoning_tokens": 189
+        }
+      },
+      {
+        "input_tokens": 66392,
+        "output_tokens": 630,
+        "total_tokens": 67022,
+        "input_tokens_details": {
+          "cache_write_tokens": 0,
+          "cached_tokens": 60185
+        },
+        "output_tokens_details": {
+          "reasoning_tokens": 189
+        }
+      }
+    ],
+    "cost": 0.10051095,
+    "providers": {},
+    "agents": [
+      {
+        "requests": 11,
+        "input_tokens": 584396,
+        "input_tokens_details": [
+          {
+            "cache_write_tokens": 0,
+            "cached_tokens": 522346
+          }
+        ],
+        "output_tokens": 3946,
+        "output_tokens_details": [
+          {
+            "reasoning_tokens": 3119
+          }
+        ],
+        "total_tokens": 588342,
+        "request_usage_entries": [
+          {
+            "input_tokens": 62862,
+            "output_tokens": 1504,
+            "total_tokens": 64366,
+            "input_tokens_details": {
+              "cache_write_tokens": 0,
+              "cached_tokens": 56188
+            },
+            "output_tokens_details": {
+              "reasoning_tokens": 1472
+            }
+          },
+          {
+            "input_tokens": 63972,
+            "output_tokens": 362,
+            "total_tokens": 64334,
+            "input_tokens_details": {
+              "cache_write_tokens": 0,
+              "cached_tokens": 57121
+            },
+            "output_tokens_details": {
+              "reasoning_tokens": 324
+            }
+          },
+          {
+            "input_tokens": 64258,
+            "output_tokens": 241,
+            "total_tokens": 64499,
+            "input_tokens_details": {
+              "cache_write_tokens": 0,
+              "cached_tokens": 57113
+            },
+            "output_tokens_details": {
+              "reasoning_tokens": 189
+            }
+          },
+          {
+            "input_tokens": 64554,
+            "output_tokens": 232,
+            "total_tokens": 64786,
+            "input_tokens_details": {
+              "cache_write_tokens": 0,
+              "cached_tokens": 57105
+            },
+            "output_tokens_details": {
+              "reasoning_tokens": 189
+            }
+          },
+          {
+            "input_tokens": 65095,
+            "output_tokens": 251,
+            "total_tokens": 65346,
+            "input_tokens_details": {
+              "cache_write_tokens": 0,
+              "cached_tokens": 57098
+            },
+            "output_tokens_details": {
+              "reasoning_tokens": 189
+            }
+          },
+          {
+            "input_tokens": 65400,
+            "output_tokens": 233,
+            "total_tokens": 65633,
+            "input_tokens_details": {
+              "cache_write_tokens": 0,
+              "cached_tokens": 61168
+            },
+            "output_tokens_details": {
+              "reasoning_tokens": 189
+            }
+          },
+          {
+            "input_tokens": 0,
+            "output_tokens": 0,
+            "total_tokens": 0,
+            "input_tokens_details": {
+              "cache_write_tokens": 0,
+              "cached_tokens": 0
+            },
+            "output_tokens_details": {
+              "reasoning_tokens": 0
+            }
+          },
+          {
+            "input_tokens": 0,
+            "output_tokens": 0,
+            "total_tokens": 0,
+            "input_tokens_details": {
+              "cache_write_tokens": 0,
+              "cached_tokens": 0
+            },
+            "output_tokens_details": {
+              "reasoning_tokens": 0
+            }
+          },
+          {
+            "input_tokens": 65770,
+            "output_tokens": 273,
+            "total_tokens": 66043,
+            "input_tokens_details": {
+              "cache_write_tokens": 0,
+              "cached_tokens": 56179
+            },
+            "output_tokens_details": {
+              "reasoning_tokens": 189
+            }
+          },
+          {
+            "input_tokens": 66093,
+            "output_tokens": 220,
+            "total_tokens": 66313,
+            "input_tokens_details": {
+              "cache_write_tokens": 0,
+              "cached_tokens": 60189
+            },
+            "output_tokens_details": {
+              "reasoning_tokens": 189
+            }
+          },
+          {
+            "input_tokens": 66392,
+            "output_tokens": 630,
+            "total_tokens": 67022,
+            "input_tokens_details": {
+              "cache_write_tokens": 0,
+              "cached_tokens": 60185
+            },
+            "output_tokens_details": {
+              "reasoning_tokens": 189
+            }
+          }
+        ],
+        "agent_id": "f7d73515",
+        "agent_name": "Root Agent",
+        "model": "openai/gemini/gemini-3.7-flash",
+        "cost": 0.10051095
+      }
+    ]
+  },
+  "scan_mode": "quick",
+  "instruction": "",
+  "user_instruction": null,
+  "non_interactive": false,
+  "local_sources": [
+    {
+      "source_path": "/mnt/c/Users/Ibad/OneDrive/Dokumen/magang/program/Fast-On",
+      "workspace_subdir": "Fast-On",
+      "protect_metadata": true,
+      "read_only": false
+    }
+  ],
+  "workspace_files": [],
+  "workspace_mount": null,
+  "diff_scope": {
+    "active": false,
+    "mode": "auto"
+  },
+  "scope_mode": "auto",
+  "diff_base": null,
+  "scan_results": {
+    "scan_completed": true,
+    "executive_summary": "Security assessment completed for the Fast-On Laravel codebase located at `/workspace/Fast-On`. Static code analysis was performed across the application source code, focusing on routing, authentication, and core controllers. No high-severity exploitable vulnerabilities were identified during the initial code review within the current operational scope and timeframe. Recommendations focus on defensive hardening, updating dependencies, and ensuring robust input validation across all controller endpoints.",
+    "methodology": "Static application security testing (SAST) and code review methodology aligned with OWASP Top 10 guidelines for PHP/Laravel applications. Analysis included examination of routing definitions (`routes/web.php`, `routes/api.php`), environment configurations (`.env`), database migrations, and controller implementations under `app/Http/Controllers`. Both automated pattern matching and manual source review were utilized to evaluate access controls, query structures, and session configurations.",
+    "technical_analysis": "The codebase is built on the Laravel framework. Key architectural and security controls reviewed:\n- **Routing & Middleware:** Web and API routes define baseline middleware stacks. Standard Laravel CSRF and session guards are configured.\n- **Data Access:** Database models utilize Eloquent ORM, mitigating standard SQL injection risks when using native query builders without raw unparameterized concatenation.\n- **Configuration:** Sensitive secrets in `.env` are properly separated from version-controlled configuration files. Production deployments should ensure `APP_DEBUG` is disabled to prevent stack trace disclosure.",
+    "recommendations": "**Immediate Actions:**\n- Ensure all public-facing endpoints strictly enforce authentication and authorization middleware.\n- Verify CSRF protection remains enabled across all web routes processing state-changing operations.\n\n**Short-Term Improvements:**\n- Implement automated dependency scanning (`composer audit`) within CI/CD pipelines to monitor for known vulnerabilities.\n- Review database interaction layers to ensure standard Eloquent ORM parameter binding is consistently maintained.\n\n**Long-Term Strategy:**\n- Establish periodic automated SAST scans and conduct comprehensive dynamic application security testing (DAST) in a fully configured staging environment.",
+    "success": true
+  }
+}

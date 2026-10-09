@@ -92,6 +92,46 @@
                 @can($m['permission'])
                     <a href="{{ route($m['route']) }}"
                        class="{{ request()->routeIs($m['route']) ? 'active' : '' }}">
+                        <span class="sidebar-icon" aria-hidden="true">
+                            @switch($m['route'])
+                                @case('dashboard')
+                                    <svg viewBox="0 0 24 24"><path d="m3.5 10 8.5-7 8.5 7"/><path d="M5.5 9.5v10h13v-10"/><path d="M9.5 19.5v-6h5v6"/></svg>
+                                    @break
+                                @case('laporan')
+                                    <svg viewBox="0 0 24 24"><path d="M6 3.5h8.5l3.5 3.5v13.5H6z"/><path d="M14.5 3.5V7H18"/><path d="M9 11h6M9 14.5h6M9 18h3.5"/></svg>
+                                    @break
+                                @case('pbpd.index')
+                                    <svg viewBox="0 0 24 24"><rect x="4" y="4" width="6" height="6" rx="1"/><rect x="14" y="4" width="6" height="6" rx="1"/><rect x="4" y="14" width="6" height="6" rx="1"/><rect x="14" y="14" width="6" height="6" rx="1"/></svg>
+                                    @break
+                                @case('perluasan.jtm')
+                                @case('perluasan.jtr')
+                                    <svg viewBox="0 0 24 24"><path d="M5 19 19 5"/><path d="M10 5h9v9"/><path d="M5 5v4M5 19h4M19 19h-4"/></svg>
+                                    @break
+                                @case('tanpa.perluasan')
+                                    <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="7.5"/><path d="m7 7 10 10"/></svg>
+                                    @break
+                                @case('pbpd.upload')
+                                    <svg viewBox="0 0 24 24"><path d="M12 16V4"/><path d="m7.5 8.5 4.5-4.5 4.5 4.5"/><path d="M5 14v5.5h14V14"/></svg>
+                                    @break
+                                @case('vendor.tiang')
+                                @case('vendor.tiang.history')
+                                @case('vendor.konstruksi')
+                                @case('vendor.konstruksi.history')
+                                    <svg viewBox="0 0 24 24"><path d="M4 20V9l8-5 8 5v11"/><path d="M8 20v-6h8v6M7 10h.01M12 10h.01M17 10h.01"/></svg>
+                                    @break
+                                @case('pengoperasian')
+                                    <svg viewBox="0 0 24 24"><path d="m5 12 4.5 4.5L19 7"/><circle cx="12" cy="12" r="9"/></svg>
+                                    @break
+                                @case('pencarian')
+                                    <svg viewBox="0 0 24 24"><circle cx="10.8" cy="10.8" r="6.3"/><path d="m16 16 4.5 4.5"/></svg>
+                                    @break
+                                @case('notifikasi')
+                                    <svg viewBox="0 0 24 24"><path d="M18 9a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9"/><path d="M10 21h4"/></svg>
+                                    @break
+                                @default
+                                    <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="8"/></svg>
+                            @endswitch
+                        </span>
                         {{ $m['label'] }}@if ($m['route'] === 'notifikasi' && auth()->check()) <span class="notif-badge">{{ \App\Models\AppNotification::where('user_id', auth()->id())->whereNull('read_at')->count() }}</span>@endif
                     </a>
                 @endcan
@@ -461,20 +501,12 @@
     #mainSidebar h2 .brand-accent{color:#facc15!important}
     #mainSidebar .role{margin:0 14px 24px!important;color:rgba(255,255,255,.68)!important;font-size:11px!important;letter-spacing:.02em}
     #mainSidebar a{position:relative;display:flex!important;align-items:center;gap:12px;margin:4px 0!important;padding:11px 12px!important;border:1px solid transparent!important;border-radius:11px!important;color:rgba(255,255,255,.78)!important;font-size:13px!important;font-weight:600!important;letter-spacing:.005em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;transition:background .18s ease,color .18s ease,transform .18s ease,box-shadow .18s ease!important}
-    #mainSidebar a::before{display:inline-flex!important;align-items:center;justify-content:center;width:20px;min-width:20px;flex:0 0 20px;text-align:center;color:rgba(255,255,255,.72);font-size:15px;line-height:1}
-    #mainSidebar a[href$="/dashboard"]::before{content:'⌂'}
-    #mainSidebar a[href$="/laporan"]::before{content:'▤'}
-    #mainSidebar a[href$="/pbpd"]::before{content:'▣'}
-    #mainSidebar a[href$="/perluasan/jtm"]::before,#mainSidebar a[href$="/perluasan/jtr"]::before{content:'↗';font-size:11px}
-    #mainSidebar a[href$="/tanpa/perluasan"]::before{content:'○';font-size:11px}
-    #mainSidebar a[href$="/pbpd-upload"]::before{content:'↑';font-size:13px}
-    #mainSidebar a[href*="vendor"]::before{content:'▥'}
-    #mainSidebar a[href$="/pengoperasian"]::before{content:'✓'}
-    #mainSidebar a[href$="/pencarian"]::before{content:'⌕'}
-    #mainSidebar a[href$="/notifikasi"]::before{content:'♧'}
+    #mainSidebar .sidebar-icon{display:inline-grid!important;place-items:center;width:34px;min-width:34px;height:34px;border:1px solid rgba(148,163,184,.16);border-radius:10px;background:rgba(255,255,255,.06);color:#9fb3ce;transition:background .18s ease,color .18s ease,border-color .18s ease,transform .18s ease}
+    #mainSidebar .sidebar-icon svg{width:17px;height:17px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;display:block}
     #mainSidebar a:hover{background:rgba(39,169,214,.2)!important;color:#fff!important;border-color:rgba(39,169,214,.24)!important;transform:translateX(2px)!important}
     #mainSidebar a.active{background:#fff!important;color:#111c91!important;box-shadow:0 5px 14px rgba(0,0,0,.12)!important;font-weight:750!important}
-    #mainSidebar a.active::before{position:static!important;display:inline-flex!important;background:none!important;color:#111c91!important;width:20px!important;min-width:20px!important;height:20px!important;top:auto!important;right:auto!important;bottom:auto!important;left:auto!important;margin:0!important;transform:none!important}
+    #mainSidebar a:hover .sidebar-icon{background:rgba(39,169,214,.18);border-color:rgba(39,169,214,.35);color:#7dd3fc;transform:translateY(-1px)}
+    #mainSidebar a.active .sidebar-icon{background:#e0f2fe!important;border-color:#bae6fd!important;color:#075985!important;box-shadow:0 4px 10px rgba(8,47,73,.12)}
     #mainSidebar a.active::after{right:12px!important;background:#facc15!important;width:6px!important;height:6px!important}
     #mainSidebar .notif-badge{margin-left:auto!important;background:#facc15!important;color:#172554!important;min-width:18px!important;border-radius:999px!important;font-size:10px!important;font-weight:800!important}
     @media(max-width:900px){#mainSidebar{width:210px!important}}
